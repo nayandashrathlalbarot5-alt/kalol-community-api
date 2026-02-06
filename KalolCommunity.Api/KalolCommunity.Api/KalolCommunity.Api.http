@@ -1,0 +1,6 @@
+@KalolCommunity.Api_HostAddress = http://localhost:5087
+
+GET {{KalolCommunity.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
