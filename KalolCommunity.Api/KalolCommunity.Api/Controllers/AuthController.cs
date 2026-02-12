@@ -39,40 +39,11 @@ namespace KalolCommunity.Api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
-        //[HttpPost("google-login")]
-        //public async Task<IActionResult> GoogleLogin(GoogleLoginRequestDTO request)
-        //{
-        //    var googleUser = await _googleAuthService.ValidateTokenAsync(request.IdToken);
-
-        //    // 1. Check if user exists
-        //    var user = await _unitOfWork.Users
-        //        .GetByEmailAsync(googleUser.Email);
-
-        //    // 2. If not exists → auto-register
-        //    if (user == null)
-        //    {
-        //        user = new User
-        //        {
-        //            Email = googleUser.Email,
-        //            //FullName = googleUser.FullName,
-        //            GoogleId = googleUser.GoogleId,
-        //            IsGoogleUser = true,
-        //            CreatedAt = DateTime.UtcNow
-        //        };
-
-        //        await _unitOfWork.Users.AddAsync(user);
-        //        await _unitOfWork.SaveChangesAsync();
-        //    }
-
-        //    // 3. Generate JWT (same as normal login)
-        //    var token = _jwtTokenService.GenerateAccessToken(user);
-
-        //    return Ok(new
-        //    {
-        //        token,
-        //        user.Email
-        //        //user.FullName
-        //    });
-        //}
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin(GoogleLoginRequestDTO request)
+        {
+            var result = await _authService.GoogleLoginAsync(request.IdToken);
+            return StatusCode(result.StatusCode, result);
+        }
     }
 }

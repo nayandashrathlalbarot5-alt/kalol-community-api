@@ -245,9 +245,10 @@ namespace KalolCommunity.Application.Services
         public async Task<ApiResponse<AuthResponseDTO>> GoogleLoginAsync(string idToken)
         {
             // Validate token with Google
+            var backendClientId = _configuration["GoogleAuth:ClientId"];
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
-                Audience = new[] { _configuration["GoogleAuth:ClientId"] }
+                Audience = new[] { backendClientId }
             };
 
             // Validate Google token here and handle validation errors locally
@@ -284,7 +285,8 @@ namespace KalolCommunity.Application.Services
                     FirstName = names.Length > 0 ? names[0] : string.Empty,
                     LastName = names.Length > 1 ? names[1] : string.Empty,
                     Email = googleInfo.Email,
-                    PasswordHash = null
+                    PasswordHash = null,
+                    IsGoogleUser = true
                 };
 
                 await _unitOfWork.Users.AddAsync(user);
