@@ -244,14 +244,14 @@ namespace KalolCommunity.Application.Services
 
         public async Task<ApiResponse<AuthResponseDTO>> GoogleLoginAsync(string idToken)
         {
-            // Validate token with Google
+            //1 Validate token with Google
             var backendClientId = _configuration["GoogleAuth:ClientId"];
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
                 Audience = new[] { backendClientId }
             };
 
-            // Validate Google token here and handle validation errors locally
+            //2 Validate Google token here and handle validation errors locally
             GoogleUserInfoDto googleInfo;
             try
             {
@@ -275,7 +275,7 @@ namespace KalolCommunity.Application.Services
                 };
             }
 
-            // Find or create local user
+            //3 Find or create local user
             var user = await _unitOfWork.Users.GetAsync(u => u.Email == googleInfo.Email);
             if (user == null)
             {
@@ -293,7 +293,7 @@ namespace KalolCommunity.Application.Services
                 await _unitOfWork.SaveChangesAsync();
             }
 
-            // Generate tokens
+            //4 Generate tokens
             var token = _jwtService.GenerateAccessToken(user);
             var refreshToken = _jwtService.GenerateRefreshToken();
             var hashedRefreshToken = _jwtService.HashToken(refreshToken);
@@ -310,7 +310,7 @@ namespace KalolCommunity.Application.Services
             await _unitOfWork.RefreshTokens.AddAsync(refreshTokenEntity);
             await _unitOfWork.SaveChangesAsync();
 
-            // Return ApiResponse<AuthResponseDTO> with Google info included
+            //5 Return ApiResponse<AuthResponseDTO> with Google info included
             return new ApiResponse<AuthResponseDTO>
             {
                 Success = true,
