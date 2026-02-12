@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using KalolCommunity.Domain.Entities;
-using KalolCommunity.Application.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace KalolCommunity.Infrastructure.Services
 {
@@ -66,6 +67,20 @@ namespace KalolCommunity.Infrastructure.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        // Helper method to generate a secure random refresh token
+        public string GenerateRefreshToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
+        // Helper method to hash tokens before storing them
+        public string HashToken(string token)
+        {
+            //The refresh token is hashed using SHA256 before storing it in the database to prevent token theft from compromising security.
+            using var sha = SHA256.Create();
+            return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(token)));
         }
     }
 }

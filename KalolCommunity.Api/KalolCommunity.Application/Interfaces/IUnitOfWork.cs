@@ -10,6 +10,7 @@ namespace KalolCommunity.Application.Interfaces
     public interface IUnitOfWork
     {
         IUserRepository Users { get; }
+        IRefreshTokenRepository RefreshTokens { get; }
         Task<int> SaveChangesAsync();
     }
 }

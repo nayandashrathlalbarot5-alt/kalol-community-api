@@ -14,11 +14,13 @@ namespace KalolCommunity.Infrastructure.Repositories
     {
         private readonly KalolCommunityDbContext _dbContext;
         public IUserRepository Users { get; }
+        public IRefreshTokenRepository RefreshTokens { get; }
 
         public UnitOfWork(KalolCommunityDbContext dbContext)
         {
             _dbContext = dbContext;
             Users = new UserRepository(_dbContext);
+            RefreshTokens = new RefreshTokenRepository(_dbContext);
         }
 
         public Task<int> SaveChangesAsync()

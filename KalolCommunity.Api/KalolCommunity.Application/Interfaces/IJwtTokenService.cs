@@ -10,7 +10,7 @@ namespace KalolCommunity.Application.Interfaces
     public interface IJwtTokenService
     {
         string GenerateAccessToken(User user);
-        //string GenerateRefreshToken();
-        //string HashToken(string token);
+        string GenerateRefreshToken();
+        string HashToken(string token);
     }
 }

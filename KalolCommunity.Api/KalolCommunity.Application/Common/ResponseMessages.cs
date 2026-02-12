@@ -7,7 +7,12 @@ namespace KalolCommunity.Application.Common
         public const string LoginSuccessful = "Login successful";
 
         // Common error messages
-        public const string InvalidCredentials = "Invalid email or password.";
-        public const string UserNotFound = "User not found.";
+        public const string InvalidCredentials = "Invalid email or password";
+        public const string UserNotFound = "User not found";
+        public const string InvalidUserId = "Invalid user id";
+        public const string RefreshTokenNotFound = "Refresh token not found";
+        public const string RefreshTokenExpiredOrRevoked = "Refresh token expired or revoked";
+        public const string TokenRefreshed = "Access token refreshed successfully";
+        public const string InvalidGoogleToken = "Invalid Google token";
     }
 }

@@ -14,7 +14,7 @@ namespace KalolCommunity.Application.Interfaces
         Task<T?> GetAsync(Expression<Func<T, bool>> predicate);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T entity);
-        //void Update(T entity);
+        Task UpdateAsync(T entity);
         //void Remove(T entity);
     }
 }

@@ -23,6 +23,12 @@ namespace KalolCommunity.Infrastructure.Repositories
         public async Task AddAsync(T entity)
             => await _dbSet.AddAsync(entity);
 
+        public Task UpdateAsync(T entity)
+        {
+            _dbSet.Update(entity);
+            return Task.CompletedTask;
+        }
+
         public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
                 => _dbSet.AnyAsync(predicate);
 

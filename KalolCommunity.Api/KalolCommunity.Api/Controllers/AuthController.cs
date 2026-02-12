@@ -32,6 +32,13 @@ namespace KalolCommunity.Api.Controllers
             return StatusCode(result.StatusCode, result);
         }
 
+        [HttpPost("refreshtoken")]
+        public async Task<IActionResult> RefreshToekn(RefreshTokenRequestDTO refreshTokenDTO)
+        {
+            var result = await _authService.RefreshTokenAsync(refreshTokenDTO);
+            return StatusCode(result.StatusCode, result);
+        }
+
         //[HttpPost("google-login")]
         //public async Task<IActionResult> GoogleLogin(GoogleLoginRequestDTO request)
         //{

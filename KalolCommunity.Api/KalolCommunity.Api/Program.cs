@@ -1,11 +1,10 @@
 using System;
 using System.Text;
-using KalolCommunity.Api.ExternalIntegration;
-using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Application.Services;
+using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Infrastructure.Services;
 using KalolCommunity.Infrastructure.Persistence;
 using KalolCommunity.Infrastructure.Repositories;
-using KalolCommunity.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,9 +24,9 @@ builder.Services.AddDbContext<KalolCommunityDbContext>(options =>
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
