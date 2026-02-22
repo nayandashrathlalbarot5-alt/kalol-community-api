@@ -140,7 +140,8 @@ namespace KalolCommunity.Application.Services
                 {
                     Token = token,
                     RefreshToken = refreshToken,
-                    Expiry = DateTime.UtcNow.AddHours(1)
+                    UserId = user.UserId,
+                    Expiry = DateTime.UtcNow.AddHours(1)                    
                 }
             };
         }
@@ -286,6 +287,7 @@ namespace KalolCommunity.Application.Services
                     LastName = names.Length > 1 ? names[1] : string.Empty,
                     Email = googleInfo.Email,
                     PasswordHash = null,
+                    GoogleId = googleInfo.GoogleId,
                     IsGoogleUser = true
                 };
 
