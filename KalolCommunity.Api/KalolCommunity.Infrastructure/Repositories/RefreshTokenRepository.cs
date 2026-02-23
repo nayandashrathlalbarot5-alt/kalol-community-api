@@ -9,11 +9,7 @@ using KalolCommunity.Infrastructure.Persistence;
 
 namespace KalolCommunity.Infrastructure.Repositories
 {
-    public class RefreshTokenRepository : Repository<RefreshToken>, IRefreshTokenRepository
+    public class RefreshTokenRepository(KalolCommunityDbContext context) : Repository<RefreshToken>(context), IRefreshTokenRepository
     {
-        public RefreshTokenRepository(KalolCommunityDbContext context)
-            : base(context)
-        {
-        }
     }
 }
