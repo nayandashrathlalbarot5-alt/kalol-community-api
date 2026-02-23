@@ -10,11 +10,7 @@ using System.Threading.Tasks;
 
 namespace KalolCommunity.Infrastructure.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UserRepository(KalolCommunityDbContext context) : Repository<User>(context), IUserRepository
     {
-        public UserRepository(KalolCommunityDbContext context)
-            : base(context)
-        {
-        }        
     }
 }

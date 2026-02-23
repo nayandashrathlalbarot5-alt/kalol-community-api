@@ -4,6 +4,7 @@ using KalolCommunity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KalolCommunity.Infrastructure.Migrations
 {
     [DbContext(typeof(KalolCommunityDbContext))]
-    partial class KalolCommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260222080036_AddCountryAndStateEntities")]
+    partial class AddCountryAndStateEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,11 +90,6 @@ namespace KalolCommunity.Infrastructure.Migrations
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
-
-                    b.Property<string>("StateCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("StateName")
                         .IsRequired()
