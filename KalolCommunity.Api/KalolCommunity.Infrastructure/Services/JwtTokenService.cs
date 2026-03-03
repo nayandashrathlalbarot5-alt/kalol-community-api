@@ -38,7 +38,7 @@ namespace KalolCommunity.Infrastructure.Services
             var claims = new List<Claim>
             {
                 // Subject claim represents user identifier
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
 
                 // User email claim for identification purposes
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),

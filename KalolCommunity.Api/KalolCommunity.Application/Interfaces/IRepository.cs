@@ -11,7 +11,7 @@ namespace KalolCommunity.Application.Interfaces
     {
         //Task<T> GetByIdAsync(Guid id);
         //Task<IEnumerable<T>> GetAllAsync();
-        Task<T?> GetAsync(Expression<Func<T, bool>> predicate);
+        Task<T?> GetAsync(Expression<Func<T, bool>> predicate,bool asNoTracking = false);        
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);

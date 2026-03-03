@@ -33,7 +33,7 @@ namespace KalolCommunity.Application.Services
             return new ApiResponse<IEnumerable<CountryDTO>>
             {
                 Success = true,
-                Message = "Countries retrieved successfully",
+                Message = ResponseMessages.CountriesRetrievedSuccessfully,
                 StatusCode = (int)HttpStatusCode.OK,
                 Data = countryDTOs
             };
@@ -53,7 +53,7 @@ namespace KalolCommunity.Application.Services
             return new ApiResponse<IEnumerable<StateDTO>>
             {
                 Success = true,
-                Message = "States retrieved successfully",
+                Message = ResponseMessages.StatesRetrievedSuccessfully,
                 StatusCode = (int)HttpStatusCode.OK,
                 Data = stateDTOs
             };
@@ -73,10 +73,10 @@ namespace KalolCommunity.Application.Services
             return new ApiResponse<IEnumerable<StateDTO>>
             {
                 Success = true,
-                Message = $"States retrieved successfully for country ID {countryId}",
+                Message = ResponseMessages.StatesRetrievedSuccessfully,
                 StatusCode = (int)HttpStatusCode.OK,
                 Data = stateDTOs
-            };
+            };      
         }
     }
 }

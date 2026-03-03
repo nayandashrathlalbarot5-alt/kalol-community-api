@@ -17,6 +17,7 @@ namespace KalolCommunity.Infrastructure.Persistence
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
+        public DbSet<CommunityDetail> CommunityDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

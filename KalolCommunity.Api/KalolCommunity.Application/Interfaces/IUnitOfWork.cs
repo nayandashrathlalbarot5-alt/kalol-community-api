@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KalolCommunity.Domain.Entities;
+﻿using System.Threading.Tasks;
 
 namespace KalolCommunity.Application.Interfaces
 {
@@ -11,6 +6,9 @@ namespace KalolCommunity.Application.Interfaces
     {
         IUserRepository Users { get; }
         IRefreshTokenRepository RefreshTokens { get; }
+        ICountryRepository Countries { get; }
+        IStateRepository States { get; }
+        ICommunityDetailRepository CommunityDetails { get; }
         Task<int> SaveChangesAsync();
     }
 }

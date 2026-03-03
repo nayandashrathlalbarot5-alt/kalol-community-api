@@ -4,6 +4,7 @@ using KalolCommunity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KalolCommunity.Infrastructure.Migrations
 {
     [DbContext(typeof(KalolCommunityDbContext))]
-    partial class KalolCommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260224045252_AddTblCommunityDetails")]
+    partial class AddTblCommunityDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,9 @@ namespace KalolCommunity.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AlternateContactNumber")
+                    b.Property<int>("AlternateContactNumber")
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("int");
 
                     b.Property<string>("BloodGroup")
                         .HasMaxLength(5)
@@ -96,12 +99,6 @@ namespace KalolCommunity.Infrastructure.Migrations
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsWhatsappAlternate")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWhatsappPrimary")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -153,10 +150,9 @@ namespace KalolCommunity.Infrastructure.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("PrimatyContactNumber")
-                        .IsRequired()
+                    b.Property<int>("PrimatyContactNumber")
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("int");
 
                     b.Property<string>("ProfessionType")
                         .HasMaxLength(100)
@@ -185,8 +181,7 @@ namespace KalolCommunity.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AlternateContactNumber")
-                        .IsUnique()
-                        .HasFilter("[AlternateContactNumber] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("CountryId");
 

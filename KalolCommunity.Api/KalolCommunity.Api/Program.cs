@@ -5,11 +5,11 @@ using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Infrastructure.Services;
 using KalolCommunity.Infrastructure.Persistence;
 using KalolCommunity.Infrastructure.Repositories;
+using KalolCommunity.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using KalolCommunity.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +32,10 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICountryRepository, CountryRepository>();
 builder.Services.AddScoped<IStateRepository, StateRepository>();
 builder.Services.AddScoped<IMasterDataService, MasterDataService>();
+builder.Services.AddScoped<ICommunityDetailService, CommunityDetailService>();
+
+// Add Blob Storage Service
+builder.Services.AddScoped<IBlobService, BlobService>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
@@ -105,7 +109,6 @@ builder.Services.AddSwaggerGen(options =>
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
                 },
-                // When referencing a scheme in a requirement, set the Scheme and Name to avoid nulls in some tools
                 Scheme = "Bearer",
                 Name = "Authorization",
                 In = ParameterLocation.Header

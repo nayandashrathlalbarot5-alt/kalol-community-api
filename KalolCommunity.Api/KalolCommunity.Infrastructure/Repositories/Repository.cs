@@ -32,7 +32,9 @@ namespace KalolCommunity.Infrastructure.Repositories
         public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
                 => _dbSet.AnyAsync(predicate);
 
-        public Task<T?> GetAsync(Expression<Func<T, bool>> predicate)
-                => _dbSet.FirstOrDefaultAsync(predicate);
+        public Task<T?> GetAsync(Expression<Func<T, bool>> predicate, bool asNoTracking = false)
+            => asNoTracking
+                ? _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate)
+                : _dbSet.FirstOrDefaultAsync(predicate);
     }
 }
