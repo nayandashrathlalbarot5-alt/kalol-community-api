@@ -19,6 +19,8 @@ namespace KalolCommunity.Infrastructure.Persistence
         public DbSet<State> States { get; set; }
         public DbSet<CommunityDetail> CommunityDetails { get; set; }
 
+        public DbSet<ChildrenDetail> ChildrenDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

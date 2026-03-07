@@ -18,6 +18,7 @@ namespace KalolCommunity.Infrastructure.Repositories
         public ICountryRepository Countries { get; }
         public IStateRepository States { get; }
         public ICommunityDetailRepository CommunityDetails { get; }
+        public IChildrenDetailRepository ChildrenDetails { get; }
 
         public UnitOfWork(KalolCommunityDbContext dbContext)
         {
@@ -27,6 +28,7 @@ namespace KalolCommunity.Infrastructure.Repositories
             Countries = new CountryRepository(_dbContext);
             States = new StateRepository(_dbContext);
             CommunityDetails = new CommunityDetailRepository(_dbContext);
+            ChildrenDetails = new ChildrenDetailRepository(_dbContext);
         }
 
         public Task<int> SaveChangesAsync()

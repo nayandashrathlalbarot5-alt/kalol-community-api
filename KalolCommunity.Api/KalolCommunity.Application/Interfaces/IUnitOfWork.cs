@@ -9,6 +9,7 @@ namespace KalolCommunity.Application.Interfaces
         ICountryRepository Countries { get; }
         IStateRepository States { get; }
         ICommunityDetailRepository CommunityDetails { get; }
+        IChildrenDetailRepository ChildrenDetails { get; }
         Task<int> SaveChangesAsync();
     }
 }

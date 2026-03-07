@@ -4,6 +4,7 @@ using KalolCommunity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KalolCommunity.Infrastructure.Migrations
 {
     [DbContext(typeof(KalolCommunityDbContext))]
-    partial class KalolCommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260303053505_AddNewEntityAndRemoveFields_ChildrenDetails")]
+    partial class AddNewEntityAndRemoveFields_ChildrenDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +34,7 @@ namespace KalolCommunity.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -38,9 +42,6 @@ namespace KalolCommunity.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("CommunityDetailId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -66,9 +67,8 @@ namespace KalolCommunity.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunityDetailId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("TblChildrenDetails");
                 });
@@ -376,19 +376,11 @@ namespace KalolCommunity.Infrastructure.Migrations
 
             modelBuilder.Entity("KalolCommunity.Domain.Entities.ChildrenDetail", b =>
                 {
-                    b.HasOne("KalolCommunity.Domain.Entities.CommunityDetail", "CommunityDetail")
-                        .WithMany("ChildrenDetails")
-                        .HasForeignKey("CommunityDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("KalolCommunity.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne()
+                        .HasForeignKey("KalolCommunity.Domain.Entities.ChildrenDetail", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("CommunityDetail");
 
                     b.Navigation("User");
                 });
@@ -440,11 +432,6 @@ namespace KalolCommunity.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("KalolCommunity.Domain.Entities.CommunityDetail", b =>
-                {
-                    b.Navigation("ChildrenDetails");
                 });
 
             modelBuilder.Entity("KalolCommunity.Domain.Entities.Country", b =>

@@ -56,10 +56,6 @@ namespace KalolCommunity.Domain.Entities
 
         [Required]
         [MaxLength(50)]
-        public string Occupation { get; set; } = null!;
-
-        [Required]
-        [MaxLength(50)]
         public string Education { get; set; } = null!;
 
         [Required]
@@ -72,10 +68,6 @@ namespace KalolCommunity.Domain.Entities
 
         [MaxLength(100)]
         public string? SpouseName { get; set; }
-
-        public int? NumberOfChildren { get; set; }
-        public int? NumberOfSons { get; set; }
-        public int? NumberOfDaughters { get; set; }
 
         [Required]
         [MaxLength(500)]
@@ -131,5 +123,6 @@ namespace KalolCommunity.Domain.Entities
         public Country? Country { get; set; }
         public State? State { get; set; }
         public User? User { get; set; }
+        public ICollection<ChildrenDetail> ChildrenDetails { get; set; } = new List<ChildrenDetail>();
     }
 }

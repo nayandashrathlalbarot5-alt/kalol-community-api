@@ -76,15 +76,11 @@ namespace KalolCommunity.Application.Services
                 IsWhatsappPrimary = dto.IsWhatsappPrimary,
                 IsWhatsappAlternate = dto.IsWhatsappAlternate,
                 PhotoPath = string.IsNullOrWhiteSpace(dto.PhotoPath)
-                            ? null : await _blobService.MoveToPermanentAsync(dto.PhotoPath),
-                Occupation = dto.Occupation,
+                            ? null : await _blobService.MoveToPermanentAsync(dto.PhotoPath),                
                 Education = dto.Education,
                 FatherName = dto.FatherName.Trim(),
                 MotherName = dto.MotherName.Trim(),
-                SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim(),
-                NumberOfChildren = dto.NumberOfChildren,
-                NumberOfSons = dto.NumberOfSons,
-                NumberOfDaughters = dto.NumberOfDaughters,
+                SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim(),                
                 CurrentAddress = dto.CurrentAddress.Trim(),
                 CountryId = dto.Country,
                 StateId = dto.State,
@@ -103,6 +99,27 @@ namespace KalolCommunity.Application.Services
 
             await _unitOfWork.CommunityDetails.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
+
+            // Save children details if provided
+            if (dto.Children != null && dto.Children.Count > 0)
+            {
+                foreach (var child in dto.Children)
+                {
+                    var childEntity = new ChildrenDetail
+                    {
+                        UserId = userId,
+                        CommunityDetailId = entity.Id,
+                        ChildName = child.ChildName.Trim(),
+                        Gender = child.Gender,
+                        MaritalStatus = child.MaritalStatus,
+                        Address = string.IsNullOrWhiteSpace(child.Address) ? null : child.Address.Trim(),
+                        IsActive = true,
+                        CreatedDate = DateTime.UtcNow
+                    };
+                    await _unitOfWork.ChildrenDetails.AddAsync(childEntity);
+                }
+                await _unitOfWork.SaveChangesAsync();
+            }
 
             _logger.LogInformation("Community detail created for user {UserId}", userId);
 
@@ -189,15 +206,10 @@ namespace KalolCommunity.Application.Services
                 // entity.PhotoPath remains unchanged
             }
             
-            entity.Occupation = dto.Occupation;
             entity.Education = dto.Education;
             entity.FatherName = dto.FatherName.Trim();
             entity.MotherName = dto.MotherName.Trim();
-            entity.SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim();
-            entity.NumberOfChildren = dto.NumberOfChildren;
-            entity.NumberOfSons = dto.NumberOfSons;
-            entity.NumberOfDaughters = dto.NumberOfDaughters;
-            entity.CurrentAddress = dto.CurrentAddress.Trim();
+            entity.SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim();            
             entity.CountryId = dto.Country;
             entity.StateId = dto.State;
             entity.City = dto.City.Trim();
@@ -213,6 +225,46 @@ namespace KalolCommunity.Application.Services
 
             await _unitOfWork.CommunityDetails.UpdateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
+
+            // Handle children details updates
+            if (dto.Children != null && dto.Children.Count > 0)
+            {
+                // Get existing children for this community detail
+                foreach (var childDto in dto.Children)
+                {
+                    if (childDto.Id.HasValue && childDto.Id.Value > 0)
+                    {
+                        // Update existing child
+                        var existingChild = await _unitOfWork.ChildrenDetails.GetAsync(c => c.Id == childDto.Id.Value);
+                        if (existingChild != null && existingChild.CommunityDetailId == communityDetailId)
+                        {
+                            existingChild.ChildName = childDto.ChildName.Trim();
+                            existingChild.Gender = childDto.Gender;
+                            existingChild.MaritalStatus = childDto.MaritalStatus;
+                            existingChild.Address = string.IsNullOrWhiteSpace(childDto.Address) ? null : childDto.Address.Trim();
+                            existingChild.UpdatedDate = DateTime.UtcNow;
+                            await _unitOfWork.ChildrenDetails.UpdateAsync(existingChild);
+                        }
+                    }
+                    else
+                    {
+                        // Add new child
+                        var newChild = new ChildrenDetail
+                        {
+                            UserId = userId,
+                            CommunityDetailId = communityDetailId,
+                            ChildName = childDto.ChildName.Trim(),
+                            Gender = childDto.Gender,
+                            MaritalStatus = childDto.MaritalStatus,
+                            Address = string.IsNullOrWhiteSpace(childDto.Address) ? null : childDto.Address.Trim(),
+                            IsActive = true,
+                            CreatedDate = DateTime.UtcNow
+                        };
+                        await _unitOfWork.ChildrenDetails.AddAsync(newChild);
+                    }
+                }
+                await _unitOfWork.SaveChangesAsync();
+            }
 
             _logger.LogInformation("Community detail updated for user {UserId}, id {CommunityDetailId}", userId, communityDetailId);
 
@@ -233,7 +285,8 @@ namespace KalolCommunity.Application.Services
 
         public async Task<ApiResponse<CommunityRequestDTO>> GetByUserIdAsync(Guid userId)
         {
-            var entity = await _unitOfWork.CommunityDetails.GetAsync(c => c.UserId == userId, asNoTracking: true);
+            // Use the new method that eagerly loads children
+            var entity = await _unitOfWork.CommunityDetails.GetByUserIdWithChildrenAsync(userId);
 
             if (entity == null)
             {
@@ -273,14 +326,10 @@ namespace KalolCommunity.Application.Services
                 AlternateContactNumber = entity.AlternateContactNumber,
                 IsWhatsappAlternate = entity.IsWhatsappAlternate,
                 PhotoPath = entity.PhotoPath,
-                Occupation = entity.Occupation,
                 Education = entity.Education,
                 FatherName = entity.FatherName,
                 MotherName = entity.MotherName,
-                SpouseName = entity.SpouseName,
-                NumberOfChildren = entity.NumberOfChildren,
-                NumberOfSons = entity.NumberOfSons,
-                NumberOfDaughters = entity.NumberOfDaughters,
+                SpouseName = entity.SpouseName,                
                 CurrentAddress = entity.CurrentAddress,
                 Country = entity.CountryId,
                 State = entity.StateId,
@@ -291,7 +340,15 @@ namespace KalolCommunity.Application.Services
                 BusinessType = entity.BusinessType,
                 CompanyName = entity.CompanyName,
                 Skills = entity.Skills,
-                OtherDetails = entity.OtherDetails
+                OtherDetails = entity.OtherDetails,
+                Children = entity.ChildrenDetails?.Select(c => new ChildrenDetailRequestDTO
+                {
+                    Id = c.Id,
+                    ChildName = c.ChildName,
+                    Gender = c.Gender,
+                    MaritalStatus = c.MaritalStatus,
+                    Address = c.Address
+                }).ToList() ?? new List<ChildrenDetailRequestDTO>()
             };
         }
 

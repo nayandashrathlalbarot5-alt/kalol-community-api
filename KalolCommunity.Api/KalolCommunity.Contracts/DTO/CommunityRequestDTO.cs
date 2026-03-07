@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace KalolCommunity.Contracts.DTO
@@ -47,8 +48,6 @@ namespace KalolCommunity.Contracts.DTO
 
         public string? PhotoUrl { get; set; }
 
-        [Required]        
-        public string Occupation { get; set; } = null!;
 
         [Required]       
         public string Education { get; set; } = null!;
@@ -63,15 +62,6 @@ namespace KalolCommunity.Contracts.DTO
 
         [MaxLength(100)]
         public string? SpouseName { get; set; }
-
-        [Range(0, int.MaxValue)]
-        public int? NumberOfChildren { get; set; }
-
-        [Range(0, int.MaxValue)]
-        public int? NumberOfSons { get; set; }
-
-        [Range(0, int.MaxValue)]
-        public int? NumberOfDaughters { get; set; }
 
         [Required]
         [MaxLength(500)]
@@ -107,7 +97,11 @@ namespace KalolCommunity.Contracts.DTO
 
         [MaxLength(500)]
         public string? OtherDetails { get; set; }
+        
         public bool IsWhatsappPrimary { get; set; }
-        public bool IsWhatsappAlternate { get; set; } 
+        public bool IsWhatsappAlternate { get; set; }
+
+        // Collection of children details
+        public ICollection<ChildrenDetailRequestDTO> Children { get; set; } = new List<ChildrenDetailRequestDTO>();
     }
 }
