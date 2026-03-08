@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using KalolCommunity.Application.Common;
 using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Exceptions;
 using KalolCommunity.Contracts.DTO;
 using KalolCommunity.Domain.Entities;
 using Microsoft.Extensions.Logging;
@@ -30,34 +31,34 @@ namespace KalolCommunity.Application.Services
         {
             if (userId == Guid.Empty)
             {
-                return InvalidResponse(ResponseMessages.InvalidUserId, HttpStatusCode.BadRequest);
+                throw new BadRequestException(ResponseMessages.InvalidUserId);
             }
 
             if (dto.DateOfBirth.Date >= DateTime.UtcNow.Date)
             {
-                return InvalidResponse(ResponseMessages.InvalidDateOfBirth, HttpStatusCode.BadRequest);
+                throw new BadRequestException(ResponseMessages.InvalidDateOfBirth);
             }
 
             if (!await _unitOfWork.Countries.AnyAsync(c => c.CountryId == dto.Country))
             {
-                return InvalidResponse(ResponseMessages.InvalidCountry, HttpStatusCode.BadRequest);
+                throw new BadRequestException(ResponseMessages.InvalidCountry);
             }
 
             if (!await _unitOfWork.States.AnyAsync(s => s.StateId == dto.State))
             {
-                return InvalidResponse(ResponseMessages.InvalidState, HttpStatusCode.BadRequest);
+                throw new BadRequestException(ResponseMessages.InvalidState);
             }
 
             string normalizedEmail = dto.Email.Trim().ToLowerInvariant();
 
             if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.Email == normalizedEmail))
             {
-                return InvalidResponse(ResponseMessages.CommunityEmailExists, HttpStatusCode.Conflict);
+                throw new ConflictException(ResponseMessages.CommunityEmailExists);
             }
 
             if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.PrimatyContactNumber == dto.PrimaryContactNumber))
             {
-                return InvalidResponse(ResponseMessages.CommunityPhoneExists, HttpStatusCode.Conflict);
+                throw new ConflictException(ResponseMessages.CommunityPhoneExists);
             }
 
             var entity = new CommunityDetail
@@ -145,39 +146,39 @@ namespace KalolCommunity.Application.Services
 
             if (entity == null)
             {
-                return InvalidResponse(ResponseMessages.CommunityDetailNotFound, HttpStatusCode.NotFound);
+                throw new NotFoundException(ResponseMessages.CommunityDetailNotFound);
             }
 
             if (entity.UserId != userId)
             {
-                return InvalidResponse(ResponseMessages.Forbidden, HttpStatusCode.Forbidden);
+                throw new ForbiddenException(ResponseMessages.Forbidden);
             }
 
             if (dto.DateOfBirth.Date >= DateTime.UtcNow.Date)
             {
-                return InvalidResponse(ResponseMessages.InvalidDateOfBirth, HttpStatusCode.BadRequest);
+                throw new BadRequestException(ResponseMessages.InvalidDateOfBirth);
             }
 
             if (!await _unitOfWork.Countries.AnyAsync(c => c.CountryId == dto.Country))
             {
-                return InvalidResponse(ResponseMessages.InvalidCountry, HttpStatusCode.BadRequest);
+                throw new BadRequestException(ResponseMessages.InvalidCountry);
             }
 
             if (!await _unitOfWork.States.AnyAsync(s => s.StateId == dto.State))
             {
-                return InvalidResponse(ResponseMessages.InvalidState, HttpStatusCode.BadRequest);
+                throw new BadRequestException(ResponseMessages.InvalidState);
             }
 
             string normalizedEmail = dto.Email.Trim().ToLowerInvariant();
 
             if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.Email == normalizedEmail && c.Id != communityDetailId))
             {
-                return InvalidResponse(ResponseMessages.CommunityEmailExists, HttpStatusCode.Conflict);
+                throw new ConflictException(ResponseMessages.CommunityEmailExists);
             }
 
             if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.PrimatyContactNumber == dto.PrimaryContactNumber && c.Id != communityDetailId))
             {
-                return InvalidResponse(ResponseMessages.CommunityPhoneExists, HttpStatusCode.Conflict);
+                throw new ConflictException(ResponseMessages.CommunityPhoneExists);
             }
 
             entity.FirstName = dto.FirstName.Trim();
@@ -290,7 +291,7 @@ namespace KalolCommunity.Application.Services
 
             if (entity == null)
             {
-                return InvalidResponse(ResponseMessages.ProfileDetailNotFound, HttpStatusCode.NotFound);
+                throw new NotFoundException(ResponseMessages.ProfileDetailNotFound);
             }
 
             var resultDto = MapToDto(entity);
@@ -384,17 +385,6 @@ namespace KalolCommunity.Application.Services
                 _logger.LogWarning(ex, "Failed to build photo URL for path {PhotoPath}", photoPath);
                 return null;
             }
-        }
-
-        private static ApiResponse<CommunityRequestDTO> InvalidResponse(string message, HttpStatusCode statusCode)
-        {
-            return new ApiResponse<CommunityRequestDTO>
-            {
-                Success = false,
-                Message = message,
-                StatusCode = (int)statusCode,
-                Data = null
-            };
         }
     }
 }

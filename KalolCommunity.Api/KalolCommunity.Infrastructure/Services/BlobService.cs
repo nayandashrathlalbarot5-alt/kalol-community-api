@@ -14,8 +14,8 @@ namespace KalolCommunity.Infrastructure.Services
     public class BlobService : IBlobService
     {
         private readonly BlobContainerClient _containerClient;
-        private readonly ILogger<BlobService> _logger;
         private readonly string _connectionString;
+        private readonly ILogger<BlobService> _logger;
         private const string TempFolder = "temp";
         private const string MembersFolder = "members";
         private const long MaxFileSize = 5 * 1024 * 1024; // 5MB
@@ -39,36 +39,23 @@ namespace KalolCommunity.Infrastructure.Services
         /// </summary>
         public async Task<string> UploadTempAsync(Stream fileStream, string fileName)
         {
-            try
-            {
-                // Validate file
-                ValidateFile(fileStream, fileName);
+            // Validate file
+            ValidateFile(fileStream, fileName);
 
-                // Generate unique file name
-                string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(fileName)}";
-                string blobName = $"{TempFolder}/{uniqueFileName}";
+            // Generate unique file name
+            string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(fileName)}";
+            string blobName = $"{TempFolder}/{uniqueFileName}";
 
-                // Reset stream position
-                fileStream.Position = 0;
+            // Reset stream position
+            fileStream.Position = 0;
 
-                // Upload to Azure Blob Storage
-                BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-                await blobClient.UploadAsync(fileStream, overwrite: true);
+            // Upload to Azure Blob Storage
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+            await blobClient.UploadAsync(fileStream, overwrite: true);
 
-                //_logger.LogInformation("Temporary file uploaded: {BlobName}", blobName);
+            _logger.LogInformation("Temporary file uploaded: {BlobName}", blobName);
 
-                return uniqueFileName;
-            }
-            catch (InvalidOperationException ex)
-            {
-                _logger.LogWarning("File validation failed: {Message}", ex.Message);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error uploading temporary file: {FileName}", fileName);
-                throw new InvalidOperationException("Failed to upload file to Azure Blob Storage", ex);
-            }
+            return uniqueFileName;
         }
 
         /// <summary>
@@ -76,41 +63,28 @@ namespace KalolCommunity.Infrastructure.Services
         /// </summary>
         public async Task<string> MoveToPermanentAsync(string tempFileName)
         {
-            try
+            string tempBlobName = $"{TempFolder}/{tempFileName}";
+            string permanentBlobName = $"{MembersFolder}/{tempFileName}";
+
+            BlobClient tempBlobClient = _containerClient.GetBlobClient(tempBlobName);
+
+            if (!await tempBlobClient.ExistsAsync())
             {
-                string tempBlobName = $"{TempFolder}/{tempFileName}";
-                string permanentBlobName = $"{MembersFolder}/{tempFileName}";
-
-                BlobClient tempBlobClient = _containerClient.GetBlobClient(tempBlobName);
-
-                if (!await tempBlobClient.ExistsAsync())
-                {
-                    throw new FileNotFoundException($"Temporary file not found: {tempFileName}");
-                }
-
-                BlobClient permanentBlobClient = _containerClient.GetBlobClient(permanentBlobName);
-
-                await permanentBlobClient.StartCopyFromUriAsync(tempBlobClient.Uri);
-
-                await WaitForCopyCompleteAsync(permanentBlobClient);
-
-                await tempBlobClient.DeleteAsync();
-
-                //_logger.LogInformation("File moved from {TempBlob} to {PermanentBlob}", tempBlobName, permanentBlobName);
-
-                // Return filename only so callers store the filename in DB
-                return tempFileName;
+                throw new FileNotFoundException($"Temporary file not found: {tempFileName}");
             }
-            catch (FileNotFoundException ex)
-            {
-                _logger.LogWarning("File not found during move operation: {Message}", ex.Message);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error moving file to permanent location: {FileName}", tempFileName);
-                throw new InvalidOperationException("Failed to move file to permanent storage", ex);
-            }
+
+            BlobClient permanentBlobClient = _containerClient.GetBlobClient(permanentBlobName);
+
+            await permanentBlobClient.StartCopyFromUriAsync(tempBlobClient.Uri);
+
+            await WaitForCopyCompleteAsync(permanentBlobClient);
+
+            await tempBlobClient.DeleteAsync();
+
+            _logger.LogInformation("File moved from {TempBlob} to {PermanentBlob}", tempBlobName, permanentBlobName);
+
+            // Return filename only so callers store the filename in DB
+            return tempFileName;
         }
 
         /// <summary>
@@ -118,21 +92,13 @@ namespace KalolCommunity.Infrastructure.Services
         /// </summary>
         public async Task DeleteTempAsync(string tempFileName)
         {
-            try
-            {
-                string blobName = $"{TempFolder}/{tempFileName}";
-                BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+            string blobName = $"{TempFolder}/{tempFileName}";
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
 
-                if (await blobClient.ExistsAsync())
-                {
-                    await blobClient.DeleteAsync();
-                    _logger.LogInformation("Temporary file deleted: {BlobName}", blobName);
-                }
-            }
-            catch (Exception ex)
+            if (await blobClient.ExistsAsync())
             {
-                _logger.LogError(ex, "Error deleting temporary file: {FileName}", tempFileName);
-                throw new InvalidOperationException("Failed to delete temporary file", ex);
+                await blobClient.DeleteAsync();
+                _logger.LogInformation("Temporary file deleted: {BlobName}", blobName);
             }
         }
 
@@ -142,17 +108,9 @@ namespace KalolCommunity.Infrastructure.Services
         /// </summary>
         public string GetPermanentBlobUrl(string fileName)
         {
-            try
-            {
-                string blobName = $"{MembersFolder}/{fileName}";
-                BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-                return blobClient.Uri.ToString();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error generating blob URL for file: {FileName}", fileName);
-                throw new InvalidOperationException("Failed to generate blob URL", ex);
-            }
+            string blobName = $"{MembersFolder}/{fileName}";
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+            return blobClient.Uri.ToString();
         }
 
         /// <summary>
@@ -161,45 +119,36 @@ namespace KalolCommunity.Infrastructure.Services
         /// </summary>
         public string GetPermanentBlobSasUrl(string fileName, TimeSpan? validFor = null)
         {
-            try
+            string blobName = $"{MembersFolder}/{fileName}";
+            BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+
+            // Default SAS validity
+            var expiresOn = DateTimeOffset.UtcNow.Add(validFor ?? TimeSpan.FromHours(1));
+
+            // Extract AccountName and AccountKey from connection string (required for StorageSharedKeyCredential)
+            string? accountName = GetConnectionStringValue(_connectionString, "AccountName");
+            string? accountKey = GetConnectionStringValue(_connectionString, "AccountKey");
+
+            if (string.IsNullOrWhiteSpace(accountName) || string.IsNullOrWhiteSpace(accountKey))
             {
-                string blobName = $"{MembersFolder}/{fileName}";
-                BlobClient blobClient = _containerClient.GetBlobClient(blobName);
-
-                // Default SAS validity
-                var expiresOn = DateTimeOffset.UtcNow.Add(validFor ?? TimeSpan.FromHours(1));
-
-                // Extract AccountName and AccountKey from connection string (required for StorageSharedKeyCredential)
-                string? accountName = GetConnectionStringValue(_connectionString, "AccountName");
-                string? accountKey = GetConnectionStringValue(_connectionString, "AccountKey");
-
-                if (string.IsNullOrWhiteSpace(accountName) || string.IsNullOrWhiteSpace(accountKey))
-                {
-                    _logger.LogError("Unable to create SAS: account name/key not found in connection string.");
-                    throw new InvalidOperationException("Storage account key is required to generate SAS. Consider using Azure AD user delegation SAS or enable container public access.");
-                }
-
-                var sharedKeyCredential = new StorageSharedKeyCredential(accountName!, accountKey!);
-
-                var sasBuilder = new BlobSasBuilder
-                {
-                    BlobContainerName = _containerClient.Name,
-                    BlobName = blobName,
-                    Resource = "b",
-                    ExpiresOn = expiresOn
-                };
-                sasBuilder.SetPermissions(BlobSasPermissions.Read);
-
-                var sasQueryParameters = sasBuilder.ToSasQueryParameters(sharedKeyCredential).ToString();
-
-                var uriBuilder = new UriBuilder(blobClient.Uri) { Query = sasQueryParameters };
-                return uriBuilder.Uri.ToString();
+                throw new InvalidOperationException("Storage account key is required to generate SAS. Consider using Azure AD user delegation SAS or enable container public access.");
             }
-            catch (Exception ex)
+
+            var sharedKeyCredential = new StorageSharedKeyCredential(accountName!, accountKey!);
+
+            var sasBuilder = new BlobSasBuilder
             {
-                _logger.LogError(ex, "Error generating SAS URL for file: {FileName}", fileName);
-                throw new InvalidOperationException("Failed to generate SAS URL", ex);
-            }
+                BlobContainerName = _containerClient.Name,
+                BlobName = blobName,
+                Resource = "b",
+                ExpiresOn = expiresOn
+            };
+            sasBuilder.SetPermissions(BlobSasPermissions.Read);
+
+            var sasQueryParameters = sasBuilder.ToSasQueryParameters(sharedKeyCredential).ToString();
+
+            var uriBuilder = new UriBuilder(blobClient.Uri) { Query = sasQueryParameters };
+            return uriBuilder.Uri.ToString();
         }
 
         /// <summary>

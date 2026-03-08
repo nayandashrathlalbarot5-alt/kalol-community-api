@@ -1,6 +1,7 @@
 ﻿using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,19 @@ namespace KalolCommunity.Infrastructure.Services
     {
         // IConfiguration to access appsettings.json values like issuer and token expiry times
         private readonly IConfiguration _configuration;
+        private readonly ILogger<JwtTokenService> _logger;
 
         // Constructor injects IConfiguration dependency
-        public JwtTokenService(IConfiguration configuration)
+        public JwtTokenService(IConfiguration configuration, ILogger<JwtTokenService> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public string GenerateAccessToken(User user)
         {
+            _logger.LogInformation("Generating access token for UserId: {UserId}", user.UserId);
+
             // Initialize JWT token handler which creates and serializes tokens
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -72,6 +77,7 @@ namespace KalolCommunity.Infrastructure.Services
         // Helper method to generate a secure random refresh token
         public string GenerateRefreshToken()
         {
+            _logger.LogDebug("Generating refresh token");
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
 
