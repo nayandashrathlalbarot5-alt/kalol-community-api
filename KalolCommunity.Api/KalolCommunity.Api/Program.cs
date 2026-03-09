@@ -57,8 +57,7 @@ try
     builder.Services.AddScoped<IStateRepository, StateRepository>();
     builder.Services.AddScoped<IMasterDataService, MasterDataService>();
     builder.Services.AddScoped<ICommunityDetailService, CommunityDetailService>();
-
-    // Add Blob Storage Service
+    builder.Services.AddScoped<ICachingService, MemoryCacheService>();
     builder.Services.AddScoped<IBlobService, BlobService>();
 
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -102,6 +101,7 @@ try
     });
 
     builder.Services.AddControllers();
+    builder.Services.AddMemoryCache();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
