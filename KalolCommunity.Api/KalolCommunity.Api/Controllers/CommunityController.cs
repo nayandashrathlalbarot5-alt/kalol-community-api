@@ -25,7 +25,7 @@ namespace KalolCommunity.Api.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(CommunityRequestDTO dto)
+        public async Task<IActionResult> Create([FromBody] CommunityRequestDTO dto)
         {
             if (!ModelState.IsValid)
             {
@@ -50,7 +50,7 @@ namespace KalolCommunity.Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update(int id, CommunityRequestDTO dto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] CommunityRequestDTO dto)
         {
             if (!ModelState.IsValid)
             {
