@@ -59,7 +59,8 @@ try
     builder.Services.AddScoped<ICommunityDetailService, CommunityDetailService>();
     builder.Services.AddScoped<ICachingService, MemoryCacheService>();
     builder.Services.AddScoped<IBlobService, BlobService>();
-
+    builder.Services.AddScoped<IServiceBusPublisher, ServiceBusPublisher>();
+    
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
     var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 

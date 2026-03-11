@@ -16,15 +16,18 @@ namespace KalolCommunity.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBlobService _blobService;
         private readonly ILogger<CommunityDetailService> _logger;
+        private readonly IServiceBusPublisher _publisher;
 
         public CommunityDetailService(
             IUnitOfWork unitOfWork,
             ILogger<CommunityDetailService> logger,
-            IBlobService blobService)
+            IBlobService blobService,
+            IServiceBusPublisher publisher)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _blobService = blobService;
+            _publisher = publisher;
         }
 
         public async Task<ApiResponse<CommunityRequestDTO>> CreateAsync(Guid userId, CommunityRequestDTO dto)
@@ -77,11 +80,11 @@ namespace KalolCommunity.Application.Services
                 IsWhatsappPrimary = dto.IsWhatsappPrimary,
                 IsWhatsappAlternate = dto.IsWhatsappAlternate,
                 PhotoPath = string.IsNullOrWhiteSpace(dto.PhotoPath)
-                            ? null : await _blobService.MoveToPermanentAsync(dto.PhotoPath),                
+                            ? null : await _blobService.MoveToPermanentAsync(dto.PhotoPath),
                 Education = dto.Education,
                 FatherName = dto.FatherName.Trim(),
                 MotherName = dto.MotherName.Trim(),
-                SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim(),                
+                SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim(),
                 CurrentAddress = dto.CurrentAddress.Trim(),
                 CountryId = dto.Country,
                 StateId = dto.State,
@@ -130,6 +133,17 @@ namespace KalolCommunity.Application.Services
             {
                 resultDto.PhotoUrl = BuildPhotoUrl(entity.PhotoPath);
             }
+
+            // Publish message to Service Bus
+            await _publisher.PublishAsync(new UserNotificationEventDTO
+            {
+                UserId = userId,
+                Name = string.Join(" ", new[] { entity.FirstName, entity.MiddleName, entity.LastName }
+                    .Where(x => !string.IsNullOrWhiteSpace(x))),
+                Email = entity.Email,
+                Mobile = entity.PrimatyContactNumber,
+                EventType = "UserRegistered"
+            });
 
             return new ApiResponse<CommunityRequestDTO>
             {
@@ -191,7 +205,7 @@ namespace KalolCommunity.Application.Services
             entity.Email = normalizedEmail;
             entity.PrimatyContactNumber = dto.PrimaryContactNumber;
             entity.AlternateContactNumber = string.IsNullOrWhiteSpace(dto.AlternateContactNumber) ? null : dto.AlternateContactNumber;
-            
+
             // Handle photo update: move from temp to permanent if a new photo is provided
             if (!string.IsNullOrWhiteSpace(dto.PhotoPath))
             {
@@ -206,11 +220,11 @@ namespace KalolCommunity.Application.Services
                 // If no photo provided in update, keep the existing one
                 // entity.PhotoPath remains unchanged
             }
-            
+
             entity.Education = dto.Education;
             entity.FatherName = dto.FatherName.Trim();
             entity.MotherName = dto.MotherName.Trim();
-            entity.SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim();            
+            entity.SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim();
             entity.CountryId = dto.Country;
             entity.StateId = dto.State;
             entity.City = dto.City.Trim();
@@ -330,7 +344,7 @@ namespace KalolCommunity.Application.Services
                 Education = entity.Education,
                 FatherName = entity.FatherName,
                 MotherName = entity.MotherName,
-                SpouseName = entity.SpouseName,                
+                SpouseName = entity.SpouseName,
                 CurrentAddress = entity.CurrentAddress,
                 Country = entity.CountryId,
                 State = entity.StateId,

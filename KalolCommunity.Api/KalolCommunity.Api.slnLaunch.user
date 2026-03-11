@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "KalolCommunity.Api\\KalolCommunity.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "KalolCommunity.NotificationWorker\\KalolCommunity.NotificationWorker.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
