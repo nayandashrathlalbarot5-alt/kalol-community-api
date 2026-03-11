@@ -8,6 +8,6 @@ namespace KalolCommunity.Application.Interfaces
 {
     public interface IServiceBusPublisher
     {
-        Task PublishAsync<T>(T message);
+        Task SendMessageAsync<T>(T message);
     }
 }

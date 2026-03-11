@@ -16,18 +16,18 @@ namespace KalolCommunity.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBlobService _blobService;
         private readonly ILogger<CommunityDetailService> _logger;
-        private readonly IServiceBusPublisher _publisher;
+        private readonly IServiceBusPublisher _serviceBusSender;
 
         public CommunityDetailService(
             IUnitOfWork unitOfWork,
             ILogger<CommunityDetailService> logger,
             IBlobService blobService,
-            IServiceBusPublisher publisher)
+            IServiceBusPublisher serviceBusSender)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _blobService = blobService;
-            _publisher = publisher;
+            _serviceBusSender = serviceBusSender;
         }
 
         public async Task<ApiResponse<CommunityRequestDTO>> CreateAsync(Guid userId, CommunityRequestDTO dto)
@@ -135,7 +135,7 @@ namespace KalolCommunity.Application.Services
             }
 
             // Publish message to Service Bus
-            await _publisher.PublishAsync(new UserNotificationEventDTO
+            await _serviceBusSender.SendMessageAsync(new UserNotificationEventDTO
             {
                 UserId = userId,
                 Name = string.Join(" ", new[] { entity.FirstName, entity.MiddleName, entity.LastName }

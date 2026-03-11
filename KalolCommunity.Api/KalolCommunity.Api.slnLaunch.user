@@ -9,6 +9,10 @@
       {
         "Path": "KalolCommunity.NotificationWorker\\KalolCommunity.NotificationWorker.csproj",
         "Action": "Start"
+      },
+      {
+        "Path": "KalolCommunity.Communication.Functions\\KalolCommunity.Communication.Functions.csproj",
+        "Action": "Start"
       }
     ]
   }
