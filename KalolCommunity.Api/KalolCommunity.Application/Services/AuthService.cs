@@ -1,15 +1,18 @@
-﻿using KalolCommunity.Application.Common;
-using KalolCommunity.Application.Interfaces;
-using KalolCommunity.Contracts.DTO;
-using KalolCommunity.Domain.Entities;
-using Microsoft.Extensions.Configuration;
-using Google.Apis.Auth;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Google.Apis.Auth;
+using KalolCommunity.Application.Common;
+using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Exceptions;
+using KalolCommunity.Contracts.DTO;
+using KalolCommunity.Domain.Entities;
+
 
 namespace KalolCommunity.Application.Services
 {
@@ -19,31 +22,30 @@ namespace KalolCommunity.Application.Services
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenService _jwtService;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthService> _logger;
 
         public AuthService(
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         IJwtTokenService jwtService,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        ILogger<AuthService> logger)
         {
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
             _jwtService = jwtService;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<ApiResponse<AuthResponseDTO>> RegisterAsync(RegisterDTO dto)
         {
+            _logger.LogInformation("Register attempt for email: {Email}", dto.Email);
+
             // 1️ Check if email exists
             if (await _unitOfWork.Users.AnyAsync(u => u.Email == dto.Email))
             {
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.EmailAlreadyRegistered,
-                    StatusCode = (int)HttpStatusCode.BadRequest,
-                    Data = null
-                };
+                throw new ConflictException(ResponseMessages.EmailAlreadyRegistered);
             }
 
             // 2️ Create user
@@ -82,6 +84,8 @@ namespace KalolCommunity.Application.Services
             await _unitOfWork.RefreshTokens.AddAsync(refreshTokenEntity);
             await _unitOfWork.SaveChangesAsync();
 
+            _logger.LogInformation("User registered successfully. UserId: {UserId}", user.UserId);
+
             // 9 Return wrapped response
             return new ApiResponse<AuthResponseDTO>
             {
@@ -100,35 +104,27 @@ namespace KalolCommunity.Application.Services
 
         public async Task<ApiResponse<AuthResponseDTO>> LoginAsync(LoginDTO dto)
         {
+            _logger.LogInformation("Login attempt for email: {Email}", dto.Email);
+
             // 1️ Find user
             var user = await _unitOfWork.Users.GetAsync(u => u.Email == dto.Email);
 
             if (user == null || user.PasswordHash == null)
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.InvalidCredentials,
-                    StatusCode = (int)HttpStatusCode.Unauthorized,
-                    Data = null
-                };
+                throw new UnauthorizedException(ResponseMessages.InvalidCredentials);
 
             // 2️ Verify password
             var isValidPassword = _passwordHasher.Verify(user.PasswordHash, dto.Password);
 
             if (!isValidPassword)
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.InvalidCredentials,
-                    StatusCode = (int)HttpStatusCode.Unauthorized,
-                    Data = null
-                };
+                throw new UnauthorizedException(ResponseMessages.InvalidCredentials);
 
             // 3️ Generate JWT
             var token = _jwtService.GenerateAccessToken(user);
 
             // 4 Generate Refresh Token
             var refreshToken = _jwtService.GenerateRefreshToken();
+
+            _logger.LogInformation("Login successful. UserId: {UserId}", user.UserId);
 
             // 5 Return wrapped response
             return new ApiResponse<AuthResponseDTO>
@@ -148,19 +144,15 @@ namespace KalolCommunity.Application.Services
 
         public async Task<ApiResponse<AuthResponseDTO>> RefreshTokenAsync(RefreshTokenRequestDTO refreshTokenRequestDTO)
         {
+            _logger.LogInformation("Refresh token attempt for user: {UserId}", refreshTokenRequestDTO.UserId);
+
             // 1️ Hash the incoming refresh token to compare with stored hash
             var hashedToken = _jwtService.HashToken(refreshTokenRequestDTO.RefreshToken);
 
             // 2️ Parse user id from DTO (DTO uses string for user id)
             if (!Guid.TryParse(refreshTokenRequestDTO.UserId, out var userGuid))
             {
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.InvalidUserId,
-                    StatusCode = (int)HttpStatusCode.BadRequest,
-                    Data = null
-                };
+                throw new BadRequestException(ResponseMessages.InvalidUserId);
             }
 
             // 3️ Retrieve the refresh token from the database matching the hashed token and user id
@@ -169,26 +161,14 @@ namespace KalolCommunity.Application.Services
 
             if (storedRefreshToken == null)
             {
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.RefreshTokenNotFound,
-                    StatusCode = (int)HttpStatusCode.Unauthorized,
-                    Data = null
-                };
+                throw new UnauthorizedException(ResponseMessages.RefreshTokenNotFound);
             }
 
             // 4️ Load the user and attach to the refresh token
             var user = await _unitOfWork.Users.GetAsync(u => u.UserId == storedRefreshToken.UserId);
             if (user == null)
             {
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.UserNotFound,
-                    StatusCode = (int)HttpStatusCode.NotFound,
-                    Data = null
-                };
+                throw new NotFoundException(ResponseMessages.UserNotFound);
             }
 
             storedRefreshToken.User = user;
@@ -196,13 +176,7 @@ namespace KalolCommunity.Application.Services
             // 5️ Check token validity
             if (storedRefreshToken.IsRevoked || storedRefreshToken.ExpiresAt <= DateTime.UtcNow)
             {
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.RefreshTokenExpiredOrRevoked,
-                    StatusCode = (int)HttpStatusCode.Unauthorized,
-                    Data = null
-                };
+                throw new UnauthorizedException(ResponseMessages.RefreshTokenExpiredOrRevoked);
             }
 
             // 6️ Generate new tokens and update stored refresh token
@@ -228,6 +202,8 @@ namespace KalolCommunity.Application.Services
             await _unitOfWork.RefreshTokens.AddAsync(newRefreshTokenEntity);
             await _unitOfWork.SaveChangesAsync();
 
+            _logger.LogInformation("Refresh token successful for UserId: {UserId}", storedRefreshToken.UserId);
+
             return new ApiResponse<AuthResponseDTO>
             {
                 Success = true,
@@ -245,6 +221,8 @@ namespace KalolCommunity.Application.Services
 
         public async Task<ApiResponse<AuthResponseDTO>> GoogleLoginAsync(string idToken)
         {
+            _logger.LogInformation("Google login attempt started");
+
             //1 Validate token with Google
             var backendClientId = _configuration["GoogleAuth:ClientId"];
             var settings = new GoogleJsonWebSignature.ValidationSettings()
@@ -265,15 +243,9 @@ namespace KalolCommunity.Application.Services
                     PictureUrl = payload.Picture
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.InvalidGoogleToken,
-                    StatusCode = (int)HttpStatusCode.Unauthorized,
-                    Data = null
-                };
+                throw new UnauthorizedException(ResponseMessages.InvalidGoogleToken, ex);
             }
 
             //3 Find or create local user
@@ -311,6 +283,8 @@ namespace KalolCommunity.Application.Services
 
             await _unitOfWork.RefreshTokens.AddAsync(refreshTokenEntity);
             await _unitOfWork.SaveChangesAsync();
+
+            _logger.LogInformation("Google login successful. UserId: {UserId}", user.UserId);
 
             //5 Return ApiResponse<AuthResponseDTO> with Google info included
             return new ApiResponse<AuthResponseDTO>
