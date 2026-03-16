@@ -4,6 +4,7 @@ using KalolCommunity.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KalolCommunity.Infrastructure.Migrations
 {
     [DbContext(typeof(KalolCommunityDbContext))]
-    partial class KalolCommunityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260316065627_MakeEmailOptional")]
+    partial class MakeEmailOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,7 +71,8 @@ namespace KalolCommunity.Infrastructure.Migrations
 
                     b.HasIndex("CommunityDetailId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("TblChildrenDetails");
                 });
@@ -383,8 +387,8 @@ namespace KalolCommunity.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("KalolCommunity.Domain.Entities.User", "User")
-                        .WithMany("ChildrenDetails")
-                        .HasForeignKey("UserId")
+                        .WithOne()
+                        .HasForeignKey("KalolCommunity.Domain.Entities.ChildrenDetail", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -454,8 +458,6 @@ namespace KalolCommunity.Infrastructure.Migrations
 
             modelBuilder.Entity("KalolCommunity.Domain.Entities.User", b =>
                 {
-                    b.Navigation("ChildrenDetails");
-
                     b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618

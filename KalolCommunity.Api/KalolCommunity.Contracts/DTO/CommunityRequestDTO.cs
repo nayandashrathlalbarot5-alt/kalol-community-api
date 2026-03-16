@@ -31,23 +31,23 @@ namespace KalolCommunity.Contracts.DTO
         
         public string? BloodGroup { get; set; }
 
-        [Required]
         [EmailAddress]
         [MaxLength(100)]
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; }
 
         [Required]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Primary contact number must be exactly 10 digits")]
-        public string PrimaryContactNumber { get; set; }
+        public string PrimaryContactNumber { get; set; } = null!;
 
         [RegularExpression("^\\d{10}$", ErrorMessage = "Alternate contact number must be exactly 10 digits")]
         public string? AlternateContactNumber { get; set; }
+
+        public bool IsPhotoUploading { get; set; }
 
         [MaxLength(500)]
         public string? PhotoPath { get; set; }
 
         public string? PhotoUrl { get; set; }
-
 
         [Required]       
         public string Education { get; set; } = null!;

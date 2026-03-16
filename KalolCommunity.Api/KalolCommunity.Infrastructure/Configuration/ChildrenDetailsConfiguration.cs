@@ -14,8 +14,8 @@ namespace KalolCommunity.Infrastructure.Configuration
         public void Configure(EntityTypeBuilder<ChildrenDetail> builder)
         {
             builder.HasOne(x => x.User)
-                .WithOne()
-                .HasForeignKey<ChildrenDetail>(x => x.UserId)
+                .WithMany(x => x.ChildrenDetails)
+                .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Foreign Key: CommunityDetail (parent relationship)
@@ -23,6 +23,9 @@ namespace KalolCommunity.Infrastructure.Configuration
                 .WithMany(x => x.ChildrenDetails)
                 .HasForeignKey(x => x.CommunityDetailId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // non-unique index (optional, for query performance)
+            builder.HasIndex(x => x.UserId);
         }
     }
 }

@@ -27,5 +27,6 @@ namespace KalolCommunity.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+        public ICollection<ChildrenDetail> ChildrenDetails { get; set; } = new List<ChildrenDetail>();
     }
 }

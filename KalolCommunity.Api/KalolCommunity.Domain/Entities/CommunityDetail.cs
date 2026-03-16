@@ -40,16 +40,15 @@ namespace KalolCommunity.Domain.Entities
         [MaxLength(5)]
         public string? BloodGroup { get; set; }
 
-        [Required]
         [MaxLength(100)]
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; }
 
         [Required]
         [MaxLength(10)]
-        public string PrimatyContactNumber { get; set; } = null!;
+        public string? PrimatyContactNumber { get; set; }
 
         [MaxLength(10)]
-        public string? AlternateContactNumber { get; set; }
+        public string? AlternateContactNumber { get; set; } = null;
 
         [MaxLength(500)]
         public string? PhotoPath { get; set; }

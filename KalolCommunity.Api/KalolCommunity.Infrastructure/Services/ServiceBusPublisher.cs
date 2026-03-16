@@ -38,10 +38,16 @@ namespace KalolCommunity.Infrastructure.Services
         /// <summary>
         /// Serializes the given message object to JSON and sends it to the Service Bus queue.
         /// </summary>
-        public async Task SendMessageAsync<T>(T message)
+        public Task SendMessageAsync<T>(T message)
+            => SendMessageAsync(message, _queueName);
+
+        /// <summary>
+        /// Serializes the given message object to JSON and sends it to the specified Service Bus queue.
+        /// </summary>
+        public async Task SendMessageAsync<T>(T message, string queueName)
         {
-            // Create a sender that targets the configured queue
-            var sender = _client.CreateSender(_queueName);
+            // Create a sender that targets the specified queue
+            var sender = _client.CreateSender(queueName);
 
             // Serialize the message object to JSON string
             var json = JsonSerializer.Serialize(message);

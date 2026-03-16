@@ -28,6 +28,9 @@ namespace KalolCommunity.NotificationWorker
         // Sends UserRegistered messages to registration-email-queue
         private ServiceBusSender? _registrationEmailSender;
 
+        // Sends UserRegistered messages to registration-whatsapp-queue
+        private ServiceBusSender? _registrationWhatsAppSender;
+
         // Sends UserApproved messages to approval-email-queue
         private ServiceBusSender? _approvalEmailSender;
 
@@ -80,9 +83,14 @@ namespace KalolCommunity.NotificationWorker
             if (message.EventType == "UserRegistered")
             {
                 // Forward to registration-email-queue → Azure Function sends registration email
-                _logger.LogInformation("Forwarding registration email event for {Email}", message.Email);
+                _logger.LogInformation("Forwarding registration notification events for {Email}", message.Email);
                 Console.WriteLine($"[NotificationWorker] Forwarding Registration Email for {message.Email}");
                 await ForwardMessageAsync(_registrationEmailSender!, body);
+
+                // Forward to registration-whatsapp-queue → Azure Function sends registration WhatsApp
+                _logger.LogInformation("Forwarding registration WhatsApp event for {Mobile}", message.Mobile);
+                Console.WriteLine($"[NotificationWorker] Forwarding Registration WhatsApp for {message.Mobile}");
+                await ForwardMessageAsync(_registrationWhatsAppSender!, body);
             }
             else if (message.EventType == "UserApproved")
             {
@@ -95,6 +103,7 @@ namespace KalolCommunity.NotificationWorker
             {
                 // Unknown event type - log and skip without failing
                 _logger.LogWarning("Unknown event type {EventType}. Skipping.", message.EventType);
+                Console.WriteLine($"[NotificationWorker] Unknown event type {message.EventType}. Skipping.");
             }
 
             // Mark message as done so it is removed from community-notifications queue
@@ -138,6 +147,10 @@ namespace KalolCommunity.NotificationWorker
             var registrationEmailQueue = _configuration["ServiceBus:RegistrationEmailQueueName"]
                 ?? throw new ArgumentNullException("ServiceBus:RegistrationEmailQueueName");
 
+            // Downstream queue for registration WhatsApp events
+            var registrationWhatsAppQueue = _configuration["ServiceBus:RegistrationWhatsAppQueueName"]
+                ?? throw new ArgumentNullException("ServiceBus:RegistrationWhatsAppQueueName");
+
             // Downstream queue for approval email events
             var approvalEmailQueue = _configuration["ServiceBus:ApprovalEmailQueueName"]
                 ?? throw new ArgumentNullException("ServiceBus:ApprovalEmailQueueName");
@@ -149,6 +162,7 @@ namespace KalolCommunity.NotificationWorker
 
             // Create senders for each downstream queue
             _registrationEmailSender = _client.CreateSender(registrationEmailQueue);
+            _registrationWhatsAppSender = _client.CreateSender(registrationWhatsAppQueue);
             _approvalEmailSender = _client.CreateSender(approvalEmailQueue);
 
             // Create processor that reads from community-notifications queue
@@ -184,6 +198,9 @@ namespace KalolCommunity.NotificationWorker
                 // Dispose senders to release queue connections
                 if (_registrationEmailSender is not null)
                     await _registrationEmailSender.DisposeAsync();
+
+                if (_registrationWhatsAppSender is not null)
+                    await _registrationWhatsAppSender.DisposeAsync();
 
                 if (_approvalEmailSender is not null)
                     await _approvalEmailSender.DisposeAsync();

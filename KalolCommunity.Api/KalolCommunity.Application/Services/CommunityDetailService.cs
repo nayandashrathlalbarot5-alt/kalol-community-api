@@ -6,6 +6,7 @@ using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Application.Exceptions;
 using KalolCommunity.Contracts.DTO;
 using KalolCommunity.Domain.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 
@@ -17,17 +18,24 @@ namespace KalolCommunity.Application.Services
         private readonly IBlobService _blobService;
         private readonly ILogger<CommunityDetailService> _logger;
         private readonly IServiceBusPublisher _serviceBusSender;
+        private readonly string _registrationEmailQueueName;
+        private readonly string _registrationWhatsAppQueueName;
 
         public CommunityDetailService(
             IUnitOfWork unitOfWork,
             ILogger<CommunityDetailService> logger,
             IBlobService blobService,
-            IServiceBusPublisher serviceBusSender)
+            IServiceBusPublisher serviceBusSender,
+            IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _blobService = blobService;
             _serviceBusSender = serviceBusSender;
+            _registrationEmailQueueName = configuration["ServiceBus:RegistrationEmailQueueName"]
+                ?? throw new ArgumentNullException("ServiceBus:RegistrationEmailQueueName");
+            _registrationWhatsAppQueueName = configuration["ServiceBus:RegistrationWhatsAppQueueName"]
+                ?? throw new ArgumentNullException("ServiceBus:RegistrationWhatsAppQueueName");
         }
 
         public async Task<ApiResponse<CommunityRequestDTO>> CreateAsync(Guid userId, CommunityRequestDTO dto)
@@ -52,10 +60,10 @@ namespace KalolCommunity.Application.Services
                 throw new BadRequestException(ResponseMessages.InvalidState);
             }
 
-            string normalizedEmail = dto.Email.Trim().ToLowerInvariant();
+            var normalizedEmail = NormalizeOptionalEmail(dto.Email);
 
-            if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.Email == normalizedEmail))
-            {
+            if (!string.IsNullOrWhiteSpace(normalizedEmail) &&
+                await _unitOfWork.CommunityDetails.AnyAsync(c => c.Email == normalizedEmail))         {
                 throw new ConflictException(ResponseMessages.CommunityEmailExists);
             }
 
@@ -134,16 +142,19 @@ namespace KalolCommunity.Application.Services
                 resultDto.PhotoUrl = BuildPhotoUrl(entity.PhotoPath);
             }
 
-            // Publish message to Service Bus
-            await _serviceBusSender.SendMessageAsync(new UserNotificationEventDTO
+            var notificationEvent = new UserNotificationEventDTO
             {
                 UserId = userId,
                 Name = string.Join(" ", new[] { entity.FirstName, entity.MiddleName, entity.LastName }
                     .Where(x => !string.IsNullOrWhiteSpace(x))),
                 Email = entity.Email,
-                Mobile = entity.PrimatyContactNumber,
+                Mobile = entity.IsWhatsappPrimary ? entity.PrimatyContactNumber : entity.AlternateContactNumber,
                 EventType = "UserRegistered"
-            });
+            };
+
+            // Publish to both email and WhatsApp queues for asynchronous processing
+            await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationEmailQueueName);
+            await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationWhatsAppQueueName);
 
             return new ApiResponse<CommunityRequestDTO>
             {
@@ -183,9 +194,10 @@ namespace KalolCommunity.Application.Services
                 throw new BadRequestException(ResponseMessages.InvalidState);
             }
 
-            string normalizedEmail = dto.Email.Trim().ToLowerInvariant();
+            var normalizedEmail = NormalizeOptionalEmail(dto.Email);
 
-            if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.Email == normalizedEmail && c.Id != communityDetailId))
+            if (!string.IsNullOrWhiteSpace(normalizedEmail) &&
+                await _unitOfWork.CommunityDetails.AnyAsync(c => c.Email == normalizedEmail && c.Id != communityDetailId))
             {
                 throw new ConflictException(ResponseMessages.CommunityEmailExists);
             }
@@ -207,18 +219,13 @@ namespace KalolCommunity.Application.Services
             entity.AlternateContactNumber = string.IsNullOrWhiteSpace(dto.AlternateContactNumber) ? null : dto.AlternateContactNumber;
 
             // Handle photo update: move from temp to permanent if a new photo is provided
-            if (!string.IsNullOrWhiteSpace(dto.PhotoPath))
+            if (!string.IsNullOrWhiteSpace(dto.PhotoPath) && dto.IsPhotoUploading)
             {
                 // If a new photo is provided and different from the stored one, move it to permanent
                 if (dto.PhotoPath != entity.PhotoPath)
                 {
                     entity.PhotoPath = await _blobService.MoveToPermanentAsync(dto.PhotoPath);
                 }
-            }
-            else
-            {
-                // If no photo provided in update, keep the existing one
-                // entity.PhotoPath remains unchanged
             }
 
             entity.Education = dto.Education;
@@ -399,6 +406,16 @@ namespace KalolCommunity.Application.Services
                 _logger.LogWarning(ex, "Failed to build photo URL for path {PhotoPath}", photoPath);
                 return null;
             }
+        }
+
+        private static string? NormalizeOptionalEmail(string? email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return null;
+            }
+
+            return email.Trim().ToLowerInvariant();
         }
     }
 }
