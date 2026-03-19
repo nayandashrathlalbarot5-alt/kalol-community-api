@@ -137,7 +137,8 @@ namespace KalolCommunity.NotificationWorker
 
             // Read Service Bus settings from appsettings.json
             var connectionString = _configuration["ServiceBus:ConnectionString"]
-                ?? throw new ArgumentNullException("ServiceBus:ConnectionString");
+                ?? _configuration["ServiceBus:ConnStr"]
+                ?? throw new ArgumentNullException("ServiceBus:ConnectionString / ServiceBus:ConnStr");
 
             // Main queue that the API publishes to
             var queueName = _configuration["ServiceBus:QueueName"]

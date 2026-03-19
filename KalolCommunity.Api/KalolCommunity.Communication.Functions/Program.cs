@@ -11,4 +11,16 @@ builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
     .ConfigureFunctionsApplicationInsights();
 
+builder.Services.AddHttpClient();
+
+var serviceBusConnection =
+    builder.Configuration["ServiceBusConnection"]
+    ?? builder.Configuration["ServiceBus:ConnectionString"]
+    ?? builder.Configuration["ServiceBus:ConnStr"];
+
+if (!string.IsNullOrWhiteSpace(serviceBusConnection))
+{
+    Environment.SetEnvironmentVariable("ServiceBusConnection", serviceBusConnection);
+}
+
 builder.Build().Run();

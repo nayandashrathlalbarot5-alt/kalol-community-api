@@ -25,8 +25,8 @@ namespace KalolCommunity.Infrastructure.Services
         {
             _logger = logger;
 
-            var connectionString = configuration["AzureBlobStorage:ConnectionString"];
-            var containerName = configuration["AzureBlobStorage:ContainerName"];
+            var connectionString = configuration["BlobStorage:Storage"];
+            var containerName = configuration["BlobStorage:Container"];
 
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
 

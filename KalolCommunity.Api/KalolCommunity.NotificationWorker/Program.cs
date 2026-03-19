@@ -15,12 +15,16 @@ try
         .ReadFrom.Configuration(builder.Configuration)
         .CreateLogger();
 
+    var appInsightsConnectionString =
+        builder.Configuration["ApplicationInsights:ConnectionString"]
+        ?? builder.Configuration["ApplicationInsights:ConnStr"];
+
     builder.Services.AddSerilog((services, loggerConfiguration) => loggerConfiguration
         .ReadFrom.Configuration(builder.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
         .WriteTo.ApplicationInsights(
-            builder.Configuration["ApplicationInsights:ConnectionString"],
+            appInsightsConnectionString,
             TelemetryConverter.Traces));
 
     builder.Services.AddHostedService<NotificationWorker>();

@@ -22,7 +22,8 @@ namespace KalolCommunity.Infrastructure.Services
         public ServiceBusPublisher(IConfiguration configuration)
         {
             // Read Service Bus connection string from appsettings.json
-            var connectionString = configuration["ServiceBus:ConnectionString"];
+            var connectionString = configuration["ServiceBus:ConnectionString"]
+                ?? configuration["ServiceBus:ConnStr"];
 
             // Read the target queue name from appsettings.json
             // Throws if not configured so we catch missing config early at startup
@@ -32,7 +33,7 @@ namespace KalolCommunity.Infrastructure.Services
             // Create the Service Bus client using the connection string
             // Throws if connection string is missing
             _client = new ServiceBusClient(connectionString
-                ?? throw new ArgumentNullException("ServiceBus:ConnectionString"));
+                ?? throw new ArgumentNullException("ServiceBus:ConnectionString / ServiceBus:ConnStr"));
         }
 
         /// <summary>

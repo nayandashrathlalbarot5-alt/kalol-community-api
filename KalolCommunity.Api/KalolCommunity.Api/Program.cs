@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using KalolCommunity.Application.Services;
 using KalolCommunity.Application.Interfaces;
@@ -22,20 +24,37 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    // Add Application Insights FIRST (before UseSerilog)
-    builder.Services.AddApplicationInsightsTelemetry();
+    var appInsightsConnectionString =
+        builder.Configuration["ApplicationInsights:ConnectionString"]
+        ?? builder.Configuration["ApplicationInsights:ConnStr"]
+        ?? builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+
+    if (!string.IsNullOrWhiteSpace(appInsightsConnectionString))
+    {
+        builder.Services.AddApplicationInsightsTelemetry(options =>
+        {
+            options.ConnectionString = appInsightsConnectionString;
+        });
+    }
 
     Log.Logger = new LoggerConfiguration()
         .ReadFrom.Configuration(builder.Configuration)
         .CreateLogger();
 
-    builder.Host.UseSerilog((context, services, loggerConfiguration) => loggerConfiguration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext()
-        .WriteTo.ApplicationInsights(
-            context.Configuration["ApplicationInsights:ConnectionString"],
-            TelemetryConverter.Traces));
+    builder.Host.UseSerilog((context, services, loggerConfiguration) =>
+    {
+        loggerConfiguration
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext();
+
+        if (!string.IsNullOrWhiteSpace(appInsightsConnectionString))
+        {
+            loggerConfiguration.WriteTo.ApplicationInsights(
+                appInsightsConnectionString,
+                TelemetryConverter.Traces);
+        }
+    });
 
     // Add services to the container.
     builder.Services.AddDbContext<KalolCommunityDbContext>(options =>
@@ -64,6 +83,7 @@ try
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
     var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 
+    
     builder.Services
         .AddAuthentication(options =>
         {
@@ -86,6 +106,51 @@ try
                 ClockSkew = TimeSpan.Zero
 
             };
+
+            //options.Events = new JwtBearerEvents
+            //{
+            //    OnAuthenticationFailed = context =>
+            //    {
+            //        var logger = context.HttpContext.RequestServices
+            //            .GetRequiredService<ILoggerFactory>()
+            //            .CreateLogger("JwtBearerEvents");
+
+            //        logger.LogWarning(
+            //            context.Exception,
+            //            "JWT authentication failed for {Path}. Token may be invalid/expired/signature mismatch.",
+            //            context.HttpContext.Request.Path);
+
+            //        return Task.CompletedTask;
+            //    },
+            //    OnTokenValidated = context =>
+            //    {
+            //        var logger = context.HttpContext.RequestServices
+            //            .GetRequiredService<ILoggerFactory>()
+            //            .CreateLogger("JwtBearerEvents");
+
+            //        var userId = context.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //        logger.LogInformation(
+            //            "JWT token validated successfully for {Path}. UserId: {UserId}",
+            //            context.HttpContext.Request.Path,
+            //            userId);
+
+            //        return Task.CompletedTask;
+            //    },
+            //    OnChallenge = context =>
+            //    {
+            //        var logger = context.HttpContext.RequestServices
+            //            .GetRequiredService<ILoggerFactory>()
+            //            .CreateLogger("JwtBearerEvents");
+
+            //        logger.LogWarning(
+            //            "JWT challenge triggered for {Path}. Error: {Error}, Description: {Description}",
+            //            context.HttpContext.Request.Path,
+            //            context.Error,
+            //            context.ErrorDescription);
+
+            //        return Task.CompletedTask;
+            //    }
+            //};
         });
 
     // Add CORS Policy
@@ -169,6 +234,29 @@ try
 
     app.UseAuthentication();
     app.UseAuthorization();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapGet("/api/debug/token", (ClaimsPrincipal user) =>
+        {
+            if (user.Identity?.IsAuthenticated != true)
+            {
+                return Results.Unauthorized();
+            }
+
+            var claims = user.Claims
+                .Select(c => new { c.Type, c.Value })
+                .ToArray();
+
+            return Results.Ok(new
+            {
+                IsAuthenticated = true,
+                AuthenticationType = user.Identity?.AuthenticationType,
+                Name = user.Identity?.Name,
+                Claims = claims
+            });
+        }).RequireAuthorization();
+    }
 
     app.MapControllers();
 
