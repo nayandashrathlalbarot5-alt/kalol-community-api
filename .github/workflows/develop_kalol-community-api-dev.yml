@@ -24,7 +24,7 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build KalolCommunity.Api/KalolCommunity.Api.sln --configuration Release
+        run: dotnet build KalolCommunity.Api/KalolCommunity.Api/KalolCommunity.Api.csproj --configuration Release
 
       - name: Publish with dotnet
         run: dotnet publish KalolCommunity.Api/KalolCommunity.Api/KalolCommunity.Api.csproj -c Release -o ./publish
