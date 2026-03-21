@@ -29,6 +29,12 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Build
+        run: dotnet build KalolCommunity.Api/KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj --configuration Release
+
+      - name: Publish
+        run: dotnet publish KalolCommunity.Api/KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj -c Release -o ./output
+      
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh
         run: |
@@ -46,7 +52,7 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3F2166FE03D040FCB337B855EACA1BD8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_03376EA5EF914D0488FA81679559C64C }}
 
-      - name: 'Run Azure Functions Action'
+      - name: Run Azure Functions Action
         uses: Azure/functions-action@v1
         id: fa
         with:
