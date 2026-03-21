@@ -30,6 +30,15 @@ jobs:
       - name: Build with dotnet
         run: dotnet build KalolCommunity.Api/KalolCommunity.Api/KalolCommunity.Api.csproj --configuration Release
 
+      - name: Install EF Tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Run EF Migrations
+        run: dotnet ef database update \
+            --project KalolCommunity.Api/KalolCommunity.Infrastructure/KalolCommunity.Infrastructure.csproj \
+            --startup-project KalolCommunity.Api/KalolCommunity.Api/KalolCommunity.Api.csproj \
+            --connection "${{ secrets.DEV_AZURE__DB_CONNECTION }}"
+      
       - name: Publish with dotnet
         run: dotnet publish KalolCommunity.Api/KalolCommunity.Api/KalolCommunity.Api.csproj -c Release -o ./publish
 
