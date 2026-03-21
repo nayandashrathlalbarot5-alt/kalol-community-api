@@ -11,7 +11,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'KalolCommunity.Api/KalolCommunity.Communication.Functions'
-  DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
+  DOTNET_VERSION: '8.0.x' 
 
 jobs:
   build-and-deploy:
@@ -31,16 +31,6 @@ jobs:
 
       - name: Build
         run: dotnet build KalolCommunity.Api/KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj --configuration Release
-
-      - name: Publish
-        run: dotnet publish KalolCommunity.Api/KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj -c Release -o ./output
-      
-      - name: 'Resolve Project Dependencies Using Dotnet'
-        shell: pwsh
-        run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          dotnet build KalolCommunity.Api/KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj --configuration Release
-          popd
 
       - name: Publish
         run: dotnet publish KalolCommunity.Api/KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj -c Release -o ./output
