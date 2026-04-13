@@ -49,6 +49,10 @@ jobs:
     if: github.event_name == 'push'
     runs-on: windows-latest
     needs: build
+
+    environment:
+      name: develop
+      
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
