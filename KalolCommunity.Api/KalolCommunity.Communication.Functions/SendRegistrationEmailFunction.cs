@@ -48,12 +48,14 @@ public class SendRegistrationEmailFunction
         Console.WriteLine($"[SendRegistrationEmail] Sending registration email to: {notification.Email} (UserId: {notification.UserId})");
 
         // Read Azure Communication Services connection string from environment settings
-        var connectionString = Environment.GetEnvironmentVariable("AzureCommunicationServices:ConnectionString")
-            ?? throw new InvalidOperationException("AzureCommunicationServices:ConnectionString is not configured.");
+        var connectionString =
+            Environment.GetEnvironmentVariable("ACS:ConnectionString")
+            ?? throw new InvalidOperationException("ACS:ConnectionString is not configured.");
 
         // Read sender address from environment settings
-        var senderAddress = Environment.GetEnvironmentVariable("AzureCommunicationServices:SenderAddress")
-            ?? throw new InvalidOperationException("AzureCommunicationServices:SenderAddress is not configured.");
+        var senderAddress =
+            Environment.GetEnvironmentVariable("ACS:SenderAddress")
+            ?? throw new InvalidOperationException("ACS:SenderAddress is not configured.");
 
         // Read HTML template from project output folder and replace placeholders
         var templatePath = Path.Combine(AppContext.BaseDirectory, "EmailTemplates", "RegistrationSuccess.html");
