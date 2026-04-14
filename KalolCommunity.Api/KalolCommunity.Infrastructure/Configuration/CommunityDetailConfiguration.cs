@@ -24,7 +24,7 @@ namespace KalolCommunity.Infrastructure.Configuration
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(x => x.Email).IsUnique();
-            builder.HasIndex(x => x.PrimatyContactNumber).IsUnique();
+            builder.HasIndex(x => x.PrimaryContactNumber).IsUnique();
             builder.HasIndex(x => x.AlternateContactNumber).IsUnique();
             builder.HasIndex(x => x.UserId).IsUnique();
         }
