@@ -10,19 +10,21 @@ namespace KalolCommunity.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "EducationOther",
-                table: "TblCommunityDetails",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblCommunityDetails', 'EducationOther') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[TblCommunityDetails] ADD [EducationOther] nvarchar(max) NULL;
+END");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "EducationOther",
-                table: "TblCommunityDetails");
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblCommunityDetails', 'EducationOther') IS NOT NULL
+BEGIN
+    ALTER TABLE [dbo].[TblCommunityDetails] DROP COLUMN [EducationOther];
+END");
         }
     }
 }
