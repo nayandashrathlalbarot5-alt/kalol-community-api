@@ -45,7 +45,7 @@ namespace KalolCommunity.Domain.Entities
 
         [Required]
         [MaxLength(10)]
-        public string? PrimatyContactNumber { get; set; }
+        public string? PrimaryContactNumber { get; set; }
 
         [MaxLength(10)]
         public string? AlternateContactNumber { get; set; } = null;
@@ -118,7 +118,8 @@ namespace KalolCommunity.Domain.Entities
         public bool IsWhatsappPrimary { get; set; } = true;
 
         public bool IsWhatsappAlternate { get; set; } = false;
-        
+        public string? EducationOther { get; set; }
+
         public Country? Country { get; set; }
         public State? State { get; set; }
         public User? User { get; set; }

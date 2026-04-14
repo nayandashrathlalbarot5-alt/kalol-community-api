@@ -100,6 +100,9 @@ namespace KalolCommunity.Contracts.DTO
         
         public bool IsWhatsappPrimary { get; set; }
         public bool IsWhatsappAlternate { get; set; }
+        
+        [MaxLength(100)]
+        public string? EducationOther { get; set; }
 
         // Collection of children details
         public ICollection<ChildrenDetailRequestDTO> Children { get; set; } = new List<ChildrenDetailRequestDTO>();

@@ -35,6 +35,12 @@ namespace KalolCommunity.Domain.Entities
 
         [MaxLength(500)]
         public string? Address { get; set; }
+        
+        [MaxLength(10)]
+        public string? Pincode { get; set; }
+
+        [MaxLength(15)]
+        public string? Mobile { get; set; }
 
         public User? User { get; set; }
 

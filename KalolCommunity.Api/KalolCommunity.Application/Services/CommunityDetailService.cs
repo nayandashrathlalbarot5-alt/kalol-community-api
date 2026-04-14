@@ -67,7 +67,7 @@ namespace KalolCommunity.Application.Services
                 throw new ConflictException(ResponseMessages.CommunityEmailExists);
             }
 
-            if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.PrimatyContactNumber == dto.PrimaryContactNumber))
+            if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.PrimaryContactNumber == dto.PrimaryContactNumber))
             {
                 throw new ConflictException(ResponseMessages.CommunityPhoneExists);
             }
@@ -83,13 +83,14 @@ namespace KalolCommunity.Application.Services
                 MaritalStatus = dto.MaritalStatus,
                 BloodGroup = dto.BloodGroup,
                 Email = normalizedEmail,
-                PrimatyContactNumber = dto.PrimaryContactNumber,
+                PrimaryContactNumber = dto.PrimaryContactNumber,
                 AlternateContactNumber = string.IsNullOrWhiteSpace(dto.AlternateContactNumber) ? null : dto.AlternateContactNumber,
                 IsWhatsappPrimary = dto.IsWhatsappPrimary,
                 IsWhatsappAlternate = dto.IsWhatsappAlternate,
                 PhotoPath = string.IsNullOrWhiteSpace(dto.PhotoPath)
                             ? null : await _blobService.MoveToPermanentAsync(dto.PhotoPath),
                 Education = dto.Education,
+                EducationOther = dto.EducationOther,
                 FatherName = dto.FatherName.Trim(),
                 MotherName = dto.MotherName.Trim(),
                 SpouseName = string.IsNullOrWhiteSpace(dto.SpouseName) ? null : dto.SpouseName.Trim(),
@@ -125,6 +126,8 @@ namespace KalolCommunity.Application.Services
                         Gender = child.Gender,
                         MaritalStatus = child.MaritalStatus,
                         Address = string.IsNullOrWhiteSpace(child.Address) ? null : child.Address.Trim(),
+                        Mobile = string.IsNullOrWhiteSpace(child.Mobile) ? null : child.Mobile.Trim(),
+                        Pincode = string.IsNullOrWhiteSpace(child.Pincode) ? null : child.Pincode.Trim(),
                         IsActive = true,
                         CreatedDate = DateTime.UtcNow
                     };
@@ -148,7 +151,7 @@ namespace KalolCommunity.Application.Services
                 Name = string.Join(" ", new[] { entity.FirstName, entity.MiddleName, entity.LastName }
                     .Where(x => !string.IsNullOrWhiteSpace(x))),
                 Email = entity.Email,
-                Mobile = entity.IsWhatsappPrimary ? entity.PrimatyContactNumber : entity.AlternateContactNumber,
+                Mobile = entity.IsWhatsappPrimary ? entity.PrimaryContactNumber : entity.AlternateContactNumber,
                 EventType = "UserRegistered"
             };
 
@@ -202,7 +205,7 @@ namespace KalolCommunity.Application.Services
                 throw new ConflictException(ResponseMessages.CommunityEmailExists);
             }
 
-            if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.PrimatyContactNumber == dto.PrimaryContactNumber && c.Id != communityDetailId))
+            if (await _unitOfWork.CommunityDetails.AnyAsync(c => c.PrimaryContactNumber == dto.PrimaryContactNumber && c.Id != communityDetailId))
             {
                 throw new ConflictException(ResponseMessages.CommunityPhoneExists);
             }
@@ -215,7 +218,7 @@ namespace KalolCommunity.Application.Services
             entity.MaritalStatus = dto.MaritalStatus;
             entity.BloodGroup = dto.BloodGroup;
             entity.Email = normalizedEmail;
-            entity.PrimatyContactNumber = dto.PrimaryContactNumber;
+            entity.PrimaryContactNumber = dto.PrimaryContactNumber;
             entity.AlternateContactNumber = string.IsNullOrWhiteSpace(dto.AlternateContactNumber) ? null : dto.AlternateContactNumber;
 
             // Handle photo update: move from temp to permanent if a new photo is provided
@@ -331,6 +334,7 @@ namespace KalolCommunity.Application.Services
         }
 
         private static CommunityRequestDTO MapToDto(CommunityDetail entity)
+        
         {
             return new CommunityRequestDTO
             {
@@ -343,12 +347,13 @@ namespace KalolCommunity.Application.Services
                 MaritalStatus = entity.MaritalStatus,
                 BloodGroup = entity.BloodGroup,
                 Email = entity.Email,
-                PrimaryContactNumber = entity.PrimatyContactNumber,
+                PrimaryContactNumber = entity.PrimaryContactNumber,
                 IsWhatsappPrimary = entity.IsWhatsappPrimary,
                 AlternateContactNumber = entity.AlternateContactNumber,
                 IsWhatsappAlternate = entity.IsWhatsappAlternate,
                 PhotoPath = entity.PhotoPath,
                 Education = entity.Education,
+                EducationOther = entity.EducationOther,
                 FatherName = entity.FatherName,
                 MotherName = entity.MotherName,
                 SpouseName = entity.SpouseName,
@@ -369,7 +374,9 @@ namespace KalolCommunity.Application.Services
                     ChildName = c.ChildName,
                     Gender = c.Gender,
                     MaritalStatus = c.MaritalStatus,
-                    Address = c.Address
+                    Address = c.Address,
+                    Mobile = c.Mobile,
+                    Pincode = c.Pincode,
                 }).ToList() ?? new List<ChildrenDetailRequestDTO>()
             };
         }
