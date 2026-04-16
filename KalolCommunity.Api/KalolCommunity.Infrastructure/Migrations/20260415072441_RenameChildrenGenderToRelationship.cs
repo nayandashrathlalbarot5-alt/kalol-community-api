@@ -10,39 +10,35 @@ namespace KalolCommunity.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Gender",
-                table: "TblChildrenDetails",
-                newName: "Relationship");
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblChildrenDetails', 'Gender') IS NOT NULL
+   AND COL_LENGTH('dbo.TblChildrenDetails', 'Relationship') IS NULL
+BEGIN
+    EXEC sp_rename 'dbo.TblChildrenDetails.Gender', 'Relationship', 'COLUMN';
+END");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "Relationship",
-                table: "TblChildrenDetails",
-                type: "nvarchar(20)",
-                maxLength: 20,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(10)",
-                oldMaxLength: 10);
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblChildrenDetails', 'Relationship') IS NOT NULL
+BEGIN
+    ALTER TABLE [dbo].[TblChildrenDetails] ALTER COLUMN [Relationship] nvarchar(20) NOT NULL;
+END");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Relationship",
-                table: "TblChildrenDetails",
-                type: "nvarchar(10)",
-                maxLength: 10,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(20)",
-                oldMaxLength: 20);
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblChildrenDetails', 'Relationship') IS NOT NULL
+BEGIN
+    ALTER TABLE [dbo].[TblChildrenDetails] ALTER COLUMN [Relationship] nvarchar(10) NOT NULL;
+END");
 
-            migrationBuilder.RenameColumn(
-                name: "Relationship",
-                table: "TblChildrenDetails",
-                newName: "Gender");
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblChildrenDetails', 'Relationship') IS NOT NULL
+   AND COL_LENGTH('dbo.TblChildrenDetails', 'Gender') IS NULL
+BEGIN
+    EXEC sp_rename 'dbo.TblChildrenDetails.Relationship', 'Gender', 'COLUMN';
+END");
         }
     }
 }
