@@ -10,19 +10,23 @@ namespace KalolCommunity.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "ChildName",
-                table: "TblChildrenDetails",
-                newName: "MemberName");
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblChildrenDetails', 'ChildName') IS NOT NULL
+   AND COL_LENGTH('dbo.TblChildrenDetails', 'MemberName') IS NULL
+BEGIN
+    EXEC sp_rename 'dbo.TblChildrenDetails.ChildName', 'MemberName', 'COLUMN';
+END");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "MemberName",
-                table: "TblChildrenDetails",
-                newName: "ChildName");
+            migrationBuilder.Sql(@"
+IF COL_LENGTH('dbo.TblChildrenDetails', 'MemberName') IS NOT NULL
+   AND COL_LENGTH('dbo.TblChildrenDetails', 'ChildName') IS NULL
+BEGIN
+    EXEC sp_rename 'dbo.TblChildrenDetails.MemberName', 'ChildName', 'COLUMN';
+END");
         }
     }
 }
