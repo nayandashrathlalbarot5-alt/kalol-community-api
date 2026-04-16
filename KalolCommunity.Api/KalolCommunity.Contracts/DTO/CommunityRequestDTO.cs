@@ -37,7 +37,7 @@ namespace KalolCommunity.Contracts.DTO
 
         [Required]
         [RegularExpression("^\\d{10}$", ErrorMessage = "Primary contact number must be exactly 10 digits")]
-        public string PrimaryContactNumber { get; set; } = null!;
+        public string? PrimaryContactNumber { get; set; } = null!;
 
         [RegularExpression("^\\d{10}$", ErrorMessage = "Alternate contact number must be exactly 10 digits")]
         public string? AlternateContactNumber { get; set; }

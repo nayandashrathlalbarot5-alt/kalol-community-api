@@ -23,11 +23,11 @@ namespace KalolCommunity.Domain.Entities
 
         [Required]
         [MaxLength(100)]
-        public string ChildName { get; set; } = null!;
+        public string MemberName { get; set; } = null!;
 
         [Required]
-        [MaxLength(10)]
-        public string Gender { get; set; } = null!;
+        [MaxLength(20)]
+        public string Relationship { get; set; } = null!;
 
         [Required]
         [MaxLength(20)]
