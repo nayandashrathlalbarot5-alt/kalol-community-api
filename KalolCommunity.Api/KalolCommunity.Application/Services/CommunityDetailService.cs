@@ -122,8 +122,8 @@ namespace KalolCommunity.Application.Services
                     {
                         UserId = userId,
                         CommunityDetailId = entity.Id,
-                        ChildName = child.ChildName.Trim(),
-                        Gender = child.Gender,
+                        MemberName = child.MemberName.Trim(),
+                        Relationship = child.Relationship,
                         MaritalStatus = child.MaritalStatus,
                         Address = string.IsNullOrWhiteSpace(child.Address) ? null : child.Address.Trim(),
                         Mobile = string.IsNullOrWhiteSpace(child.Mobile) ? null : child.Mobile.Trim(),
@@ -263,11 +263,13 @@ namespace KalolCommunity.Application.Services
                         var existingChild = await _unitOfWork.ChildrenDetails.GetAsync(c => c.Id == childDto.Id.Value);
                         if (existingChild != null && existingChild.CommunityDetailId == communityDetailId)
                         {
-                            existingChild.ChildName = childDto.ChildName.Trim();
-                            existingChild.Gender = childDto.Gender;
+                            existingChild.MemberName = childDto.MemberName.Trim();
+                            existingChild.Relationship = childDto.Relationship;
                             existingChild.MaritalStatus = childDto.MaritalStatus;
                             existingChild.Address = string.IsNullOrWhiteSpace(childDto.Address) ? null : childDto.Address.Trim();
                             existingChild.UpdatedDate = DateTime.UtcNow;
+                            existingChild.Pincode = string.IsNullOrWhiteSpace(childDto.Pincode) ? null : childDto.Pincode.Trim();
+                            existingChild.Mobile = string.IsNullOrWhiteSpace(childDto.Mobile) ? null : childDto.Mobile.Trim();
                             await _unitOfWork.ChildrenDetails.UpdateAsync(existingChild);
                         }
                     }
@@ -278,10 +280,12 @@ namespace KalolCommunity.Application.Services
                         {
                             UserId = userId,
                             CommunityDetailId = communityDetailId,
-                            ChildName = childDto.ChildName.Trim(),
-                            Gender = childDto.Gender,
+                            MemberName = childDto.MemberName.Trim(),
+                            Relationship = childDto.Relationship,
                             MaritalStatus = childDto.MaritalStatus,
                             Address = string.IsNullOrWhiteSpace(childDto.Address) ? null : childDto.Address.Trim(),
+                            Pincode = string.IsNullOrWhiteSpace(childDto.Pincode) ? null : childDto.Pincode.Trim(),
+                            Mobile = string.IsNullOrWhiteSpace(childDto.Mobile) ? null : childDto.Mobile.Trim(),
                             IsActive = true,
                             CreatedDate = DateTime.UtcNow
                         };
@@ -371,12 +375,12 @@ namespace KalolCommunity.Application.Services
                 Children = entity.ChildrenDetails?.Select(c => new ChildrenDetailRequestDTO
                 {
                     Id = c.Id,
-                    ChildName = c.ChildName,
-                    Gender = c.Gender,
+                    MemberName = c.MemberName,
+                    Relationship = c.Relationship,
                     MaritalStatus = c.MaritalStatus,
                     Address = c.Address,
                     Mobile = c.Mobile,
-                    Pincode = c.Pincode,
+                    Pincode = c.Pincode
                 }).ToList() ?? new List<ChildrenDetailRequestDTO>()
             };
         }

@@ -1,0 +1,48 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace KalolCommunity.Infrastructure.Migrations
+{
+    /// <inheritdoc />
+    public partial class RenameChildrenGenderToRelationship : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.RenameColumn(
+                name: "Gender",
+                table: "TblChildrenDetails",
+                newName: "Relationship");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Relationship",
+                table: "TblChildrenDetails",
+                type: "nvarchar(20)",
+                maxLength: 20,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(10)",
+                oldMaxLength: 10);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "Relationship",
+                table: "TblChildrenDetails",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(20)",
+                oldMaxLength: 20);
+
+            migrationBuilder.RenameColumn(
+                name: "Relationship",
+                table: "TblChildrenDetails",
+                newName: "Gender");
+        }
+    }
+}

@@ -13,10 +13,10 @@ namespace KalolCommunity.Contracts.DTO
 
         [Required]
         [MaxLength(100)]
-        public string ChildName { get; set; } = null!;
+        public string MemberName { get; set; } = null!;
 
         [Required]
-        public string Gender { get; set; } = null!;
+        public string Relationship { get; set; } = null!;
 
         [Required]
         public string MaritalStatus { get; set; } = null!;
