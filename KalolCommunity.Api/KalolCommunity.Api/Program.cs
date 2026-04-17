@@ -93,11 +93,15 @@ try
     {
         options.AddPolicy("AllowAngularApp", policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
+            var originsCsv = builder.Configuration["Cors:AllowedOriginsCsv"] ?? "http://localhost:4200";
 
+            var origins = originsCsv
+                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            policy.WithOrigins(origins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+            // Add .AllowCredentials() only if you use cookies.
         });
     });
 
