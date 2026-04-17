@@ -25,10 +25,20 @@ namespace KalolCommunity.Infrastructure.Services
         {
             _logger = logger;
 
+            // Preferred keys
             var connectionString = configuration["AzureBlobStorage:ConnectionString"];
             var containerName = configuration["AzureBlobStorage:ContainerName"];
 
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            // Fallback keys (if Azure env naming is restricted)
+            connectionString ??= configuration["BlobStorage:Storage"];
+            containerName ??= configuration["BlobStorage:Container"];
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentNullException(nameof(connectionString), "Blob storage connection string is missing.");
+            if (string.IsNullOrWhiteSpace(containerName))
+                throw new ArgumentNullException(nameof(containerName), "Blob container name is missing.");
+
+            _connectionString = connectionString;
 
             var blobServiceClient = new BlobServiceClient(connectionString);
             _containerClient = blobServiceClient.GetBlobContainerClient(containerName);
