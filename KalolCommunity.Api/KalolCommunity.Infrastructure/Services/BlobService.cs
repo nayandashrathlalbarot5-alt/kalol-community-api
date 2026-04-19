@@ -29,9 +29,19 @@ namespace KalolCommunity.Infrastructure.Services
             var connectionString = configuration["AzureBlobStorage:ConnectionString"];
             var containerName = configuration["AzureBlobStorage:ContainerName"];
 
+            _logger.LogInformation("Step 1 - Checking AzureBlobStorage:ConnectionString = {Value}", 
+                string.IsNullOrWhiteSpace(connectionString) ? "NULL/EMPTY" : "HAS VALUE");
+            _logger.LogInformation("Step 2 - Checking AzureBlobStorage:ContainerName = {Value}", 
+                string.IsNullOrWhiteSpace(containerName) ? "NULL/EMPTY" : "HAS VALUE");
+
             // Fallback keys (if Azure env naming is restricted)
             connectionString ??= configuration["BlobStorage:Storage"];
             containerName ??= configuration["BlobStorage:Container"];
+
+            _logger.LogInformation("Step 3 - After fallback, BlobStorage:Storage = {Value}", 
+                string.IsNullOrWhiteSpace(connectionString) ? "NULL/EMPTY" : "HAS VALUE");
+            _logger.LogInformation("Step 4 - After fallback, BlobStorage:Container = {Value}", 
+                string.IsNullOrWhiteSpace(containerName) ? "NULL/EMPTY" : "HAS VALUE");
 
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentNullException(nameof(connectionString), "Blob storage connection string is missing.");
@@ -42,6 +52,8 @@ namespace KalolCommunity.Infrastructure.Services
 
             var blobServiceClient = new BlobServiceClient(connectionString);
             _containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            _logger.LogInformation("BlobService initialized successfully with container: {ContainerName}", containerName);
         }
 
         /// <summary>
