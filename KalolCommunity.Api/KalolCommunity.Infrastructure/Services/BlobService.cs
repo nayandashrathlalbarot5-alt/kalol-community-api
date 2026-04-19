@@ -25,30 +25,36 @@ namespace KalolCommunity.Infrastructure.Services
         {
             _logger = logger;
 
-            // Preferred keys
+            // Preferred values
             var preferredConnectionString = configuration["AzureBlobStorage:ConnectionString"];
             var preferredContainerName = configuration["AzureBlobStorage:ContainerName"];
 
-            Console.WriteLine($"[BlobService] AzureBlobStorage:ConnectionString(raw) => {preferredConnectionString ?? "<null>"}");
-            Console.WriteLine($"[BlobService] AzureBlobStorage:ConnectionString(length) => {(preferredConnectionString?.Length ?? 0)}");
-            Console.WriteLine($"[BlobService] AzureBlobStorage:ContainerName(raw) => {preferredContainerName ?? "<null>"}");
-
-            // Fallback keys (if Azure env naming is restricted)
+            // Fallback values
             var fallbackConnectionString = configuration["BlobStorage:Storage"];
             var fallbackContainerName = configuration["BlobStorage:Container"];
 
-            Console.WriteLine($"[BlobService] BlobStorage:Storage(raw) => {fallbackConnectionString ?? "<null>"}");
-            Console.WriteLine($"[BlobService] BlobStorage:Storage(length) => {(fallbackConnectionString?.Length ?? 0)}");
-            Console.WriteLine($"[BlobService] BlobStorage:Container(raw) => {fallbackContainerName ?? "<null>"}");
+            // ✅ Proper fallback (handles null + empty)
+            var connectionString = string.IsNullOrWhiteSpace(preferredConnectionString)
+                ? fallbackConnectionString
+                : preferredConnectionString;
 
-            var connectionString = preferredConnectionString ?? fallbackConnectionString;
-            var containerName = preferredContainerName ?? fallbackContainerName;
+            var containerName = string.IsNullOrWhiteSpace(preferredContainerName)
+                ? fallbackContainerName
+                : preferredContainerName;
 
-            Console.WriteLine($"[BlobService] Final ConnectionString source => {(preferredConnectionString is not null ? "AzureBlobStorage:ConnectionString" : "BlobStorage:Storage")}");
-            Console.WriteLine($"[BlobService] Final ContainerName source => {(preferredContainerName is not null ? "AzureBlobStorage:ContainerName" : "BlobStorage:Container")}");
+            // ✅ Minimal useful logging (no secrets exposed)
+            Console.WriteLine($"[BlobService] Using ConnectionString from: " +
+                (!string.IsNullOrWhiteSpace(preferredConnectionString)
+                    ? "AzureBlobStorage"
+                    : "BlobStorage"));
 
+            Console.WriteLine($"[BlobService] Container Name: {containerName}");
+            Console.WriteLine($"[BlobService] ConnectionString Length: {connectionString?.Length}");
+
+            // ✅ Validations
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentNullException(nameof(connectionString), "Blob storage connection string is missing.");
+
             if (string.IsNullOrWhiteSpace(containerName))
                 throw new ArgumentNullException(nameof(containerName), "Blob container name is missing.");
 
@@ -57,7 +63,7 @@ namespace KalolCommunity.Infrastructure.Services
             var blobServiceClient = new BlobServiceClient(connectionString);
             _containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
-            Console.WriteLine($"[BlobService] Initialized successfully. Container: {containerName}");
+            Console.WriteLine($"[BlobService] Initialized successfully.");
         }
 
         /// <summary>
