@@ -43,6 +43,7 @@ namespace KalolCommunity.Api.Controllers
 
             try
             {
+                Console.WriteLine("API HIT TEST");
                 using var stream = file.OpenReadStream();
                 string fileName = await _blobService.UploadTempAsync(stream, file.FileName);
 
