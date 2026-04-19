@@ -43,13 +43,13 @@ namespace KalolCommunity.Infrastructure.Services
                 : preferredContainerName;
 
             // ✅ Minimal useful logging (no secrets exposed)
-            Console.WriteLine($"[BlobService] Using ConnectionString from: " +
-                (!string.IsNullOrWhiteSpace(preferredConnectionString)
-                    ? "AzureBlobStorage"
-                    : "BlobStorage"));
+            _logger.LogInformation("[BlobService] Using ConnectionString from: {ConfigSource}",
+                !string.IsNullOrWhiteSpace(preferredConnectionString) ? "AzureBlobStorage" : "BlobStorage");
 
-            Console.WriteLine($"[BlobService] Container Name: {containerName}");
-            Console.WriteLine($"[BlobService] ConnectionString Length: {connectionString?.Length}");
+            _logger.LogInformation("[BlobService] Container Name: {ContainerName}", containerName);
+
+            // avoid logging full secrets; length is acceptable for diagnostics
+            _logger.LogInformation("[BlobService] ConnectionString Length: {Length}", connectionString?.Length);
 
             // ✅ Validations
             if (string.IsNullOrWhiteSpace(connectionString))
@@ -63,7 +63,7 @@ namespace KalolCommunity.Infrastructure.Services
             var blobServiceClient = new BlobServiceClient(connectionString);
             _containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
-            Console.WriteLine($"[BlobService] Initialized successfully.");
+            _logger.LogInformation("[BlobService] Initialized successfully.");
         }
 
         /// <summary>
