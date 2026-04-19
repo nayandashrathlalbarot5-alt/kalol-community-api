@@ -33,6 +33,7 @@ try
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
+        .WriteTo.Console()
         .WriteTo.ApplicationInsights(
             context.Configuration["ApplicationInsights:ConnectionString"],
             TelemetryConverter.Traces));
@@ -153,10 +154,6 @@ try
     // Uncomment to generate state inserts
     //StateInsertGenerator.GenerateInserts();
     //return; // Exit after generation
-
-    builder.Logging.ClearProviders();
-    builder.Logging.AddConsole();
-    builder.Logging.SetMinimumLevel(LogLevel.Information);
 
     var app = builder.Build();
 
