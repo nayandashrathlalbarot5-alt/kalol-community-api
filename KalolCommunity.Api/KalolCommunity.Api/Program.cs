@@ -154,6 +154,10 @@ try
     //StateInsertGenerator.GenerateInserts();
     //return; // Exit after generation
 
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole();
+    builder.Logging.SetMinimumLevel(LogLevel.Information);
+
     var app = builder.Build();
 
     app.UseSerilogRequestLogging();
