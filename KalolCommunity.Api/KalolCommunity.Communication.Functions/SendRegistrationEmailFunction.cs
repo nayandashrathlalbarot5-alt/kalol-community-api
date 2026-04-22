@@ -49,13 +49,13 @@ public class SendRegistrationEmailFunction
 
         // Read Azure Communication Services connection string from environment settings
         var connectionString =
-            Environment.GetEnvironmentVariable("ACS__ConnectionString")
-            ?? throw new InvalidOperationException("ACS__ConnectionString is not configured.");
+            Environment.GetEnvironmentVariable("ACS:ConnectionString")
+            ?? throw new InvalidOperationException("ACS:ConnectionString is not configured.");
 
         // Read sender address from environment settings
         var senderAddress =
-            Environment.GetEnvironmentVariable("ACS__SenderAddress")
-            ?? throw new InvalidOperationException("ACS__SenderAddress is not configured.");
+            Environment.GetEnvironmentVariable("ACS:SenderAddress")
+            ?? throw new InvalidOperationException("ACS:SenderAddress is not configured.");
 
         // Read HTML template from project output folder and replace placeholders
         var templatePath = Path.Combine(AppContext.BaseDirectory, "EmailTemplates", "RegistrationSuccess.html");
