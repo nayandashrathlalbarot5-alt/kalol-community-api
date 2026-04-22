@@ -1,9 +1,9 @@
+using Azure;
 using Azure.Communication.Email;
 using KalolCommunity.Contracts.DTO;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
 using System.Text.Json;
 
 namespace KalolCommunity.Communication.Functions;
@@ -15,10 +15,14 @@ namespace KalolCommunity.Communication.Functions;
 public class SendRegistrationEmailFunction
 {
     private readonly ILogger<SendRegistrationEmailFunction> _logger;
+    private readonly IConfiguration _configuration;
 
-    public SendRegistrationEmailFunction(ILogger<SendRegistrationEmailFunction> logger)
+    public SendRegistrationEmailFunction(
+        ILogger<SendRegistrationEmailFunction> logger,
+        IConfiguration configuration)
     {
         _logger = logger;
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -26,66 +30,81 @@ public class SendRegistrationEmailFunction
     /// Queue name: registration-email-queue
     /// </summary>
     [Function("SendRegistrationEmail")]
-    public async Task Run([ServiceBusTrigger("registration-email-queue", Connection = "ServiceBusConnection")] string message)
+    public async Task Run(
+        [ServiceBusTrigger("registration-email-queue", Connection = "ServiceBusConnection")] string message)
     {
-        // Log raw incoming queue message
-        _logger.LogInformation("SendRegistrationEmail triggered. Message: {Message}", message);
-        Console.WriteLine($"[SendRegistrationEmail] Triggered with message: {message}");
-
-        // Convert JSON queue payload into DTO object
-        var notification = JsonSerializer.Deserialize<UserNotificationEventDTO>(message);
-
-        // If payload is invalid/null, skip processing safely
-        if (notification is null)
+        try
         {
-            _logger.LogWarning("Received null or invalid message. Skipping.");
-            Console.WriteLine("[SendRegistrationEmail] Invalid/empty payload. Skipped.");
-            return;
-        }
+            _logger.LogInformation("SendRegistrationEmail triggered. Payload: {Payload}", message);
 
-        // Log important details before sending email
-        _logger.LogInformation("Sending registration email to {Email} for user {UserId}", notification.Email, notification.UserId);
-        Console.WriteLine($"[SendRegistrationEmail] Sending registration email to: {notification.Email} (UserId: {notification.UserId})");
-
-        // Read Azure Communication Services connection string from environment settings
-        var connectionString =
-            Environment.GetEnvironmentVariable("ACS:ConnectionString")
-            ?? throw new InvalidOperationException("ACS:ConnectionString is not configured.");
-
-        // Read sender address from environment settings
-        var senderAddress =
-            Environment.GetEnvironmentVariable("ACS:SenderAddress")
-            ?? throw new InvalidOperationException("ACS:SenderAddress is not configured.");
-
-        // Read HTML template from project output folder and replace placeholders
-        var templatePath = Path.Combine(AppContext.BaseDirectory, "EmailTemplates", "RegistrationSuccess.html");
-        if (!File.Exists(templatePath))
-        {
-            throw new FileNotFoundException($"Email template not found at: {templatePath}");
-        }
-
-        var htmlBody = await File.ReadAllTextAsync(templatePath);
-        htmlBody = htmlBody.Replace("{UserName}", notification.Name);
-
-        // Create ACS email client
-        var emailClient = new EmailClient(connectionString);
-
-        // Build email message content and recipient
-        var emailMessage = new EmailMessage(
-            senderAddress: senderAddress,
-            content: new EmailContent("Registration Successful")
+            var notification = JsonSerializer.Deserialize<UserNotificationEventDTO>(message);
+            if (notification is null)
             {
-                PlainText = $"Dear {notification.Name},\n\nYour registration has been successfully completed.",
-                Html = htmlBody
-            },
-            recipients: new EmailRecipients(new[] { new EmailAddress(notification.Email, notification.Name) })
-        );
+                _logger.LogWarning("Invalid payload. Deserialization returned null. Payload: {Payload}", message);
+                return;
+            }
 
-        // Send email and wait for completion
-        var emailResult = await emailClient.SendAsync(Azure.WaitUntil.Completed, emailMessage);
+            _logger.LogInformation(
+                "Preparing email. UserId: {UserId}, Email: {Email}",
+                notification.UserId,
+                notification.Email);
 
-        // Log final status from ACS
-        _logger.LogInformation("Registration email sent. Status: {Status}", emailResult.Value.Status);
-        Console.WriteLine($"[SendRegistrationEmail] Email sent. Status: {emailResult.Value.Status}");
+            var connectionString = _configuration["ACS:ConnectionString"]
+                ?? throw new InvalidOperationException("Missing configuration: ACS:ConnectionString");
+
+            var senderAddress = _configuration["ACS:SenderAddress"]
+                ?? throw new InvalidOperationException("Missing configuration: ACS:SenderAddress");
+
+            _logger.LogInformation("ACS configuration loaded. SenderAddress: {SenderAddress}", senderAddress);
+
+            var templatePath = Path.Combine(AppContext.BaseDirectory, "EmailTemplates", "RegistrationSuccess.html");
+            if (!File.Exists(templatePath))
+            {
+                throw new FileNotFoundException("Email template file not found.", templatePath);
+            }
+
+            var htmlBody = await File.ReadAllTextAsync(templatePath);
+            htmlBody = htmlBody.Replace("{UserName}", notification.Name);
+
+            var emailClient = new EmailClient(connectionString);
+
+            var emailMessage = new EmailMessage(
+                senderAddress: senderAddress,
+                content: new EmailContent("Registration Successful")
+                {
+                    PlainText = $"Dear {notification.Name},\n\nYour registration has been successfully completed.",
+                    Html = htmlBody
+                },
+                recipients: new EmailRecipients(new[] { new EmailAddress(notification.Email, notification.Name) })
+            );
+
+            var emailResult = await emailClient.SendAsync(WaitUntil.Completed, emailMessage);
+
+            _logger.LogInformation(
+                "Email sent successfully. UserId: {UserId}, Email: {Email}, Status: {Status}",
+                notification.UserId,
+                notification.Email,
+                emailResult.Value.Status);
+        }
+        catch (RequestFailedException ex)
+        {
+            _logger.LogError(
+                ex,
+                "ACS RequestFailedException. HttpStatus: {Status}, ErrorCode: {ErrorCode}, Message: {Message}",
+                ex.Status,
+                ex.ErrorCode,
+                ex.Message);
+            throw;
+        }
+        catch (JsonException ex)
+        {
+            _logger.LogError(ex, "JSON parsing failed. Payload: {Payload}", message);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unhandled error in SendRegistrationEmail. Payload: {Payload}", message);
+            throw;
+        }
     }
 }
