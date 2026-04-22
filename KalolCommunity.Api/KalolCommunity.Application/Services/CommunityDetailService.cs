@@ -157,7 +157,7 @@ namespace KalolCommunity.Application.Services
 
             // Publish to both email and WhatsApp queues for asynchronous processing
             await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationEmailQueueName);
-            await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationWhatsAppQueueName);
+            //await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationWhatsAppQueueName);
 
             return new ApiResponse<CommunityRequestDTO>
             {
