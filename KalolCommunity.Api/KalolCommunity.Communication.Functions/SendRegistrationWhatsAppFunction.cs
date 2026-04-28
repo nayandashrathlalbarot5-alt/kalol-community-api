@@ -23,15 +23,18 @@ public class SendRegistrationWhatsAppFunction
     private readonly ILogger<SendRegistrationWhatsAppFunction> _logger;
     private readonly IConfiguration _configuration;
     private readonly HttpClient _httpClient;
+    private readonly TransliterationService _transliterationService;
 
     public SendRegistrationWhatsAppFunction(
         ILogger<SendRegistrationWhatsAppFunction> logger,
         IConfiguration configuration,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        TransliterationService transliterationService)
     {
         _logger = logger;
         _configuration = configuration;
         _httpClient = httpClientFactory.CreateClient();
+        _transliterationService = transliterationService;
     }
 
     [Function("SendRegistrationWhatsApp")]
@@ -109,7 +112,7 @@ public class SendRegistrationWhatsAppFunction
             ?? throw new InvalidOperationException("Missing configuration: WhatsApp:TemplateName");
 
         var recipient = NormalizeIndianMobile(notification.Mobile);
-        var memberName = notification.Name;
+        var memberName = await _transliterationService.ConvertToGujaratiAsync(notification.Name);
 
         var url = apiUrlTemplate.Replace(MetaMessagesUrlPhoneNumberPlaceholder, phoneNumberId, StringComparison.OrdinalIgnoreCase);
         var payload = CreateMetaTemplateMessageRequest(recipient, templateName, memberName);
