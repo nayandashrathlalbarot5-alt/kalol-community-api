@@ -1,5 +1,6 @@
 using KalolCommunity.Contracts.DTO;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.Text;
@@ -20,13 +21,16 @@ public class SendRegistrationWhatsAppFunction
     };
 
     private readonly ILogger<SendRegistrationWhatsAppFunction> _logger;
+    private readonly IConfiguration _configuration;
     private readonly HttpClient _httpClient;
 
     public SendRegistrationWhatsAppFunction(
         ILogger<SendRegistrationWhatsAppFunction> logger,
+        IConfiguration configuration,
         IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
+        _configuration = configuration;
         _httpClient = httpClientFactory.CreateClient();
     }
 
@@ -52,7 +56,7 @@ public class SendRegistrationWhatsAppFunction
                 return;
             }
 
-            var provider = Environment.GetEnvironmentVariable("WhatsApp:Provider")?.Trim().ToLowerInvariant() ?? "meta";
+            var provider = (_configuration["WhatsApp:Provider"] ?? "meta").Trim().ToLowerInvariant();
 
             switch (provider)
             {
@@ -92,34 +96,34 @@ public class SendRegistrationWhatsAppFunction
 
     private async Task SendViaMetaApiAsync(UserNotificationEventDTO notification, CancellationToken cancellationToken)
     {
-        // Read required Meta WhatsApp configuration values.
-        var phoneNumberId = GetRequiredEnvironmentVariable("WhatsApp:PhoneNumberId");
-        var accessToken = GetRequiredEnvironmentVariable("WhatsApp:AccessToken");
-        var apiUrlTemplate = GetRequiredEnvironmentVariable("WhatsApp:MessagesApiUrlTemplate");
-        var templateName = GetRequiredEnvironmentVariable("WhatsApp:TemplateName");
+        var phoneNumberId = _configuration["WhatsApp:PhoneNumberId"]
+            ?? throw new InvalidOperationException("Missing configuration: WhatsApp:PhoneNumberId");
 
-        // Prepare message data from incoming notification.
+        var accessToken = _configuration["WhatsApp:AccessToken"]
+            ?? throw new InvalidOperationException("Missing configuration: WhatsApp:AccessToken");
+
+        var apiUrlTemplate = _configuration["WhatsApp:MessagesApiUrlTemplate"]
+            ?? throw new InvalidOperationException("Missing configuration: WhatsApp:MessagesApiUrlTemplate");
+
+        var templateName = _configuration["WhatsApp:TemplateName"]
+            ?? throw new InvalidOperationException("Missing configuration: WhatsApp:TemplateName");
+
         var recipient = NormalizeIndianMobile(notification.Mobile);
         var memberName = notification.Name;
 
-        // Build final Meta API endpoint and request payload.
         var url = apiUrlTemplate.Replace(MetaMessagesUrlPhoneNumberPlaceholder, phoneNumberId, StringComparison.OrdinalIgnoreCase);
         var payload = CreateMetaTemplateMessageRequest(recipient, templateName, memberName);
 
-        // Create HTTP POST request with JSON body.
         using var request = new HttpRequestMessage(HttpMethod.Post, url)
         {
             Content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json")
         };
 
-        // Add bearer token for Meta API authentication.
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-        // Send request and read response for logging/debugging.
         using var response = await _httpClient.SendAsync(request, cancellationToken);
         var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
 
-        // Log and fail fast if Meta API returns non-success status.
         if (!response.IsSuccessStatusCode)
         {
             _logger.LogError(
@@ -135,9 +139,15 @@ public class SendRegistrationWhatsAppFunction
 
     private async Task SendViaTwilioAsync(UserNotificationEventDTO notification)
     {
-        var accountSid = GetRequiredEnvironmentVariable("Twilio:AccountSid");
-        var authToken = GetRequiredEnvironmentVariable("Twilio:AuthToken");
-        var fromWhatsApp = GetRequiredEnvironmentVariable("Twilio:FromWhatsAppNumber");
+        var accountSid = _configuration["Twilio:AccountSid"]
+            ?? throw new InvalidOperationException("Missing configuration: Twilio:AccountSid");
+
+        var authToken = _configuration["Twilio:AuthToken"]
+            ?? throw new InvalidOperationException("Missing configuration: Twilio:AuthToken");
+
+        var fromWhatsApp = _configuration["Twilio:FromWhatsAppNumber"]
+            ?? throw new InvalidOperationException("Missing configuration: Twilio:FromWhatsAppNumber");
+
         var recipient = NormalizeIndianMobile(notification.Mobile);
 
         TwilioClient.Init(accountSid, authToken);
@@ -156,10 +166,6 @@ public class SendRegistrationWhatsAppFunction
 
         _logger.LogInformation("Twilio WhatsApp sent successfully to {Mobile}", recipient);
     }
-
-    private static string GetRequiredEnvironmentVariable(string key)
-        => Environment.GetEnvironmentVariable(key)
-           ?? throw new InvalidOperationException($"{key} is not configured.");
 
     private static string NormalizeIndianMobile(string mobile)
     {
