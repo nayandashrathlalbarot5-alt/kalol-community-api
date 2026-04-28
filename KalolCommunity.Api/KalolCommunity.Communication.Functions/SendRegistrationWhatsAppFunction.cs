@@ -35,31 +35,58 @@ public class SendRegistrationWhatsAppFunction
         [ServiceBusTrigger("registration-whatsapp-queue", Connection = "ServiceBusConnection")] string message,
         CancellationToken cancellationToken)
     {
-        var notification = JsonSerializer.Deserialize<UserNotificationEventDTO>(message, SerializerOptions);
-        if (notification is null)
+        try
         {
-            _logger.LogWarning("Invalid WhatsApp payload. Skipping.");
-            return;
+            _logger.LogInformation("SendRegistrationWhatsApp triggered. Payload: {Payload}", message);
+
+            var notification = JsonSerializer.Deserialize<UserNotificationEventDTO>(message, SerializerOptions);
+            if (notification is null)
+            {
+                _logger.LogWarning("Invalid WhatsApp payload. Deserialization returned null. Payload: {Payload}", message);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(notification.Name) || string.IsNullOrWhiteSpace(notification.Mobile))
+            {
+                _logger.LogWarning("Invalid notification data for user {UserId}. Name or Mobile is missing.", notification.UserId);
+                return;
+            }
+
+            var provider = Environment.GetEnvironmentVariable("WhatsApp:Provider")?.Trim().ToLowerInvariant() ?? "meta";
+
+            switch (provider)
+            {
+                case "meta":
+                    await SendViaMetaApiAsync(notification, cancellationToken);
+                    break;
+                case "twilio":
+                    await SendViaTwilioAsync(notification);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Unsupported WhatsApp provider '{provider}'. Use 'meta' or 'twilio'.");
+            }
         }
-
-        if (string.IsNullOrWhiteSpace(notification.Name) || string.IsNullOrWhiteSpace(notification.Mobile))
+        catch (JsonException ex)
         {
-            _logger.LogWarning("Invalid notification data for user {UserId}. Name or Mobile is missing.", notification.UserId);
-            return;
+            _logger.LogError(
+                ex,
+                "JSON parsing failed in SendRegistrationWhatsApp. Payload: {Payload}, Message: {ExceptionMessage}, InnerException: {InnerException}, StackTrace: {StackTrace}",
+                message,
+                ex.Message,
+                ex.InnerException?.Message,
+                ex.StackTrace);
+            throw;
         }
-
-        var provider = Environment.GetEnvironmentVariable("WhatsApp:Provider")?.Trim().ToLowerInvariant() ?? "meta";
-
-        switch (provider)
+        catch (Exception ex)
         {
-            case "meta":
-                await SendViaMetaApiAsync(notification, cancellationToken);
-                break;
-            case "twilio":
-                await SendViaTwilioAsync(notification);
-                break;
-            default:
-                throw new InvalidOperationException($"Unsupported WhatsApp provider '{provider}'. Use 'meta' or 'twilio'.");
+            _logger.LogError(
+                ex,
+                "Unhandled error in SendRegistrationWhatsApp. Payload: {Payload}, Message: {ExceptionMessage}, InnerException: {InnerException}, StackTrace: {StackTrace}",
+                message,
+                ex.Message,
+                ex.InnerException?.Message,
+                ex.StackTrace);
+            throw;
         }
     }
 
@@ -100,7 +127,7 @@ public class SendRegistrationWhatsAppFunction
                 recipient,
                 response.StatusCode,
                 responseBody);
-            throw new InvalidOperationException("Meta WhatsApp API call failed.");
+            throw new InvalidOperationException($"Meta WhatsApp API call failed. StatusCode: {response.StatusCode}, Response: {responseBody}");
         }
 
         _logger.LogInformation("Meta WhatsApp sent successfully to {Mobile}. Response: {Response}", recipient, responseBody);
