@@ -36,15 +36,21 @@ namespace KalolCommunity.Infrastructure.Services
         }
 
         /// <summary>
-        /// Serializes the given message object to JSON and sends it to the Service Bus queue.
+        /// Sends a message to the default queue immediately.
         /// </summary>
         public Task SendMessageAsync<T>(T message)
             => SendMessageAsync(message, _queueName);
 
         /// <summary>
-        /// Serializes the given message object to JSON and sends it to the specified Service Bus queue.
+        /// Sends a message to the specified queue immediately.
         /// </summary>
-        public async Task SendMessageAsync<T>(T message, string queueName)
+        public Task SendMessageAsync<T>(T message, string queueName)
+            => SendMessageAsync(message, queueName, DateTimeOffset.UtcNow);
+
+        /// <summary>
+        /// Sends a message to the specified queue with a scheduled enqueue time for delayed delivery.
+        /// </summary>
+        public async Task SendMessageAsync<T>(T message, string queueName, DateTimeOffset scheduledEnqueueTime)
         {
             // Create a sender that targets the specified queue
             var sender = _client.CreateSender(queueName);
@@ -55,7 +61,8 @@ namespace KalolCommunity.Infrastructure.Services
             // Wrap the JSON string into a Service Bus message
             var serviceBusMessage = new ServiceBusMessage(json)
             {
-                ContentType = "application/json"
+                ContentType = "application/json",
+                ScheduledEnqueueTime = scheduledEnqueueTime
             };
 
             // Send the message to the queue

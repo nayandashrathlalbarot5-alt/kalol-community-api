@@ -155,9 +155,13 @@ namespace KalolCommunity.Application.Services
                 EventType = "UserRegistered"
             };
 
-            // Publish to both email and WhatsApp queues for asynchronous processing
+            // Publish email notification immediately
             await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationEmailQueueName);
-            await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationWhatsAppQueueName);
+
+            // Publish WhatsApp notification with a 3-minute delay
+            // This ensures the API response reaches the user before the WhatsApp message is sent
+            var whatsAppDelay = DateTimeOffset.UtcNow.AddMinutes(3);
+            await _serviceBusSender.SendMessageAsync(notificationEvent, _registrationWhatsAppQueueName, whatsAppDelay);
 
             return new ApiResponse<CommunityRequestDTO>
             {
