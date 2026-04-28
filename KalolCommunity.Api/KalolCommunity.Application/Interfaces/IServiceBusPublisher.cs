@@ -10,5 +10,6 @@ namespace KalolCommunity.Application.Interfaces
     {
         Task SendMessageAsync<T>(T message);
         Task SendMessageAsync<T>(T message, string queueName);
+        Task SendMessageAsync<T>(T message, string queueName, DateTimeOffset scheduledEnqueueTime);
     }
 }
