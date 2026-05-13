@@ -23,6 +23,7 @@ namespace KalolCommunity.Application.Common
         public const string Forbidden = "Access denied";
         public const string ProfileDetailRetrieved = "Profile details retrieved successfully";
         public const string ProfileDetailNotFound = "Profile details not found";
+        public const string ContactUsCreated = "Contact message submitted successfully";
         
         // Blob Storage Messages
         public const string FileUploadedSuccessfully = "File uploaded successfully";

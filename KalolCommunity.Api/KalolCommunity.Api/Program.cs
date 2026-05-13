@@ -58,6 +58,8 @@ try
     builder.Services.AddScoped<IStateRepository, StateRepository>();
     builder.Services.AddScoped<IMasterDataService, MasterDataService>();
     builder.Services.AddScoped<ICommunityDetailService, CommunityDetailService>();
+    builder.Services.AddScoped<IContactUsRepository, ContactUsRepository>();
+    builder.Services.AddScoped<IContactUsService, ContactUsService>();
     builder.Services.AddScoped<ICachingService, MemoryCacheService>();
     builder.Services.AddScoped<IBlobService, BlobService>();
     builder.Services.AddScoped<IServiceBusPublisher, ServiceBusPublisher>();
