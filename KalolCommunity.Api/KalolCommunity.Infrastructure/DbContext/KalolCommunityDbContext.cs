@@ -18,8 +18,8 @@ namespace KalolCommunity.Infrastructure.Persistence
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<CommunityDetail> CommunityDetails { get; set; }
-
         public DbSet<ChildrenDetail> ChildrenDetails { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
