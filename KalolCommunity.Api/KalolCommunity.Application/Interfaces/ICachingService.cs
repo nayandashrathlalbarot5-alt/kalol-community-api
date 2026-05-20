@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KalolCommunity.Application.Interfaces
@@ -9,5 +6,8 @@ namespace KalolCommunity.Application.Interfaces
     public interface ICachingService
     {
         Task<T> GetOrSetAsync<T>(string key, Func<Task<T>> getData, TimeSpan expiry);
+        Task SetAsync<T>(string key, T value, TimeSpan expiry);
+        Task<T?> GetAsync<T>(string key);
+        Task RemoveAsync(string key);
     }
 }

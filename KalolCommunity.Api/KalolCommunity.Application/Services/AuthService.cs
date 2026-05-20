@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Google.Apis.Auth;
+using KalolCommunity.Application.Common;
+using KalolCommunity.Application.Exceptions;
+using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Contracts.DTO;
+using KalolCommunity.Domain.Entities;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Google.Apis.Auth;
-using KalolCommunity.Application.Common;
-using KalolCommunity.Application.Interfaces;
-using KalolCommunity.Application.Exceptions;
-using KalolCommunity.Contracts.DTO;
-using KalolCommunity.Domain.Entities;
 
 
 namespace KalolCommunity.Application.Services
@@ -21,19 +22,27 @@ namespace KalolCommunity.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenService _jwtService;
+        private readonly ICachingService _cachingService;
+        private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthService> _logger;
+        private const string OtpPrefix = "otp:";
+        private const int OtpExpiryMinutes = 5;
 
         public AuthService(
         IUnitOfWork unitOfWork,
         IPasswordHasher passwordHasher,
         IJwtTokenService jwtService,
+        ICachingService cachingService,
+        IEmailService emailService,
         IConfiguration configuration,
         ILogger<AuthService> logger)
         {
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
             _jwtService = jwtService;
+            _cachingService = cachingService;
+            _emailService = emailService;
             _configuration = configuration;
             _logger = logger;
         }
@@ -41,6 +50,11 @@ namespace KalolCommunity.Application.Services
         public async Task<ApiResponse<AuthResponseDTO>> RegisterAsync(RegisterDTO dto)
         {
             _logger.LogInformation("Register attempt for email: {Email}", dto.Email);
+
+            if (string.IsNullOrWhiteSpace(dto.FirstName) || string.IsNullOrWhiteSpace(dto.LastName))
+            {
+                throw new BadRequestException("First Name and Last Name are required for registration.");
+            }
 
             // 1️ Check if email exists
             if (await _unitOfWork.Users.AnyAsync(u => u.Email == dto.Email))
@@ -54,7 +68,9 @@ namespace KalolCommunity.Application.Services
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email,
-                PasswordHash = _passwordHasher.Hash(dto.Password)
+                PasswordHash = string.IsNullOrWhiteSpace(dto.Password)
+                    ? null
+                    : _passwordHasher.Hash(dto.Password)
             };
 
             // 3 Save User to Databse
@@ -137,7 +153,7 @@ namespace KalolCommunity.Application.Services
                     Token = token,
                     RefreshToken = refreshToken,
                     UserId = user.UserId,
-                    Expiry = DateTime.UtcNow.AddHours(1)                    
+                    Expiry = DateTime.UtcNow.AddHours(1)
                 }
             };
         }
@@ -301,6 +317,190 @@ namespace KalolCommunity.Application.Services
                     GoogleUserInfo = googleInfo
                 }
             };
+        }
+
+        public async Task<ApiResponse<AuthResponseDTO>> SendOtpAsync(string email, string flag)
+        {
+            var normalizedEmail = email.ToLowerInvariant();
+            var normalizedFlag = flag.Trim().ToUpperInvariant();
+
+            if (normalizedFlag == "R")
+            {
+                var userExists = await _unitOfWork.Users.AnyAsync(u => u.Email == normalizedEmail);
+                if (userExists)
+                {
+                    _logger.LogWarning("Registration OTP request for already registered email: {Email}", normalizedEmail);
+                    return new ApiResponse<AuthResponseDTO>
+                    {
+                        Success = false,
+                        Message = ResponseMessages.EmailAlreadyRegistered,
+                        StatusCode = (int)HttpStatusCode.Conflict
+                    };
+                }
+            }
+
+            var otp = GenerateOtp();
+            var cacheKey = $"{OtpPrefix}{normalizedEmail}";
+
+            await _cachingService.SetAsync(cacheKey, otp, TimeSpan.FromMinutes(OtpExpiryMinutes));
+            _logger.LogInformation("OTP generated and stored in cache for email: {Email}, Flag: {Flag}", normalizedEmail, normalizedFlag);
+
+            await _emailService.SendOtpEmailAsync(normalizedEmail, otp);
+            _logger.LogInformation("OTP email sent successfully to: {Email}", normalizedEmail);
+
+            return new ApiResponse<AuthResponseDTO>
+            {
+                Success = true,
+                Message = ResponseMessages.OtpSentSuccessfully,
+                StatusCode = (int)HttpStatusCode.OK
+            };
+        }
+            
+        public async Task<ApiResponse<AuthResponseDTO>> VerifyOtpAsync(RegisterDTO request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Otp))
+            {
+                return new ApiResponse<AuthResponseDTO>
+                {
+                    Success = false,
+                    Message = ResponseMessages.InvalidOrExpiredOtp,
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+
+            var normalizedFlag = request.Flag?.Trim().ToUpperInvariant();
+            var normalizedEmail = request.Email.ToLowerInvariant();
+            var cachedOtp = await GetOtpAsync(normalizedEmail);
+
+            if (string.IsNullOrWhiteSpace(cachedOtp) || !string.Equals(cachedOtp, request.Otp, StringComparison.Ordinal))
+            {
+                _logger.LogWarning("Invalid or expired OTP verification attempt for email: {Email}", normalizedEmail);
+                return new ApiResponse<AuthResponseDTO>
+                {
+                    Success = false,
+                    Message = ResponseMessages.InvalidOrExpiredOtp,
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                };
+            }
+
+            if (normalizedFlag == "R")
+            {
+                var userExists = await _unitOfWork.Users.AnyAsync(u => u.Email == normalizedEmail);
+                if (userExists)
+                {
+                    return new ApiResponse<AuthResponseDTO>
+                    {
+                        Success = false,
+                        Message = ResponseMessages.EmailAlreadyRegistered,
+                        StatusCode = (int)HttpStatusCode.Conflict
+                    };
+                }
+
+                var user = new User
+                {
+                    FirstName = request.FirstName!,
+                    LastName = request.LastName!,
+                    Email = request.Email!,
+                    PasswordHash = string.IsNullOrWhiteSpace(request.Password)
+                        ? null
+                        : _passwordHasher.Hash(request.Password),
+                    IsEmailConfirmed = true,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                await _unitOfWork.Users.AddAsync(user);
+                await _unitOfWork.SaveChangesAsync();
+
+                await DeleteOtpAsync(normalizedEmail);
+                _logger.LogInformation("OTP verified and user registered for email: {Email}", normalizedEmail);
+
+                return new ApiResponse<AuthResponseDTO>
+                {
+                    Success = true,
+                    Message = ResponseMessages.RegistrationSuccessful,
+                    StatusCode = (int)HttpStatusCode.Created
+                };
+            }
+
+            await DeleteOtpAsync(normalizedEmail);
+            _logger.LogInformation("OTP verified for login flow, email: {Email}", normalizedEmail);
+
+            // L flag: find user, generate tokens and return auth response
+            var loginUser = await _unitOfWork.Users.GetAsync(u => u.Email == normalizedEmail);
+            if (loginUser == null)
+            {
+                return new ApiResponse<AuthResponseDTO>
+                {
+                    Success = false,
+                    Message = ResponseMessages.UserNotFound,
+                    StatusCode = (int)HttpStatusCode.NotFound
+                };
+            }
+
+            // Generate JWT
+            var token = _jwtService.GenerateAccessToken(loginUser);
+
+            // Generate Refresh Token
+            var refreshToken = _jwtService.GenerateRefreshToken();
+
+            // Hash the refresh token before storing
+            var hashedRefreshToken = _jwtService.HashToken(refreshToken);
+
+            // Create RefreshToken entity
+            var refreshTokenEntity = new RefreshToken
+            {
+                TokenHash = hashedRefreshToken,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false,
+                UserId = loginUser.UserId,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            // 8 Save RefreshToken to Databse
+            await _unitOfWork.RefreshTokens.AddAsync(refreshTokenEntity);
+            await _unitOfWork.SaveChangesAsync();
+
+            _logger.LogInformation("OTP login successful. UserId: {UserId}", loginUser.UserId);
+
+            return new ApiResponse<AuthResponseDTO>
+            {
+                Success = true,
+                Message = ResponseMessages.LoginSuccessful,
+                StatusCode = (int)HttpStatusCode.OK,
+                Data = new AuthResponseDTO
+                {
+                    Token = token,
+                    RefreshToken = refreshToken,
+                    UserId = loginUser.UserId,
+                    Expiry = DateTime.UtcNow.AddHours(1)
+                }
+            };
+        }
+
+        public async Task<string?> GetOtpAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return null;
+
+            var cacheKey = $"{OtpPrefix}{email.ToLowerInvariant()}";
+            return await _cachingService.GetAsync<string>(cacheKey);
+        }
+
+        public async Task DeleteOtpAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return;
+
+            var cacheKey = $"{OtpPrefix}{email.ToLowerInvariant()}";
+            await _cachingService.RemoveAsync(cacheKey);
+            _logger.LogInformation("OTP deleted from cache for email: {Email}", email);
+        }
+
+        private static string GenerateOtp()
+        {
+            var random = new Random();
+            return random.Next(100000, 999999).ToString();
         }
     }
 }
