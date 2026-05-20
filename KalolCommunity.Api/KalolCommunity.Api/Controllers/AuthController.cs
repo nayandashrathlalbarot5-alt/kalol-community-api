@@ -1,8 +1,8 @@
-﻿using KalolCommunity.Application.Interfaces;
-using KalolCommunity.Application.Services;
+﻿using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Contracts.DTO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KalolCommunity.Api.Controllers
@@ -43,6 +43,46 @@ namespace KalolCommunity.Api.Controllers
         public async Task<IActionResult> GoogleLogin(GoogleLoginRequestDTO request)
         {
             var result = await _authService.GoogleLoginAsync(request.IdToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost("send-otp")]
+        public async Task<IActionResult> SendOtp([FromBody] SendOtpRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorMessage = string.Join(" | ",
+                    ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+
+                return BadRequest(new ApiResponse<AuthResponseDTO>
+                {
+                    Success = false,
+                    Message = errorMessage,
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                });
+            }
+
+            var result = await _authService.SendOtpAsync(request.Email, request.Flag);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] RegisterDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorMessage = string.Join(" | ",
+                    ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+
+                return BadRequest(new ApiResponse<AuthResponseDTO>
+                {
+                    Success = false,
+                    Message = errorMessage,
+                    StatusCode = (int)HttpStatusCode.BadRequest
+                });
+            }
+
+            var result = await _authService.VerifyOtpAsync(request);
             return StatusCode(result.StatusCode, result);
         }
     }

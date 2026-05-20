@@ -8,6 +8,7 @@ namespace KalolCommunity.Application.Common
         public const string InvalidCredentials = "Invalid email or password";
         public const string UserNotFound = "User not found";
         public const string InvalidUserId = "Invalid user id";
+        public const string InvalidEmail = "Email is required and must be valid.";
         public const string RefreshTokenNotFound = "Refresh token not found";
         public const string RefreshTokenExpiredOrRevoked = "Refresh token expired or revoked";
         public const string TokenRefreshed = "Access token refreshed successfully";
@@ -24,6 +25,10 @@ namespace KalolCommunity.Application.Common
         public const string ProfileDetailRetrieved = "Profile details retrieved successfully";
         public const string ProfileDetailNotFound = "Profile details not found";
         public const string ContactUsCreated = "Contact message submitted successfully";
+        public const string OtpSentSuccessfully = "OTP sent successfully to your email.";
+        public const string OtpSendFailed = "Failed to send OTP. Please try again.";
+        public const string OtpVerified = "OTP Verified";
+        public const string InvalidOrExpiredOtp = "Invalid or expired OTP";
         
         // Blob Storage Messages
         public const string FileUploadedSuccessfully = "File uploaded successfully";

@@ -63,6 +63,7 @@ try
     builder.Services.AddScoped<ICachingService, MemoryCacheService>();
     builder.Services.AddScoped<IBlobService, BlobService>();
     builder.Services.AddScoped<IServiceBusPublisher, ServiceBusPublisher>();
+    builder.Services.AddScoped<IEmailService, EmailService>();
     
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
     var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);

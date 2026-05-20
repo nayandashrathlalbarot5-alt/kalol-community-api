@@ -32,5 +32,28 @@ namespace KalolCommunity.Infrastructure.Services
             }
             return data!;
         }
+
+        public async Task SetAsync<T>(string key, T value, TimeSpan expiry)
+        {
+            var cacheOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = expiry
+            };
+
+            _cache.Set(key, value, cacheOptions);
+            await Task.CompletedTask;
+        }
+
+        public async Task<T?> GetAsync<T>(string key)
+        {
+            _cache.TryGetValue(key, out T? value);
+            return await Task.FromResult(value);
+        }
+
+        public async Task RemoveAsync(string key)
+        {
+            _cache.Remove(key);
+            await Task.CompletedTask;
+        }
     }
 }

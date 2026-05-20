@@ -13,5 +13,9 @@ namespace KalolCommunity.Application.Interfaces
         Task<ApiResponse<AuthResponseDTO>> LoginAsync(LoginDTO dto);
         Task<ApiResponse<AuthResponseDTO>> GoogleLoginAsync(string idToken);
         Task<ApiResponse<AuthResponseDTO>> RefreshTokenAsync(RefreshTokenRequestDTO refreshTokenRequestDTO);
+        Task<ApiResponse<AuthResponseDTO>> SendOtpAsync(string email, string flag);
+        Task<ApiResponse<AuthResponseDTO>> VerifyOtpAsync(RegisterDTO request);
+        Task<string?> GetOtpAsync(string email);
+        Task DeleteOtpAsync(string email);
     }
 }
