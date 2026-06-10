@@ -1,0 +1,1153 @@
+Folder PATH listing for volume New Volume
+Volume serial number is 00000095 288B:AC37
+D:.
+|   KalolCommunity.Api.slnLaunch.user
+|   KalolCommunity.Api.slnx
+|   Program.cs
+|   SolutionStructure.txt
+|   
++---KalolCommunity.Api
+|   |   appsettings.Development.json
+|   |   appsettings.json
+|   |   CountryState.json
+|   |   GoogleAPITesting.html
+|   |   InsertStates.sql
+|   |   KalolCommunity.Api.csproj
+|   |   KalolCommunity.Api.csproj.user
+|   |   Program.cs
+|   |   Program_StateGenerator.cs
+|   |   
+|   +---bin
+|   |   \---Debug
+|   |       \---net8.0
+|   |           |   appsettings.Development.json
+|   |           |   appsettings.json
+|   |           |   Azure.Communication.Email.dll
+|   |           |   Azure.Core.Amqp.dll
+|   |           |   Azure.Core.dll
+|   |           |   Azure.Identity.dll
+|   |           |   Azure.Messaging.ServiceBus.dll
+|   |           |   Azure.Monitor.OpenTelemetry.Exporter.dll
+|   |           |   Azure.Storage.Blobs.dll
+|   |           |   Azure.Storage.Common.dll
+|   |           |   CountryState.json
+|   |           |   Google.Apis.Auth.AspNetCore3.dll
+|   |           |   Google.Apis.Auth.dll
+|   |           |   Google.Apis.Core.dll
+|   |           |   Google.Apis.dll
+|   |           |   Humanizer.dll
+|   |           |   KalolCommunity.Api.deps.json
+|   |           |   KalolCommunity.Api.dll
+|   |           |   KalolCommunity.Api.exe
+|   |           |   KalolCommunity.Api.pdb
+|   |           |   KalolCommunity.Api.runtimeconfig.json
+|   |           |   KalolCommunity.Api.staticwebassets.endpoints.json
+|   |           |   KalolCommunity.Application.dll
+|   |           |   KalolCommunity.Application.pdb
+|   |           |   KalolCommunity.Contracts.dll
+|   |           |   KalolCommunity.Contracts.pdb
+|   |           |   KalolCommunity.Domain.dll
+|   |           |   KalolCommunity.Domain.pdb
+|   |           |   KalolCommunity.Infrastructure.dll
+|   |           |   KalolCommunity.Infrastructure.pdb
+|   |           |   Microsoft.ApplicationInsights.AspNetCore.dll
+|   |           |   Microsoft.ApplicationInsights.dll
+|   |           |   Microsoft.AspNetCore.Authentication.JwtBearer.dll
+|   |           |   Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+|   |           |   Microsoft.AspNetCore.Cryptography.Internal.dll
+|   |           |   Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+|   |           |   Microsoft.Azure.Amqp.dll
+|   |           |   Microsoft.Bcl.AsyncInterfaces.dll
+|   |           |   Microsoft.CodeAnalysis.CSharp.dll
+|   |           |   Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+|   |           |   Microsoft.CodeAnalysis.dll
+|   |           |   Microsoft.CodeAnalysis.Workspaces.dll
+|   |           |   Microsoft.Data.SqlClient.dll
+|   |           |   Microsoft.EntityFrameworkCore.Abstractions.dll
+|   |           |   Microsoft.EntityFrameworkCore.Design.dll
+|   |           |   Microsoft.EntityFrameworkCore.dll
+|   |           |   Microsoft.EntityFrameworkCore.Relational.dll
+|   |           |   Microsoft.EntityFrameworkCore.SqlServer.dll
+|   |           |   Microsoft.Extensions.Caching.Abstractions.dll
+|   |           |   Microsoft.Extensions.Caching.Memory.dll
+|   |           |   Microsoft.Extensions.Configuration.Abstractions.dll
+|   |           |   Microsoft.Extensions.Configuration.Binder.dll
+|   |           |   Microsoft.Extensions.Configuration.dll
+|   |           |   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+|   |           |   Microsoft.Extensions.DependencyInjection.dll
+|   |           |   Microsoft.Extensions.DependencyModel.dll
+|   |           |   Microsoft.Extensions.Diagnostics.Abstractions.dll
+|   |           |   Microsoft.Extensions.FileProviders.Abstractions.dll
+|   |           |   Microsoft.Extensions.Hosting.Abstractions.dll
+|   |           |   Microsoft.Extensions.Identity.Core.dll
+|   |           |   Microsoft.Extensions.Logging.Abstractions.dll
+|   |           |   Microsoft.Extensions.Logging.dll
+|   |           |   Microsoft.Extensions.Options.dll
+|   |           |   Microsoft.Extensions.Primitives.dll
+|   |           |   Microsoft.Identity.Client.dll
+|   |           |   Microsoft.Identity.Client.Extensions.Msal.dll
+|   |           |   Microsoft.IdentityModel.Abstractions.dll
+|   |           |   Microsoft.IdentityModel.JsonWebTokens.dll
+|   |           |   Microsoft.IdentityModel.Logging.dll
+|   |           |   Microsoft.IdentityModel.Protocols.dll
+|   |           |   Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+|   |           |   Microsoft.IdentityModel.Tokens.dll
+|   |           |   Microsoft.OpenApi.dll
+|   |           |   Microsoft.SqlServer.Server.dll
+|   |           |   Microsoft.Win32.SystemEvents.dll
+|   |           |   Mono.TextTemplating.dll
+|   |           |   Newtonsoft.Json.dll
+|   |           |   OpenTelemetry.Api.dll
+|   |           |   OpenTelemetry.Api.ProviderBuilderExtensions.dll
+|   |           |   OpenTelemetry.dll
+|   |           |   OpenTelemetry.Extensions.Hosting.dll
+|   |           |   OpenTelemetry.Instrumentation.AspNetCore.dll
+|   |           |   OpenTelemetry.Instrumentation.Http.dll
+|   |           |   OpenTelemetry.Instrumentation.SqlClient.dll
+|   |           |   OpenTelemetry.PersistentStorage.Abstractions.dll
+|   |           |   OpenTelemetry.PersistentStorage.FileSystem.dll
+|   |           |   Serilog.AspNetCore.dll
+|   |           |   Serilog.dll
+|   |           |   Serilog.Extensions.Hosting.dll
+|   |           |   Serilog.Extensions.Logging.dll
+|   |           |   Serilog.Formatting.Compact.dll
+|   |           |   Serilog.Settings.Configuration.dll
+|   |           |   Serilog.Sinks.ApplicationInsights.dll
+|   |           |   Serilog.Sinks.Console.dll
+|   |           |   Serilog.Sinks.Debug.dll
+|   |           |   Serilog.Sinks.File.dll
+|   |           |   Swashbuckle.AspNetCore.Swagger.dll
+|   |           |   Swashbuckle.AspNetCore.SwaggerGen.dll
+|   |           |   Swashbuckle.AspNetCore.SwaggerUI.dll
+|   |           |   System.ClientModel.dll
+|   |           |   System.CodeDom.dll
+|   |           |   System.Composition.AttributedModel.dll
+|   |           |   System.Composition.Convention.dll
+|   |           |   System.Composition.Hosting.dll
+|   |           |   System.Composition.Runtime.dll
+|   |           |   System.Composition.TypedParts.dll
+|   |           |   System.Configuration.ConfigurationManager.dll
+|   |           |   System.Diagnostics.DiagnosticSource.dll
+|   |           |   System.Drawing.Common.dll
+|   |           |   System.IdentityModel.Tokens.Jwt.dll
+|   |           |   System.IO.Hashing.dll
+|   |           |   System.IO.Pipelines.dll
+|   |           |   System.Management.dll
+|   |           |   System.Memory.Data.dll
+|   |           |   System.Runtime.Caching.dll
+|   |           |   System.Security.Cryptography.ProtectedData.dll
+|   |           |   System.Security.Permissions.dll
+|   |           |   System.Text.Encodings.Web.dll
+|   |           |   System.Text.Json.dll
+|   |           |   System.Windows.Extensions.dll
+|   |           |   Twilio.dll
+|   |           |   
+|   |           +---cs
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---de
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---es
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---fr
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---it
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---ja
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---ko
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---pl
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---pt-BR
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---ru
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---runtimes
+|   |           |   +---browser
+|   |           |   |   \---lib
+|   |           |   |       \---net8.0
+|   |           |   |               System.Text.Encodings.Web.dll
+|   |           |   |               
+|   |           |   +---unix
+|   |           |   |   \---lib
+|   |           |   |       \---net6.0
+|   |           |   |               Microsoft.Data.SqlClient.dll
+|   |           |   |               System.Drawing.Common.dll
+|   |           |   |               
+|   |           |   +---win
+|   |           |   |   \---lib
+|   |           |   |       +---net6.0
+|   |           |   |       |       Microsoft.Data.SqlClient.dll
+|   |           |   |       |       Microsoft.Win32.SystemEvents.dll
+|   |           |   |       |       System.Drawing.Common.dll
+|   |           |   |       |       System.Runtime.Caching.dll
+|   |           |   |       |       System.Security.Cryptography.ProtectedData.dll
+|   |           |   |       |       System.Windows.Extensions.dll
+|   |           |   |       |       
+|   |           |   |       \---net7.0
+|   |           |   |               System.Management.dll
+|   |           |   |               
+|   |           |   +---win-arm
+|   |           |   |   \---native
+|   |           |   |           Microsoft.Data.SqlClient.SNI.dll
+|   |           |   |           
+|   |           |   +---win-arm64
+|   |           |   |   \---native
+|   |           |   |           Microsoft.Data.SqlClient.SNI.dll
+|   |           |   |           
+|   |           |   +---win-x64
+|   |           |   |   \---native
+|   |           |   |           Microsoft.Data.SqlClient.SNI.dll
+|   |           |   |           
+|   |           |   \---win-x86
+|   |           |       \---native
+|   |           |               Microsoft.Data.SqlClient.SNI.dll
+|   |           |               
+|   |           +---tr
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           +---zh-Hans
+|   |           |       Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |           |       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |           |       Microsoft.CodeAnalysis.resources.dll
+|   |           |       Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |           |       
+|   |           \---zh-Hant
+|   |                   Microsoft.CodeAnalysis.CSharp.resources.dll
+|   |                   Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+|   |                   Microsoft.CodeAnalysis.resources.dll
+|   |                   Microsoft.CodeAnalysis.Workspaces.resources.dll
+|   |                   
+|   +---Controllers
+|   |       AuthController.cs
+|   |       BlobController.cs
+|   |       CommunityController.cs
+|   |       ContactUsController.cs
+|   |       MasterDataController.cs
+|   |       
+|   +---Handlers
+|   |       GlobalExceptionHandler.cs
+|   |       
+|   +---Logs
+|   |       log-20260308.txt
+|   |       log-20260310.txt
+|   |       log-20260311.txt
+|   |       log-20260312.txt
+|   |       log-20260316.txt
+|   |       log-20260318.txt
+|   |       log-20260319.txt
+|   |       log-20260320.txt
+|   |       log-20260322.txt
+|   |       log-20260413.txt
+|   |       log-20260414.txt
+|   |       log-20260415.txt
+|   |       log-20260416.txt
+|   |       log-20260421.txt
+|   |       log-20260422.txt
+|   |       log-20260427.txt
+|   |       log-20260428.txt
+|   |       log-20260509.txt
+|   |       log-20260510.txt
+|   |       log-20260511.txt
+|   |       log-20260512.txt
+|   |       log-20260513.txt
+|   |       log-20260519.txt
+|   |       log-20260520.txt
+|   |       
+|   +---Middleware
+|   +---obj
+|   |   |   KalolCommunity.Api.csproj.EntityFrameworkCore.targets
+|   |   |   KalolCommunity.Api.csproj.nuget.dgspec.json
+|   |   |   KalolCommunity.Api.csproj.nuget.g.props
+|   |   |   KalolCommunity.Api.csproj.nuget.g.targets
+|   |   |   project.assets.json
+|   |   |   project.nuget.cache
+|   |   |   
+|   |   \---Debug
+|   |       \---net8.0
+|   |           |   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+|   |           |   ApiEndpoints.json
+|   |           |   apphost.exe
+|   |           |   KalolCom.17109246.Up2Date
+|   |           |   KalolCommunity.Api.AssemblyInfo.cs
+|   |           |   KalolCommunity.Api.AssemblyInfoInputs.cache
+|   |           |   KalolCommunity.Api.assets.cache
+|   |           |   KalolCommunity.Api.csproj.AssemblyReference.cache
+|   |           |   KalolCommunity.Api.csproj.BuildWithSkipAnalyzers
+|   |           |   KalolCommunity.Api.csproj.CoreCompileInputs.cache
+|   |           |   KalolCommunity.Api.csproj.FileListAbsolute.txt
+|   |           |   KalolCommunity.Api.dll
+|   |           |   KalolCommunity.Api.GeneratedMSBuildEditorConfig.editorconfig
+|   |           |   KalolCommunity.Api.genruntimeconfig.cache
+|   |           |   KalolCommunity.Api.GlobalUsings.g.cs
+|   |           |   KalolCommunity.Api.MvcApplicationPartsAssemblyInfo.cache
+|   |           |   KalolCommunity.Api.MvcApplicationPartsAssemblyInfo.cs
+|   |           |   KalolCommunity.Api.pdb
+|   |           |   KalolCommunity.Api.sourcelink.json
+|   |           |   rjsmcshtml.dswa.cache.json
+|   |           |   rjsmrazor.dswa.cache.json
+|   |           |   rpswa.dswa.cache.json
+|   |           |   staticwebassets.build.endpoints.json
+|   |           |   staticwebassets.build.json
+|   |           |   staticwebassets.build.json.cache
+|   |           |   staticwebassets.references.upToDateCheck.txt
+|   |           |   staticwebassets.removed.txt
+|   |           |   swae.build.ex.cache
+|   |           |   
+|   |           +---EndpointInfo
+|   |           |       KalolCommunity.Api.json
+|   |           |       KalolCommunity.Api.OpenApiFiles.cache
+|   |           |       
+|   |           +---ref
+|   |           |       KalolCommunity.Api.dll
+|   |           |       
+|   |           +---refint
+|   |           |       KalolCommunity.Api.dll
+|   |           |       
+|   |           \---staticwebassets
+|   \---Properties
+|           launchSettings.json
+|           
++---KalolCommunity.Application
+|   |   KalolCommunity.Application.csproj
+|   |   
+|   +---bin
+|   |   \---Debug
+|   |       \---net8.0
+|   |               KalolCommunity.Application.deps.json
+|   |               KalolCommunity.Application.dll
+|   |               KalolCommunity.Application.pdb
+|   |               KalolCommunity.Contracts.dll
+|   |               KalolCommunity.Contracts.pdb
+|   |               KalolCommunity.Domain.dll
+|   |               KalolCommunity.Domain.pdb
+|   |               
+|   +---Commands
+|   |   \---Community
+|   |           CreateCommunityCommand.cs
+|   |           CreateCommunityCommandHandler.cs
+|   |           
+|   +---Common
+|   |       ResponseMessages.cs
+|   |       
+|   +---Exceptions
+|   |       BadRequestException.cs
+|   |       BaseException.cs
+|   |       ConflictException.cs
+|   |       ForbiddenException.cs
+|   |       NotFoundException.cs
+|   |       UnauthorizedException.cs
+|   |       ValidationException.cs
+|   |       
+|   +---Interfaces
+|   |       IAuthService.cs
+|   |       IBlobService.cs
+|   |       ICachingService.cs
+|   |       IChildrenDetailRepository.cs
+|   |       ICommunityDetailRepository.cs
+|   |       ICommunityDetailService.cs
+|   |       IContactUsRepository.cs
+|   |       IContactUsService.cs
+|   |       ICountryRepository.cs
+|   |       IEmailService.cs
+|   |       IJwtTokenService.cs
+|   |       IMasterDataService.cs
+|   |       IMsg91OtpService.cs
+|   |       IPasswordHasher.cs
+|   |       IRefreshTokenRepository.cs
+|   |       IRepository.cs
+|   |       IServiceBusPublisher.cs
+|   |       IStateRepository.cs
+|   |       IUnitOfWork.cs
+|   |       IUserRepository.cs
+|   |       
+|   +---obj
+|   |   |   KalolCommunity.Application.csproj.nuget.dgspec.json
+|   |   |   KalolCommunity.Application.csproj.nuget.g.props
+|   |   |   KalolCommunity.Application.csproj.nuget.g.targets
+|   |   |   project.assets.json
+|   |   |   project.nuget.cache
+|   |   |   
+|   |   \---Debug
+|   |       \---net8.0
+|   |           |   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+|   |           |   KalolCom.799AA53F.Up2Date
+|   |           |   KalolCommunity.Application.AssemblyInfo.cs
+|   |           |   KalolCommunity.Application.AssemblyInfoInputs.cache
+|   |           |   KalolCommunity.Application.assets.cache
+|   |           |   KalolCommunity.Application.csproj.AssemblyReference.cache
+|   |           |   KalolCommunity.Application.csproj.BuildWithSkipAnalyzers
+|   |           |   KalolCommunity.Application.csproj.CoreCompileInputs.cache
+|   |           |   KalolCommunity.Application.csproj.FileListAbsolute.txt
+|   |           |   KalolCommunity.Application.dll
+|   |           |   KalolCommunity.Application.GeneratedMSBuildEditorConfig.editorconfig
+|   |           |   KalolCommunity.Application.GlobalUsings.g.cs
+|   |           |   KalolCommunity.Application.pdb
+|   |           |   KalolCommunity.Application.sourcelink.json
+|   |           |   
+|   |           +---ref
+|   |           |       KalolCommunity.Application.dll
+|   |           |       
+|   |           \---refint
+|   |                   KalolCommunity.Application.dll
+|   |                   
+|   +---Queries
+|   |   \---Community
+|   |           GetCommunityByIdQuery.cs
+|   |           GetCommunityByIdQueryHandler.cs
+|   |           
+|   \---Services
+|           AuthService.cs
+|           CommunityDetailService.cs
+|           ContactusService.cs
+|           MasterDataService.cs
+|           
++---KalolCommunity.Communication.Functions
+|   |   .gitignore
+|   |   host.json
+|   |   KalolCommunity.Communication.Functions.csproj
+|   |   local.settings.json
+|   |   Program.cs
+|   |   SendRegistrationEmailFunction.cs
+|   |   SendRegistrationWhatsAppFunction.cs
+|   |   TransliterationService.cs
+|   |   
+|   +---bin
+|   |   \---Debug
+|   |       \---net8.0
+|   |           |   Azure.Communication.Email.dll
+|   |           |   Azure.Core.Amqp.dll
+|   |           |   Azure.Core.dll
+|   |           |   Azure.Identity.dll
+|   |           |   Azure.Messaging.ServiceBus.dll
+|   |           |   extensions.json
+|   |           |   functions.metadata
+|   |           |   Google.Protobuf.dll
+|   |           |   Grpc.Core.Api.dll
+|   |           |   Grpc.Net.Client.dll
+|   |           |   Grpc.Net.ClientFactory.dll
+|   |           |   Grpc.Net.Common.dll
+|   |           |   host.json
+|   |           |   KalolCommunity.Communication.Functions.deps.json
+|   |           |   KalolCommunity.Communication.Functions.dll
+|   |           |   KalolCommunity.Communication.Functions.exe
+|   |           |   KalolCommunity.Communication.Functions.pdb
+|   |           |   KalolCommunity.Communication.Functions.runtimeconfig.json
+|   |           |   KalolCommunity.Contracts.dll
+|   |           |   KalolCommunity.Contracts.pdb
+|   |           |   local.settings.json
+|   |           |   Microsoft.AI.DependencyCollector.dll
+|   |           |   Microsoft.AI.EventCounterCollector.dll
+|   |           |   Microsoft.AI.PerfCounterCollector.dll
+|   |           |   Microsoft.AI.ServerTelemetryChannel.dll
+|   |           |   Microsoft.AI.WindowsServer.dll
+|   |           |   Microsoft.ApplicationInsights.dll
+|   |           |   Microsoft.ApplicationInsights.WorkerService.dll
+|   |           |   Microsoft.Azure.Amqp.dll
+|   |           |   Microsoft.Azure.Functions.Worker.ApplicationInsights.dll
+|   |           |   Microsoft.Azure.Functions.Worker.Core.dll
+|   |           |   Microsoft.Azure.Functions.Worker.dll
+|   |           |   Microsoft.Azure.Functions.Worker.Extensions.Abstractions.dll
+|   |           |   Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore.dll
+|   |           |   Microsoft.Azure.Functions.Worker.Extensions.Http.dll
+|   |           |   Microsoft.Azure.Functions.Worker.Extensions.Rpc.dll
+|   |           |   Microsoft.Azure.Functions.Worker.Extensions.ServiceBus.dll
+|   |           |   Microsoft.Azure.Functions.Worker.Grpc.dll
+|   |           |   Microsoft.Bcl.AsyncInterfaces.dll
+|   |           |   Microsoft.Bcl.Memory.dll
+|   |           |   Microsoft.Extensions.Azure.dll
+|   |           |   Microsoft.Extensions.Configuration.Binder.dll
+|   |           |   Microsoft.Extensions.Configuration.FileExtensions.dll
+|   |           |   Microsoft.Extensions.Configuration.Json.dll
+|   |           |   Microsoft.Extensions.Configuration.UserSecrets.dll
+|   |           |   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+|   |           |   Microsoft.Extensions.DependencyInjection.dll
+|   |           |   Microsoft.Extensions.Diagnostics.Abstractions.dll
+|   |           |   Microsoft.Extensions.Diagnostics.dll
+|   |           |   Microsoft.Extensions.Hosting.Abstractions.dll
+|   |           |   Microsoft.Extensions.Hosting.dll
+|   |           |   Microsoft.Extensions.Logging.Abstractions.dll
+|   |           |   Microsoft.Extensions.Logging.ApplicationInsights.dll
+|   |           |   Microsoft.Extensions.Logging.Configuration.dll
+|   |           |   Microsoft.Extensions.Logging.Console.dll
+|   |           |   Microsoft.Extensions.Logging.Debug.dll
+|   |           |   Microsoft.Extensions.Logging.dll
+|   |           |   Microsoft.Extensions.Logging.EventLog.dll
+|   |           |   Microsoft.Extensions.Logging.EventSource.dll
+|   |           |   Microsoft.Extensions.Options.dll
+|   |           |   Microsoft.Identity.Client.dll
+|   |           |   Microsoft.Identity.Client.Extensions.Msal.dll
+|   |           |   Microsoft.IdentityModel.Abstractions.dll
+|   |           |   Microsoft.IdentityModel.JsonWebTokens.dll
+|   |           |   Microsoft.IdentityModel.Logging.dll
+|   |           |   Microsoft.IdentityModel.Tokens.dll
+|   |           |   Microsoft.Win32.SystemEvents.dll
+|   |           |   Newtonsoft.Json.dll
+|   |           |   System.ClientModel.dll
+|   |           |   System.Configuration.ConfigurationManager.dll
+|   |           |   System.Diagnostics.EventLog.dll
+|   |           |   System.Diagnostics.PerformanceCounter.dll
+|   |           |   System.Drawing.Common.dll
+|   |           |   System.IdentityModel.Tokens.Jwt.dll
+|   |           |   System.Memory.Data.dll
+|   |           |   System.Security.Cryptography.ProtectedData.dll
+|   |           |   System.Security.Permissions.dll
+|   |           |   System.Windows.Extensions.dll
+|   |           |   Twilio.dll
+|   |           |   worker.config.json
+|   |           |   
+|   |           +---.azurefunctions
+|   |           |   |   Azure.Core.Amqp.dll
+|   |           |   |   Azure.Core.dll
+|   |           |   |   Azure.Identity.dll
+|   |           |   |   Azure.Messaging.ServiceBus.dll
+|   |           |   |   function.deps.json
+|   |           |   |   Google.Protobuf.dll
+|   |           |   |   Grpc.AspNetCore.Server.ClientFactory.dll
+|   |           |   |   Grpc.AspNetCore.Server.dll
+|   |           |   |   Grpc.Core.Api.dll
+|   |           |   |   Grpc.Net.Client.dll
+|   |           |   |   Grpc.Net.ClientFactory.dll
+|   |           |   |   Grpc.Net.Common.dll
+|   |           |   |   Microsoft.Azure.Amqp.dll
+|   |           |   |   Microsoft.Azure.Functions.Worker.Extensions.dll
+|   |           |   |   Microsoft.Azure.Functions.Worker.Extensions.pdb
+|   |           |   |   Microsoft.Azure.WebJobs.Extensions.FunctionMetadataLoader.dll
+|   |           |   |   Microsoft.Azure.WebJobs.Extensions.Rpc.dll
+|   |           |   |   Microsoft.Azure.WebJobs.Extensions.ServiceBus.dll
+|   |           |   |   Microsoft.Azure.WebJobs.Host.Storage.dll
+|   |           |   |   Microsoft.Azure.WebJobs.Rpc.Core.dll
+|   |           |   |   Microsoft.Bcl.AsyncInterfaces.dll
+|   |           |   |   Microsoft.Extensions.Azure.dll
+|   |           |   |   Microsoft.Identity.Client.dll
+|   |           |   |   Microsoft.Identity.Client.Extensions.Msal.dll
+|   |           |   |   Microsoft.IdentityModel.Abstractions.dll
+|   |           |   |   Microsoft.WindowsAzure.Storage.dll
+|   |           |   |   System.ClientModel.dll
+|   |           |   |   
+|   |           |   \---runtimes
+|   |           |       \---win
+|   |           |           \---lib
+|   |           |               \---netstandard2.0
+|   |           |                       System.Security.Cryptography.ProtectedData.dll
+|   |           |                       
+|   |           +---EmailTemplates
+|   |           |       RegistrationSuccess.html
+|   |           |       
+|   |           \---runtimes
+|   |               +---unix
+|   |               |   \---lib
+|   |               |       \---net6.0
+|   |               |               System.Drawing.Common.dll
+|   |               |               
+|   |               \---win
+|   |                   \---lib
+|   |                       +---net6.0
+|   |                       |       Microsoft.Win32.SystemEvents.dll
+|   |                       |       System.Diagnostics.PerformanceCounter.dll
+|   |                       |       System.Drawing.Common.dll
+|   |                       |       System.Security.Cryptography.ProtectedData.dll
+|   |                       |       System.Windows.Extensions.dll
+|   |                       |       
+|   |                       \---net8.0
+|   |                               System.Diagnostics.EventLog.dll
+|   |                               
+|   +---EmailTemplates
+|   |       RegistrationSuccess.html
+|   |       
+|   +---obj
+|   |   |   KalolCommunity.Communication.Functions.csproj.nuget.dgspec.json
+|   |   |   KalolCommunity.Communication.Functions.csproj.nuget.g.props
+|   |   |   KalolCommunity.Communication.Functions.csproj.nuget.g.targets
+|   |   |   project.assets.json
+|   |   |   project.nuget.cache
+|   |   |   
+|   |   \---Debug
+|   |       \---net8.0
+|   |           |   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+|   |           |   apphost.exe
+|   |           |   extensions.json
+|   |           |   functions.metadata
+|   |           |   KalolCom.3EE1F9CF.Up2Date
+|   |           |   KalolCommunity.Communication.Functions.AssemblyInfo.cs
+|   |           |   KalolCommunity.Communication.Functions.AssemblyInfoInputs.cache
+|   |           |   KalolCommunity.Communication.Functions.assets.cache
+|   |           |   KalolCommunity.Communication.Functions.csproj.AssemblyReference.cache
+|   |           |   KalolCommunity.Communication.Functions.csproj.BuildWithSkipAnalyzers
+|   |           |   KalolCommunity.Communication.Functions.csproj.CoreCompileInputs.cache
+|   |           |   KalolCommunity.Communication.Functions.csproj.FileListAbsolute.txt
+|   |           |   KalolCommunity.Communication.Functions.dll
+|   |           |   KalolCommunity.Communication.Functions.GeneratedMSBuildEditorConfig.editorconfig
+|   |           |   KalolCommunity.Communication.Functions.genruntimeconfig.cache
+|   |           |   KalolCommunity.Communication.Functions.GlobalUsings.g.cs
+|   |           |   KalolCommunity.Communication.Functions.pdb
+|   |           |   KalolCommunity.Communication.Functions.sourcelink.json
+|   |           |   worker.config.json
+|   |           |   
+|   |           +---ref
+|   |           |       KalolCommunity.Communication.Functions.dll
+|   |           |       
+|   |           +---refint
+|   |           |       KalolCommunity.Communication.Functions.dll
+|   |           |       
+|   |           \---WorkerExtensions
+|   |               |   WorkerExtensions.csproj
+|   |               |   
+|   |               +---bin
+|   |               |   \---Release
+|   |               |       \---net8.0
+|   |               |           |   Azure.Core.Amqp.dll
+|   |               |           |   Azure.Core.dll
+|   |               |           |   Azure.Identity.dll
+|   |               |           |   Azure.Messaging.ServiceBus.dll
+|   |               |           |   Google.Protobuf.dll
+|   |               |           |   Grpc.AspNetCore.Server.ClientFactory.dll
+|   |               |           |   Grpc.AspNetCore.Server.dll
+|   |               |           |   Grpc.Core.Api.dll
+|   |               |           |   Grpc.Net.Client.dll
+|   |               |           |   Grpc.Net.ClientFactory.dll
+|   |               |           |   Grpc.Net.Common.dll
+|   |               |           |   Microsoft.AspNetCore.JsonPatch.dll
+|   |               |           |   Microsoft.AspNetCore.Mvc.WebApiCompatShim.dll
+|   |               |           |   Microsoft.Azure.Amqp.dll
+|   |               |           |   Microsoft.Azure.Functions.Worker.Extensions.deps.json
+|   |               |           |   Microsoft.Azure.Functions.Worker.Extensions.dll
+|   |               |           |   Microsoft.Azure.Functions.Worker.Extensions.pdb
+|   |               |           |   Microsoft.Azure.WebJobs.dll
+|   |               |           |   Microsoft.Azure.WebJobs.Extensions.dll
+|   |               |           |   Microsoft.Azure.WebJobs.Extensions.Http.dll
+|   |               |           |   Microsoft.Azure.WebJobs.Extensions.Rpc.dll
+|   |               |           |   Microsoft.Azure.WebJobs.Extensions.ServiceBus.dll
+|   |               |           |   Microsoft.Azure.WebJobs.Host.dll
+|   |               |           |   Microsoft.Azure.WebJobs.Host.Storage.dll
+|   |               |           |   Microsoft.Azure.WebJobs.Rpc.Core.dll
+|   |               |           |   Microsoft.Bcl.AsyncInterfaces.dll
+|   |               |           |   Microsoft.DotNet.PlatformAbstractions.dll
+|   |               |           |   Microsoft.Extensions.Azure.dll
+|   |               |           |   Microsoft.Extensions.Configuration.Binder.dll
+|   |               |           |   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+|   |               |           |   Microsoft.Extensions.DependencyInjection.dll
+|   |               |           |   Microsoft.Extensions.DependencyModel.dll
+|   |               |           |   Microsoft.Extensions.Logging.Abstractions.dll
+|   |               |           |   Microsoft.Extensions.Logging.dll
+|   |               |           |   Microsoft.Extensions.Options.dll
+|   |               |           |   Microsoft.Identity.Client.dll
+|   |               |           |   Microsoft.Identity.Client.Extensions.Msal.dll
+|   |               |           |   Microsoft.IdentityModel.Abstractions.dll
+|   |               |           |   Microsoft.WindowsAzure.Storage.dll
+|   |               |           |   NCrontab.Signed.dll
+|   |               |           |   Newtonsoft.Json.Bson.dll
+|   |               |           |   Newtonsoft.Json.dll
+|   |               |           |   System.ClientModel.dll
+|   |               |           |   System.Memory.Data.dll
+|   |               |           |   System.Net.Http.Formatting.dll
+|   |               |           |   System.Security.Cryptography.ProtectedData.dll
+|   |               |           |   
+|   |               |           +---bin
+|   |               |           |   |   Azure.Core.Amqp.dll
+|   |               |           |   |   Azure.Core.dll
+|   |               |           |   |   Azure.Identity.dll
+|   |               |           |   |   Azure.Messaging.ServiceBus.dll
+|   |               |           |   |   extensions.json
+|   |               |           |   |   function.deps.json
+|   |               |           |   |   Google.Protobuf.dll
+|   |               |           |   |   Grpc.AspNetCore.Server.ClientFactory.dll
+|   |               |           |   |   Grpc.AspNetCore.Server.dll
+|   |               |           |   |   Grpc.Core.Api.dll
+|   |               |           |   |   Grpc.Net.Client.dll
+|   |               |           |   |   Grpc.Net.ClientFactory.dll
+|   |               |           |   |   Grpc.Net.Common.dll
+|   |               |           |   |   Microsoft.Azure.Amqp.dll
+|   |               |           |   |   Microsoft.Azure.Functions.Worker.Extensions.dll
+|   |               |           |   |   Microsoft.Azure.Functions.Worker.Extensions.pdb
+|   |               |           |   |   Microsoft.Azure.WebJobs.Extensions.Rpc.dll
+|   |               |           |   |   Microsoft.Azure.WebJobs.Extensions.ServiceBus.dll
+|   |               |           |   |   Microsoft.Azure.WebJobs.Host.Storage.dll
+|   |               |           |   |   Microsoft.Azure.WebJobs.Rpc.Core.dll
+|   |               |           |   |   Microsoft.Bcl.AsyncInterfaces.dll
+|   |               |           |   |   Microsoft.Extensions.Azure.dll
+|   |               |           |   |   Microsoft.Identity.Client.dll
+|   |               |           |   |   Microsoft.Identity.Client.Extensions.Msal.dll
+|   |               |           |   |   Microsoft.IdentityModel.Abstractions.dll
+|   |               |           |   |   Microsoft.WindowsAzure.Storage.dll
+|   |               |           |   |   System.ClientModel.dll
+|   |               |           |   |   
+|   |               |           |   \---runtimes
+|   |               |           |       \---win
+|   |               |           |           \---lib
+|   |               |           |               \---netstandard2.0
+|   |               |           |                       System.Security.Cryptography.ProtectedData.dll
+|   |               |           |                       
+|   |               |           \---runtimes
+|   |               |               \---win
+|   |               |                   \---lib
+|   |               |                       \---netstandard2.0
+|   |               |                               System.Security.Cryptography.ProtectedData.dll
+|   |               |                               
+|   |               \---obj
+|   |                   |   project.assets.json
+|   |                   |   project.nuget.cache
+|   |                   |   WorkerExtensions.csproj.nuget.dgspec.json
+|   |                   |   WorkerExtensions.csproj.nuget.g.props
+|   |                   |   WorkerExtensions.csproj.nuget.g.targets
+|   |                   |   
+|   |                   \---Release
+|   |                       \---net8.0
+|   |                           |   Microsoft.Azure.Functions.Worker.Extensions.dll
+|   |                           |   Microsoft.Azure.Functions.Worker.Extensions.pdb
+|   |                           |   WorkerEx.422953E6.Up2Date
+|   |                           |   WorkerExtensions.AssemblyInfo.cs
+|   |                           |   WorkerExtensions.AssemblyInfoInputs.cache
+|   |                           |   WorkerExtensions.assets.cache
+|   |                           |   WorkerExtensions.csproj.AssemblyReference.cache
+|   |                           |   WorkerExtensions.csproj.BuildWithSkipAnalyzers
+|   |                           |   WorkerExtensions.csproj.CoreCompileInputs.cache
+|   |                           |   WorkerExtensions.csproj.FileListAbsolute.txt
+|   |                           |   WorkerExtensions.GeneratedMSBuildEditorConfig.editorconfig
+|   |                           |   WorkerExtensions.sourcelink.json
+|   |                           |   
+|   |                           +---ref
+|   |                           |       Microsoft.Azure.Functions.Worker.Extensions.dll
+|   |                           |       
+|   |                           \---refint
+|   |                                   Microsoft.Azure.Functions.Worker.Extensions.dll
+|   |                                   
+|   \---Properties
+|           launchSettings.json
+|           serviceDependencies.json
+|           serviceDependencies.local.json
+|           serviceDependencies.local.json.user
+|           
++---KalolCommunity.Contracts
+|   |   KalolCommunity.Contracts.csproj
+|   |   
+|   +---bin
+|   |   \---Debug
+|   |       \---net8.0
+|   |               KalolCommunity.Contracts.deps.json
+|   |               KalolCommunity.Contracts.dll
+|   |               KalolCommunity.Contracts.pdb
+|   |               
+|   +---DTO
+|   |       ApiResponse.cs
+|   |       AuthResponseDTO.cs
+|   |       BlobUploadResponseDTO.cs
+|   |       ChildrenDetailRequestDTO.cs
+|   |       CommunityRequestDTO.cs
+|   |       ContactUsRequestDTO.cs
+|   |       ContactUsResponseDTO.cs
+|   |       CountryDTO.cs
+|   |       ErrorResponseDTO.cs
+|   |       GoogleLoginRequestDTO.cs
+|   |       GoogleUserInfoDto.cs
+|   |       LoginDTO.cs
+|   |       MetaTemplateMessageRequestDTO.cs
+|   |       RefreshTokenRequestDTO.cs
+|   |       RefreshTokenResponseDTO.cs
+|   |       RegisterDTO.cs
+|   |       SendOtpRequestDTO.cs
+|   |       StateDTO.cs
+|   |       UserNotificationEventDTO.cs
+|   |       VerifyOtpRequestDTO.cs
+|   |       
+|   \---obj
+|       |   KalolCommunity.Contracts.csproj.nuget.dgspec.json
+|       |   KalolCommunity.Contracts.csproj.nuget.g.props
+|       |   KalolCommunity.Contracts.csproj.nuget.g.targets
+|       |   project.assets.json
+|       |   project.nuget.cache
+|       |   
+|       \---Debug
+|           \---net8.0
+|               |   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+|               |   KalolCommunity.Contracts.AssemblyInfo.cs
+|               |   KalolCommunity.Contracts.AssemblyInfoInputs.cache
+|               |   KalolCommunity.Contracts.assets.cache
+|               |   KalolCommunity.Contracts.csproj.BuildWithSkipAnalyzers
+|               |   KalolCommunity.Contracts.csproj.CoreCompileInputs.cache
+|               |   KalolCommunity.Contracts.csproj.FileListAbsolute.txt
+|               |   KalolCommunity.Contracts.dll
+|               |   KalolCommunity.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+|               |   KalolCommunity.Contracts.GlobalUsings.g.cs
+|               |   KalolCommunity.Contracts.pdb
+|               |   KalolCommunity.Contracts.sourcelink.json
+|               |   
+|               +---ref
+|               |       KalolCommunity.Contracts.dll
+|               |       
+|               \---refint
+|                       KalolCommunity.Contracts.dll
+|                       
++---KalolCommunity.Domain
+|   |   KalolCommunity.Domain.csproj
+|   |   
+|   +---bin
+|   |   \---Debug
+|   |       \---net8.0
+|   |               KalolCommunity.Domain.deps.json
+|   |               KalolCommunity.Domain.dll
+|   |               KalolCommunity.Domain.pdb
+|   |               
+|   +---Entities
+|   |       ChildrenDetail.cs
+|   |       CommunityDetail.cs
+|   |       ContactUs.cs
+|   |       Country.cs
+|   |       RefreshToken.cs
+|   |       Role.cs
+|   |       State.cs
+|   |       User.cs
+|   |       UserLogin.cs
+|   |       UserRole.cs
+|   |       
+|   \---obj
+|       |   KalolCommunity.Domain.csproj.nuget.dgspec.json
+|       |   KalolCommunity.Domain.csproj.nuget.g.props
+|       |   KalolCommunity.Domain.csproj.nuget.g.targets
+|       |   project.assets.json
+|       |   project.nuget.cache
+|       |   
+|       \---Debug
+|           \---net8.0
+|               |   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+|               |   KalolCommunity.Domain.AssemblyInfo.cs
+|               |   KalolCommunity.Domain.AssemblyInfoInputs.cache
+|               |   KalolCommunity.Domain.assets.cache
+|               |   KalolCommunity.Domain.csproj.BuildWithSkipAnalyzers
+|               |   KalolCommunity.Domain.csproj.CoreCompileInputs.cache
+|               |   KalolCommunity.Domain.csproj.FileListAbsolute.txt
+|               |   KalolCommunity.Domain.dll
+|               |   KalolCommunity.Domain.GeneratedMSBuildEditorConfig.editorconfig
+|               |   KalolCommunity.Domain.GlobalUsings.g.cs
+|               |   KalolCommunity.Domain.pdb
+|               |   KalolCommunity.Domain.sourcelink.json
+|               |   
+|               +---ref
+|               |       KalolCommunity.Domain.dll
+|               |       
+|               \---refint
+|                       KalolCommunity.Domain.dll
+|                       
++---KalolCommunity.Infrastructure
+|   |   KalolCommunity.Infrastructure.csproj
+|   |   
+|   +---bin
+|   |   \---Debug
+|   |       \---net8.0
+|   |               KalolCommunity.Application.dll
+|   |               KalolCommunity.Application.pdb
+|   |               KalolCommunity.Contracts.dll
+|   |               KalolCommunity.Contracts.pdb
+|   |               KalolCommunity.Domain.dll
+|   |               KalolCommunity.Domain.pdb
+|   |               KalolCommunity.Infrastructure.deps.json
+|   |               KalolCommunity.Infrastructure.dll
+|   |               KalolCommunity.Infrastructure.pdb
+|   |               KalolCommunity.Infrastructure.runtimeconfig.json
+|   |               
+|   +---Configuration
+|   |       ChildrenDetailsConfiguration.cs
+|   |       CommunityDetailConfiguration.cs
+|   |       CountryConfiguration.cs
+|   |       RefreshTokenConfiguration.cs
+|   |       StateConfiguration.cs
+|   |       UserConfiguration.cs
+|   |       
+|   +---DbContext
+|   |       KalolCommunityDbContext.cs
+|   |       
+|   +---Migrations
+|   |       20260209052148_InitialCreate.cs
+|   |       20260209052148_InitialCreate.Designer.cs
+|   |       20260210095320_AddGoogleFieldsToUser.cs
+|   |       20260210095320_AddGoogleFieldsToUser.Designer.cs
+|   |       20260211134104_AddRefreshToken.cs
+|   |       20260211134104_AddRefreshToken.Designer.cs
+|   |       20260222080036_AddCountryAndStateEntities.cs
+|   |       20260222080036_AddCountryAndStateEntities.Designer.cs
+|   |       20260222083210_AddStateCodeToStateEntities.cs
+|   |       20260222083210_AddStateCodeToStateEntities.Designer.cs
+|   |       20260224045252_AddTblCommunityDetails.cs
+|   |       20260224045252_AddTblCommunityDetails.Designer.cs
+|   |       20260224141136_AddFieldsToTblCommunityDetails.cs
+|   |       20260224141136_AddFieldsToTblCommunityDetails.Designer.cs
+|   |       20260225114922_Update_Datatype_ContactNumber_TblCommunityDetails.cs
+|   |       20260225114922_Update_Datatype_ContactNumber_TblCommunityDetails.Designer.cs
+|   |       20260303053505_AddNewEntityAndRemoveFields_ChildrenDetails.cs
+|   |       20260303053505_AddNewEntityAndRemoveFields_ChildrenDetails.Designer.cs
+|   |       20260305131203_AddCommunityDetailForeignKeyToChildren.cs
+|   |       20260305131203_AddCommunityDetailForeignKeyToChildren.Designer.cs
+|   |       20260305132533_MakeAddressOptionalInChildren.cs
+|   |       20260305132533_MakeAddressOptionalInChildren.Designer.cs
+|   |       20260316065627_MakeEmailOptional.cs
+|   |       20260316065627_MakeEmailOptional.Designer.cs
+|   |       20260316073720_FixChildrenUserRelation_ToOneToMany.cs
+|   |       20260316073720_FixChildrenUserRelation_ToOneToMany.Designer.cs
+|   |       20260414090016_AddNewColumnsInChildrenDetail.cs
+|   |       20260414090016_AddNewColumnsInChildrenDetail.Designer.cs
+|   |       20260414133715_RenamePrimatyToPrimaryContactNumber.cs
+|   |       20260414133715_RenamePrimatyToPrimaryContactNumber.Designer.cs
+|   |       20260414134819_AddEducationOther.cs
+|   |       20260414134819_AddEducationOther.Designer.cs
+|   |       20260415072441_RenameChildrenGenderToRelationship.cs
+|   |       20260415072441_RenameChildrenGenderToRelationship.Designer.cs
+|   |       20260415073351_RenameChildrenChildNameToMemberName.cs
+|   |       20260415073351_RenameChildrenChildNameToMemberName.Designer.cs
+|   |       20260512160640_AddContactUsTable.cs
+|   |       20260512160640_AddContactUsTable.Designer.cs
+|   |       KalolCommunityDbContextModelSnapshot.cs
+|   |       
+|   +---obj
+|   |   |   KalolCommunity.Api.EntityFrameworkCore.targets
+|   |   |   KalolCommunity.Infrastructure.csproj.EntityFrameworkCore.targets
+|   |   |   KalolCommunity.Infrastructure.csproj.nuget.dgspec.json
+|   |   |   KalolCommunity.Infrastructure.csproj.nuget.g.props
+|   |   |   KalolCommunity.Infrastructure.csproj.nuget.g.targets
+|   |   |   project.assets.json
+|   |   |   project.nuget.cache
+|   |   |   
+|   |   \---Debug
+|   |       \---net8.0
+|   |           |   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+|   |           |   KalolCom.E186D4E5.Up2Date
+|   |           |   KalolCommunity.Infrastructure.AssemblyInfo.cs
+|   |           |   KalolCommunity.Infrastructure.AssemblyInfoInputs.cache
+|   |           |   KalolCommunity.Infrastructure.assets.cache
+|   |           |   KalolCommunity.Infrastructure.csproj.AssemblyReference.cache
+|   |           |   KalolCommunity.Infrastructure.csproj.BuildWithSkipAnalyzers
+|   |           |   KalolCommunity.Infrastructure.csproj.CoreCompileInputs.cache
+|   |           |   KalolCommunity.Infrastructure.csproj.FileListAbsolute.txt
+|   |           |   KalolCommunity.Infrastructure.dll
+|   |           |   KalolCommunity.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+|   |           |   KalolCommunity.Infrastructure.genruntimeconfig.cache
+|   |           |   KalolCommunity.Infrastructure.GlobalUsings.g.cs
+|   |           |   KalolCommunity.Infrastructure.pdb
+|   |           |   KalolCommunity.Infrastructure.sourcelink.json
+|   |           |   
+|   |           +---ref
+|   |           |       KalolCommunity.Infrastructure.dll
+|   |           |       
+|   |           \---refint
+|   |                   KalolCommunity.Infrastructure.dll
+|   |                   
+|   +---Repositories
+|   |       ChildrenDetailRepository.cs
+|   |       CommunityDetailRepository.cs
+|   |       ContactUsRepository.cs
+|   |       CountryRepository.cs
+|   |       RefreshTokenRepository.cs
+|   |       Repository.cs
+|   |       StateRepository.cs
+|   |       UnitOfWork.cs
+|   |       UserRepository.cs
+|   |       
+|   \---Services
+|           BlobService.cs
+|           EmailService.cs
+|           JwtTokenService.cs
+|           MemoryCacheService.cs
+|           Msg91OtpService.cs
+|           PasswordHasher.cs
+|           ServiceBusPublisher.cs
+|           WhatsAppService.cs
+|           
+\---KalolCommunity.NotificationWorker
+    |   appsettings.Development.json
+    |   appsettings.json
+    |   KalolCommunity.NotificationWorker.csproj
+    |   NotificationWorker.cs
+    |   Program.cs
+    |   
+    +---bin
+    |   \---Debug
+    |       \---net8.0
+    |           |   appsettings.Development.json
+    |           |   appsettings.json
+    |           |   Azure.Core.Amqp.dll
+    |           |   Azure.Core.dll
+    |           |   Azure.Messaging.ServiceBus.dll
+    |           |   KalolCommunity.Contracts.dll
+    |           |   KalolCommunity.Contracts.pdb
+    |           |   KalolCommunity.NotificationWorker.deps.json
+    |           |   KalolCommunity.NotificationWorker.dll
+    |           |   KalolCommunity.NotificationWorker.exe
+    |           |   KalolCommunity.NotificationWorker.pdb
+    |           |   KalolCommunity.NotificationWorker.runtimeconfig.json
+    |           |   Microsoft.AI.DependencyCollector.dll
+    |           |   Microsoft.AI.EventCounterCollector.dll
+    |           |   Microsoft.AI.PerfCounterCollector.dll
+    |           |   Microsoft.AI.ServerTelemetryChannel.dll
+    |           |   Microsoft.AI.WindowsServer.dll
+    |           |   Microsoft.ApplicationInsights.dll
+    |           |   Microsoft.ApplicationInsights.WorkerService.dll
+    |           |   Microsoft.Azure.Amqp.dll
+    |           |   Microsoft.Bcl.AsyncInterfaces.dll
+    |           |   Microsoft.Extensions.Caching.Abstractions.dll
+    |           |   Microsoft.Extensions.Caching.Memory.dll
+    |           |   Microsoft.Extensions.Configuration.Abstractions.dll
+    |           |   Microsoft.Extensions.Configuration.Binder.dll
+    |           |   Microsoft.Extensions.Configuration.CommandLine.dll
+    |           |   Microsoft.Extensions.Configuration.dll
+    |           |   Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+    |           |   Microsoft.Extensions.Configuration.FileExtensions.dll
+    |           |   Microsoft.Extensions.Configuration.Json.dll
+    |           |   Microsoft.Extensions.Configuration.UserSecrets.dll
+    |           |   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+    |           |   Microsoft.Extensions.DependencyInjection.dll
+    |           |   Microsoft.Extensions.DependencyModel.dll
+    |           |   Microsoft.Extensions.Diagnostics.Abstractions.dll
+    |           |   Microsoft.Extensions.Diagnostics.dll
+    |           |   Microsoft.Extensions.FileProviders.Abstractions.dll
+    |           |   Microsoft.Extensions.FileProviders.Physical.dll
+    |           |   Microsoft.Extensions.FileSystemGlobbing.dll
+    |           |   Microsoft.Extensions.Hosting.Abstractions.dll
+    |           |   Microsoft.Extensions.Hosting.dll
+    |           |   Microsoft.Extensions.Logging.Abstractions.dll
+    |           |   Microsoft.Extensions.Logging.ApplicationInsights.dll
+    |           |   Microsoft.Extensions.Logging.Configuration.dll
+    |           |   Microsoft.Extensions.Logging.Console.dll
+    |           |   Microsoft.Extensions.Logging.Debug.dll
+    |           |   Microsoft.Extensions.Logging.dll
+    |           |   Microsoft.Extensions.Logging.EventLog.dll
+    |           |   Microsoft.Extensions.Logging.EventSource.dll
+    |           |   Microsoft.Extensions.Options.ConfigurationExtensions.dll
+    |           |   Microsoft.Extensions.Options.dll
+    |           |   Microsoft.Extensions.Primitives.dll
+    |           |   Microsoft.Win32.SystemEvents.dll
+    |           |   Serilog.dll
+    |           |   Serilog.Extensions.Hosting.dll
+    |           |   Serilog.Extensions.Logging.dll
+    |           |   Serilog.Settings.Configuration.dll
+    |           |   Serilog.Sinks.ApplicationInsights.dll
+    |           |   Serilog.Sinks.File.dll
+    |           |   System.ClientModel.dll
+    |           |   System.Configuration.ConfigurationManager.dll
+    |           |   System.Diagnostics.EventLog.dll
+    |           |   System.Diagnostics.PerformanceCounter.dll
+    |           |   System.Drawing.Common.dll
+    |           |   System.Memory.Data.dll
+    |           |   System.Security.Cryptography.ProtectedData.dll
+    |           |   System.Security.Permissions.dll
+    |           |   System.Windows.Extensions.dll
+    |           |   
+    |           +---Logs
+    |           |       log-20260310.txt
+    |           |       log-20260311.txt
+    |           |       log-20260312.txt
+    |           |       log-20260316.txt
+    |           |       log-20260318.txt
+    |           |       log-20260319.txt
+    |           |       log-20260320.txt
+    |           |       log-20260322.txt
+    |           |       log-20260413.txt
+    |           |       log-20260414.txt
+    |           |       log-20260415.txt
+    |           |       log-20260416.txt
+    |           |       log-20260421.txt
+    |           |       log-20260422.txt
+    |           |       log-20260427.txt
+    |           |       log-20260428.txt
+    |           |       log-20260509.txt
+    |           |       log-20260511.txt
+    |           |       log-20260512.txt
+    |           |       log-20260513.txt
+    |           |       log-20260519.txt
+    |           |       log-20260520.txt
+    |           |       
+    |           \---runtimes
+    |               +---unix
+    |               |   \---lib
+    |               |       \---net6.0
+    |               |               System.Drawing.Common.dll
+    |               |               
+    |               \---win
+    |                   \---lib
+    |                       +---net6.0
+    |                       |       Microsoft.Win32.SystemEvents.dll
+    |                       |       System.Diagnostics.PerformanceCounter.dll
+    |                       |       System.Drawing.Common.dll
+    |                       |       System.Security.Cryptography.ProtectedData.dll
+    |                       |       System.Windows.Extensions.dll
+    |                       |       
+    |                       \---net8.0
+    |                               System.Diagnostics.EventLog.dll
+    |                               System.Diagnostics.EventLog.Messages.dll
+    |                               
+    +---obj
+    |   |   KalolCommunity.NotificationWorker.csproj.nuget.dgspec.json
+    |   |   KalolCommunity.NotificationWorker.csproj.nuget.g.props
+    |   |   KalolCommunity.NotificationWorker.csproj.nuget.g.targets
+    |   |   project.assets.json
+    |   |   project.nuget.cache
+    |   |   
+    |   \---Debug
+    |       \---net8.0
+    |           |   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+    |           |   apphost.exe
+    |           |   KalolCom.FF87F885.Up2Date
+    |           |   KalolCommunity.NotificationWorker.AssemblyInfo.cs
+    |           |   KalolCommunity.NotificationWorker.AssemblyInfoInputs.cache
+    |           |   KalolCommunity.NotificationWorker.assets.cache
+    |           |   KalolCommunity.NotificationWorker.csproj.AssemblyReference.cache
+    |           |   KalolCommunity.NotificationWorker.csproj.BuildWithSkipAnalyzers
+    |           |   KalolCommunity.NotificationWorker.csproj.CoreCompileInputs.cache
+    |           |   KalolCommunity.NotificationWorker.csproj.FileListAbsolute.txt
+    |           |   KalolCommunity.NotificationWorker.dll
+    |           |   KalolCommunity.NotificationWorker.GeneratedMSBuildEditorConfig.editorconfig
+    |           |   KalolCommunity.NotificationWorker.genruntimeconfig.cache
+    |           |   KalolCommunity.NotificationWorker.GlobalUsings.g.cs
+    |           |   KalolCommunity.NotificationWorker.pdb
+    |           |   KalolCommunity.NotificationWorker.sourcelink.json
+    |           |   
+    |           +---ref
+    |           |       KalolCommunity.NotificationWorker.dll
+    |           |       
+    |           \---refint
+    |                   KalolCommunity.NotificationWorker.dll
+    |                   
+    \---Properties
+            launchSettings.json
+            
