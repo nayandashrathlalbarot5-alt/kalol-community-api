@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Repositories;
 
 namespace KalolCommunity.Infrastructure.Repositories
 {

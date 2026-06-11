@@ -5,7 +5,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using KalolCommunity.Application.Common;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Services;
 using KalolCommunity.Contracts.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

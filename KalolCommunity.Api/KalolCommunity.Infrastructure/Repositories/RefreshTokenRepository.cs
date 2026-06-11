@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KalolCommunity.Domain.Entities;
-using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Infrastructure.Persistence;
+using KalolCommunity.Application.Interfaces.Repositories;
 
 namespace KalolCommunity.Infrastructure.Repositories
 {

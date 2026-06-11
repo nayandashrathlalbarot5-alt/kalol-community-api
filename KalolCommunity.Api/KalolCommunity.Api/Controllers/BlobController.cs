@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using KalolCommunity.Application.Common;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Infrastructure;
 using KalolCommunity.Contracts.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

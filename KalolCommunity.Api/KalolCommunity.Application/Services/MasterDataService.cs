@@ -1,5 +1,4 @@
 using KalolCommunity.Application.Common;
-using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Contracts.DTO;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,9 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using KalolCommunity.Application.Interfaces.Repositories;
+using KalolCommunity.Application.Interfaces.Infrastructure;
+using KalolCommunity.Application.Interfaces.Services;
 
 
 namespace KalolCommunity.Application.Services

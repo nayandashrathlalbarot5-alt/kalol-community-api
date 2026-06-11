@@ -2,7 +2,7 @@ using KalolCommunity.Domain.Entities;
 using System;
 using System.Threading.Tasks;
 
-namespace KalolCommunity.Application.Interfaces
+namespace KalolCommunity.Application.Interfaces.Repositories
 {
     public interface ICommunityDetailRepository : IRepository<CommunityDetail>
     {

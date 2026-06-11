@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 
-namespace KalolCommunity.Application.Interfaces
+namespace KalolCommunity.Application.Interfaces.Repositories
 {
     public interface IRepository<T> where T : class 
     {

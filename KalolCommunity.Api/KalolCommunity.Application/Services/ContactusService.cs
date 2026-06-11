@@ -2,7 +2,8 @@
 using System.Net;
 using System.Threading.Tasks;
 using KalolCommunity.Application.Common;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Repositories;
+using KalolCommunity.Application.Interfaces.Services;
 using KalolCommunity.Contracts.DTO;
 using KalolCommunity.Domain.Entities;
 using Microsoft.Extensions.Logging;

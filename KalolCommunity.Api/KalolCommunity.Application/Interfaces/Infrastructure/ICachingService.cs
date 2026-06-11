@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace KalolCommunity.Application.Interfaces
+namespace KalolCommunity.Application.Interfaces.Infrastructure
 {
     public interface ICachingService
     {

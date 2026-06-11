@@ -1,9 +1,18 @@
 <Solution>
-  <Project Path="KalolCommunity.Api/KalolCommunity.Api.csproj" />
-  <Project Path="KalolCommunity.Application/KalolCommunity.Application.csproj" Id="e68a2c44-944c-438e-a5d7-397b86c991ef" />
-  <Project Path="KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj" Id="9b993ee7-996a-4f34-a628-3eac26713649" />
-  <Project Path="KalolCommunity.Contracts/KalolCommunity.Contracts.csproj" Id="daeb876e-22b1-4fdd-805f-6170076a178a" />
-  <Project Path="KalolCommunity.Domain/KalolCommunity.Domain.csproj" Id="34ef6973-bc30-4c52-b819-f747af8eb434" />
-  <Project Path="KalolCommunity.Infrastructure/KalolCommunity.Infrastructure.csproj" Id="5f560684-7d2a-425b-8cb3-fb2e0c4c0cc5" />
-  <Project Path="KalolCommunity.NotificationWorker/KalolCommunity.NotificationWorker.csproj" Id="aa8f9fe0-35bb-4d58-b819-fd0d74a3a594" />
+  <Folder Name="/Core Services/">
+    <Project Path="KalolCommunity.Api/KalolCommunity.Api.csproj" />
+    <Project Path="KalolCommunity.Application/KalolCommunity.Application.csproj" Id="e68a2c44-944c-438e-a5d7-397b86c991ef" />
+    <Project Path="KalolCommunity.Contracts/KalolCommunity.Contracts.csproj" Id="daeb876e-22b1-4fdd-805f-6170076a178a" />
+    <Project Path="KalolCommunity.Domain/KalolCommunity.Domain.csproj" Id="34ef6973-bc30-4c52-b819-f747af8eb434" />
+    <Project Path="KalolCommunity.Infrastructure/KalolCommunity.Infrastructure.csproj" Id="5f560684-7d2a-425b-8cb3-fb2e0c4c0cc5" />
+  </Folder>
+  <Folder Name="/Integration Hub/">
+    <Project Path="KalolCommunity.Communication.Functions/KalolCommunity.Communication.Functions.csproj" Id="9b993ee7-996a-4f34-a628-3eac26713649" />
+  </Folder>
+  <Folder Name="/Processing Hub/">
+    <Project Path="KalolCommunity.NotificationWorker/KalolCommunity.NotificationWorker.csproj" Id="aa8f9fe0-35bb-4d58-b819-fd0d74a3a594" />
+  </Folder>
+  <Folder Name="/Test Automation/">
+    <Project Path="KaloCommunity.Application.Tests/KaloCommunity.Application.Tests.csproj" Id="92417392-a56f-499d-86b2-eaa21cc9b067" />
+  </Folder>
 </Solution>
