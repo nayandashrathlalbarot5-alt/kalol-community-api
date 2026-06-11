@@ -1,4 +1,4 @@
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Repositories;
 using KalolCommunity.Domain.Entities;
 using KalolCommunity.Infrastructure.Persistence;
 

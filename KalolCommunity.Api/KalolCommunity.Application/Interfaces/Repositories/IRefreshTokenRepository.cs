@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KalolCommunity.Application.Interfaces
+namespace KalolCommunity.Application.Interfaces.Repositories
 {
     public interface IRefreshTokenRepository : IRepository<RefreshToken>
     {   

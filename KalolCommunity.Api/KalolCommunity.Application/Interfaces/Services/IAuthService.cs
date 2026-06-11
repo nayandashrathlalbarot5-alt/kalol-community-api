@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KalolCommunity.Application.Interfaces
+namespace KalolCommunity.Application.Interfaces.Services
 {
     public interface IAuthService
     {

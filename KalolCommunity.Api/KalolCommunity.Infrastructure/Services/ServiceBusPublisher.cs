@@ -1,5 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Text.Json;

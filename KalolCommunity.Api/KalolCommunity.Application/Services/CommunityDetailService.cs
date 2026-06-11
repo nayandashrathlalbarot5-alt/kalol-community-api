@@ -2,13 +2,15 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using KalolCommunity.Application.Common;
-using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Application.Exceptions;
 using KalolCommunity.Contracts.DTO;
 using KalolCommunity.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using KalolCommunity.Application.Interfaces.Infrastructure;
+using KalolCommunity.Application.Interfaces.Repositories;
+using KalolCommunity.Application.Interfaces.Services;
 
 namespace KalolCommunity.Application.Services
 {

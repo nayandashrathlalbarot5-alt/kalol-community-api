@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace KalolCommunity.Infrastructure.Services

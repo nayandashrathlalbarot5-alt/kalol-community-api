@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Azure;
 using Azure.Communication.Email;
 using KalolCommunity.Application.Exceptions;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 

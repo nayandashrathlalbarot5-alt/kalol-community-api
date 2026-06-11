@@ -1,7 +1,9 @@
 ﻿using Google.Apis.Auth;
 using KalolCommunity.Application.Common;
 using KalolCommunity.Application.Exceptions;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Infrastructure;
+using KalolCommunity.Application.Interfaces.Repositories;
+using KalolCommunity.Application.Interfaces.Services;
 using KalolCommunity.Contracts.DTO;
 using KalolCommunity.Domain.Entities;
 using Microsoft.Extensions.Configuration;

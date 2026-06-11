@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KalolCommunity.Domain.Entities;
 
-namespace KalolCommunity.Application.Interfaces
+namespace KalolCommunity.Application.Interfaces.Infrastructure
 {
     public interface IJwtTokenService
     {

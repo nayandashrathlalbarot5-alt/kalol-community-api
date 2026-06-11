@@ -1,4 +1,4 @@
-﻿using KalolCommunity.Application.Interfaces;
+﻿using KalolCommunity.Application.Interfaces.Infrastructure;
 using KalolCommunity.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

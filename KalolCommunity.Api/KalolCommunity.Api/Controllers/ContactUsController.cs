@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using KalolCommunity.Application.Interfaces;
+using KalolCommunity.Application.Interfaces.Services;
 using KalolCommunity.Contracts.DTO;
 using Microsoft.AspNetCore.Mvc;
 

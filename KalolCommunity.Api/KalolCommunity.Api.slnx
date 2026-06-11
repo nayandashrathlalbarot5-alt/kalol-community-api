@@ -12,5 +12,7 @@
   <Folder Name="/Processing Hub/">
     <Project Path="KalolCommunity.NotificationWorker/KalolCommunity.NotificationWorker.csproj" Id="aa8f9fe0-35bb-4d58-b819-fd0d74a3a594" />
   </Folder>
-  <Folder Name="/Test Automation/" />
+  <Folder Name="/Test Automation/">
+    <Project Path="KaloCommunity.Application.Tests/KaloCommunity.Application.Tests.csproj" Id="92417392-a56f-499d-86b2-eaa21cc9b067" />
+  </Folder>
 </Solution>

@@ -3,7 +3,7 @@ using KalolCommunity.Contracts.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace KalolCommunity.Application.Interfaces
+namespace KalolCommunity.Application.Interfaces.Services
 {
     public interface IMasterDataService
     {

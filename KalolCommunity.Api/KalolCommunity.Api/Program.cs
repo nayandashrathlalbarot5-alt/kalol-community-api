@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using KalolCommunity.Application.Services;
-using KalolCommunity.Application.Interfaces;
 using KalolCommunity.Infrastructure.Services;
 using KalolCommunity.Infrastructure.Persistence;
 using KalolCommunity.Infrastructure.Repositories;
@@ -16,6 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.ApplicationInsights;
+using KalolCommunity.Application.Interfaces.Repositories;
+using KalolCommunity.Application.Interfaces.Infrastructure;
+using KalolCommunity.Application.Interfaces.Services;
 
 
 try
