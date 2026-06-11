@@ -326,21 +326,6 @@ namespace KalolCommunity.Application.Services
             var normalizedEmail = email.ToLowerInvariant();
             var normalizedFlag = flag.Trim().ToUpperInvariant();
 
-            if (normalizedFlag == "R")
-            {
-                var userExists = await _unitOfWork.Users.AnyAsync(u => u.Email == normalizedEmail);
-                if (userExists)
-                {
-                    _logger.LogWarning("Registration OTP request for already registered email: {Email}", normalizedEmail);
-                    return new ApiResponse<AuthResponseDTO>
-                    {
-                        Success = false,
-                        Message = ResponseMessages.EmailAlreadyRegistered,
-                        StatusCode = (int)HttpStatusCode.Conflict
-                    };
-                }
-            }
-
             var otp = GenerateOtp();
             var cacheKey = $"{OtpPrefix}{normalizedEmail}";
 

@@ -2,13 +2,14 @@ namespace KalolCommunity.Application.Common
 {
     public static class ResponseMessages
     {
-        public const string EmailAlreadyRegistered = "Email is already registered.";
+        public const string EmailMandantory = "Email Address is mandatory!";
+        public const string InvalidEmail = "Email Address is invalid!";
+        public const string EmailAlreadyRegistered = "Email Address is already registered!";
         public const string RegistrationSuccessful = "Registration successful";
         public const string LoginSuccessful = "Login successful";
         public const string InvalidCredentials = "Invalid email or password";
         public const string UserNotFound = "User not found";
-        public const string InvalidUserId = "Invalid user id";
-        public const string InvalidEmail = "Email is required and must be valid.";
+        public const string InvalidUserId = "Invalid user id";        
         public const string RefreshTokenNotFound = "Refresh token not found";
         public const string RefreshTokenExpiredOrRevoked = "Refresh token expired or revoked";
         public const string TokenRefreshed = "Access token refreshed successfully";

@@ -1,24 +1,26 @@
-using System;
-using System.Text;
+using KalolCommunity.Api;
+using KalolCommunity.Api.Filters;
+using KalolCommunity.Api.Handlers;
+using KalolCommunity.Application.Interfaces.Infrastructure;
+using KalolCommunity.Application.Interfaces.Repositories;
+using KalolCommunity.Application.Interfaces.Services;
 using KalolCommunity.Application.Services;
-using KalolCommunity.Infrastructure.Services;
+using KalolCommunity.Application.Validators;
 using KalolCommunity.Infrastructure.Persistence;
 using KalolCommunity.Infrastructure.Repositories;
-using KalolCommunity.Api;
+using KalolCommunity.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using KalolCommunity.Api.Handlers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Sinks.ApplicationInsights;
-using KalolCommunity.Application.Interfaces.Repositories;
-using KalolCommunity.Application.Interfaces.Infrastructure;
-using KalolCommunity.Application.Interfaces.Services;
-
+using System;
+using System.Text;
+using FluentValidation;
 
 try
 {
@@ -66,7 +68,7 @@ try
     builder.Services.AddScoped<IBlobService, BlobService>();
     builder.Services.AddScoped<IServiceBusPublisher, ServiceBusPublisher>();
     builder.Services.AddScoped<IEmailService, EmailService>();
-    
+
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
     var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
 
@@ -111,7 +113,18 @@ try
         });
     });
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add<AsyncValidationFilter>();
+    });
+
+    // Scan the KalolCommunity.Application assembly and automatically register all FluentValidation Validators.
+    // Only one validator type is needed as a reference point for assembly scanning.
+    // Any new validator (e.g., ForgotPasswordRequestValidator, RegisterUserValidator)
+    // added to the same KalolCommunity.Application assembly will be discovered automatically.
+    // No additional registration in Program.cs is required.
+    builder.Services.AddValidatorsFromAssemblyContaining<SendOtpRequestValidator>();
+    
     builder.Services.AddMemoryCache();
 
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
