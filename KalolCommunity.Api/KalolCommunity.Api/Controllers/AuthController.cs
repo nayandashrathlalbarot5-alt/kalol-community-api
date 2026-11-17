@@ -49,19 +49,6 @@ namespace KalolCommunity.Api.Controllers
         [HttpPost("send-otp")]
         public async Task<IActionResult> SendOtp([FromBody] SendOtpRequestDTO request)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessage = string.Join(" | ",
-                    ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-
-                return BadRequest(new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = errorMessage,
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                });
-            }
-
             var result = await _authService.SendOtpAsync(request.Email, request.Flag);
             return StatusCode(result.StatusCode, result);
         }
@@ -69,19 +56,6 @@ namespace KalolCommunity.Api.Controllers
         [HttpPost("verify-otp")]
         public async Task<IActionResult> VerifyOtp([FromBody] RegisterDTO request)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessage = string.Join(" | ",
-                    ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-
-                return BadRequest(new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = errorMessage,
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                });
-            }
-
             var result = await _authService.VerifyOtpAsync(request);
             return StatusCode(result.StatusCode, result);
         }

@@ -1,14 +1,20 @@
+using static System.Net.WebRequestMethods;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace KalolCommunity.Application.Common
 {
     public static class ResponseMessages
     {
-        public const string EmailAlreadyRegistered = "Email is already registered.";
+        public const string FirstNameMandantory = "First Name is mandatory!";
+        public const string LastNameMandantory = "Last Name is mandatory!";
+        public const string EmailMandantory = "Email Address is mandatory!";
+        public const string InvalidEmail = "Email Address is invalid!";
+        public const string EmailAlreadyRegistered = "Email Address is already registered!";
         public const string RegistrationSuccessful = "Registration successful";
         public const string LoginSuccessful = "Login successful";
         public const string InvalidCredentials = "Invalid email or password";
         public const string UserNotFound = "User not found";
-        public const string InvalidUserId = "Invalid user id";
-        public const string InvalidEmail = "Email is required and must be valid.";
+        public const string InvalidUserId = "Invalid user id";        
         public const string RefreshTokenNotFound = "Refresh token not found";
         public const string RefreshTokenExpiredOrRevoked = "Refresh token expired or revoked";
         public const string TokenRefreshed = "Access token refreshed successfully";
@@ -25,9 +31,11 @@ namespace KalolCommunity.Application.Common
         public const string ProfileDetailRetrieved = "Profile details retrieved successfully";
         public const string ProfileDetailNotFound = "Profile details not found";
         public const string ContactUsCreated = "Contact message submitted successfully";
+        public const string OtpMandantory = "OTP is mandatory!";
         public const string OtpSentSuccessfully = "OTP sent successfully to your email.";
         public const string OtpSendFailed = "Failed to send OTP. Please try again.";
         public const string OtpVerified = "OTP Verified";
+        public const string OtpMustBe6Digits = "OTP must be a 6-digit number.";
         public const string InvalidOrExpiredOtp = "Invalid or expired OTP";
         
         // Blob Storage Messages
