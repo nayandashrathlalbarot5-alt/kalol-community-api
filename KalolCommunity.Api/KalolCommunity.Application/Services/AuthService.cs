@@ -183,7 +183,9 @@ namespace KalolCommunity.Application.Services
             }
 
             // 4️ Load the user and attach to the refresh token
-            var user = await _unitOfWork.Users.GetAsync(u => u.UserId == storedRefreshToken.UserId);
+            var user = await _unitOfWork.Users.GetAsync(
+                u => u.UserId == storedRefreshToken.UserId);
+
             if (user == null)
             {
                 throw new NotFoundException(ResponseMessages.UserNotFound);
@@ -345,16 +347,6 @@ namespace KalolCommunity.Application.Services
             
         public async Task<ApiResponse<AuthResponseDTO>> VerifyOtpAsync(RegisterDTO request)
         {
-            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Otp))
-            {
-                return new ApiResponse<AuthResponseDTO>
-                {
-                    Success = false,
-                    Message = ResponseMessages.InvalidOrExpiredOtp,
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
-            }
-
             var normalizedFlag = request.Flag?.Trim().ToUpperInvariant();
             var normalizedEmail = request.Email.ToLowerInvariant();
             var cachedOtp = await GetOtpAsync(normalizedEmail);
@@ -444,7 +436,7 @@ namespace KalolCommunity.Application.Services
                 CreatedAt = DateTime.UtcNow,
             };
 
-            // 8 Save RefreshToken to Databse
+            // Save RefreshToken to Databse
             await _unitOfWork.RefreshTokens.AddAsync(refreshTokenEntity);
             await _unitOfWork.SaveChangesAsync();
 

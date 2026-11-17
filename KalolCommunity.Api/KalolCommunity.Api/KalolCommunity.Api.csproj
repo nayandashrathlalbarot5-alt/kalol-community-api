@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middleware\" />
     <Folder Include="Logs\" />
   </ItemGroup>
 
